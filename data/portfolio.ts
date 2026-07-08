@@ -25,7 +25,7 @@ export const projects = [
       "Medication management PWA for barangay health units with role-based access, AI-assisted medication scanning, adherence tracking, and dashboards.",
     stack: ["PWA", "React", "AI", "Healthcare"],
     href: "https://pharsayo.netlify.app",
-    image: "/projects/pharsayo.svg",
+    image: "/projects/pharsayo-preview.png",
     status: "Live Site"
   },
   {
