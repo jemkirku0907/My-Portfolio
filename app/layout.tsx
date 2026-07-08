@@ -5,8 +5,13 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Developer Portfolio",
-  description: "Minimal personal developer portfolio with projects, certificates, design work, and an AI assistant."
+  title: "Jemkirk Utana - Web developer",
+  description: "Portfolio of Jemkirk Utana, a web developer building practical full-stack web systems.",
+  icons: {
+    icon: "/icon.jpg",
+    shortcut: "/icon.jpg",
+    apple: "/icon.jpg"
+  }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
