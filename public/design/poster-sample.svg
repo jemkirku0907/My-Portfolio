@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="750" viewBox="0 0 1000 750" role="img" aria-label="Poster sample placeholder">
+  <rect width="1000" height="750" fill="#efe9dd"/>
+  <rect x="130" y="90" width="740" height="570" rx="20" fill="#ffffff"/>
+  <rect x="205" y="170" width="330" height="330" rx="12" fill="#b85f4d"/>
+  <rect x="585" y="180" width="210" height="28" rx="14" fill="#111111"/>
+  <rect x="585" y="240" width="250" height="18" rx="9" fill="#405466"/>
+  <rect x="585" y="280" width="220" height="18" rx="9" fill="#405466"/>
+  <text x="210" y="585" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#111111">Poster Sample</text>
+</svg>

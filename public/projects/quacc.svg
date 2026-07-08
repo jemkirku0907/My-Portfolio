@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="QUACC preview placeholder">
+  <rect width="1200" height="750" fill="#f1ece5"/>
+  <rect x="130" y="120" width="940" height="510" rx="20" fill="#ffffff" stroke="#ded9ce" stroke-width="4"/>
+  <rect x="210" y="210" width="220" height="280" rx="14" fill="#405466"/>
+  <rect x="490" y="210" width="220" height="280" rx="14" fill="#426451"/>
+  <rect x="770" y="210" width="220" height="280" rx="14" fill="#b85f4d"/>
+  <text x="382" y="570" font-family="Arial, sans-serif" font-size="56" font-weight="700" fill="#111111">QUACC</text>
+</svg>

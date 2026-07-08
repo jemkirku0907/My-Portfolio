@@ -1,0 +1,124 @@
+"use client";
+
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { Command, Loader2, Send, X } from "lucide-react";
+
+type Message = {
+  role: "user" | "assistant";
+  content: string;
+};
+
+export function AskPalette() {
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<Message[]>([
+    { role: "assistant", content: "Ask me about projects, skills, certificates, or experience." }
+  ]);
+  const [loading, setLoading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setOpen(true);
+      }
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus();
+  }, [open]);
+
+  async function submit(event: FormEvent) {
+    event.preventDefault();
+    const question = input.trim();
+    if (!question || loading) return;
+
+    const nextMessages: Message[] = [...messages, { role: "user", content: question }];
+    setMessages(nextMessages);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: nextMessages })
+      });
+      const data = await response.json();
+      setMessages([...nextMessages, { role: "assistant", content: data.answer ?? "I could not answer that just now." }]);
+    } catch {
+      setMessages([
+        ...nextMessages,
+        {
+          role: "assistant",
+          content: "The assistant is taking a quick breather. Please try again in a moment."
+        }
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        className="focus-ring inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-medium text-ink shadow-sm transition hover:border-moss"
+      >
+        <Command className="h-4 w-4" aria-hidden />
+        Ask anything
+        <span className="hidden rounded border border-line px-1.5 py-0.5 text-xs text-steel sm:inline">Ctrl K</span>
+      </button>
+
+      {open ? (
+        <div className="fixed inset-0 z-40 bg-ink/35 p-4 backdrop-blur-sm" onMouseDown={() => setOpen(false)}>
+          <div
+            className="mx-auto mt-20 w-full max-w-2xl overflow-hidden rounded-lg border border-line bg-paper shadow-soft"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-line px-4 py-3">
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <Command className="h-4 w-4 text-moss" aria-hidden />
+                Ask Anything
+              </div>
+              <button className="focus-ring rounded p-1" onClick={() => setOpen(false)} aria-label="Close assistant">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <form onSubmit={submit} className="flex gap-2 border-b border-line p-3">
+              <input
+                ref={inputRef}
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                placeholder="Ask about Marajo, PharSayo, skills..."
+                className="focus-ring min-w-0 flex-1 rounded-md border border-line bg-white px-3 py-2 text-base outline-none"
+              />
+              <button className="focus-ring rounded-md bg-ink px-3 text-white disabled:opacity-50" disabled={loading} aria-label="Send question">
+                {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+              </button>
+            </form>
+            <div className="max-h-[50vh] space-y-3 overflow-y-auto p-4">
+              {messages.map((message, index) => (
+                <div key={`${message.role}-${index}`} className={message.role === "user" ? "text-right" : "text-left"}>
+                  <p
+                    className={`inline-block max-w-[88%] rounded-lg px-3 py-2 text-sm leading-6 ${
+                      message.role === "user" ? "bg-ink text-white" : "border border-line bg-white text-ink"
+                    }`}
+                  >
+                    {message.content}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </>
+  );
+}

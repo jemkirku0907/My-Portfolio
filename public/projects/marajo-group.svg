@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="Marajo Group preview placeholder">
+  <rect width="1200" height="750" fill="#efe9dd"/>
+  <rect x="90" y="90" width="1020" height="570" rx="24" fill="#ffffff" stroke="#ded9ce" stroke-width="4"/>
+  <rect x="150" y="160" width="420" height="300" rx="12" fill="#426451"/>
+  <rect x="620" y="170" width="340" height="28" rx="14" fill="#111111"/>
+  <rect x="620" y="230" width="430" height="18" rx="9" fill="#405466"/>
+  <rect x="620" y="270" width="390" height="18" rx="9" fill="#405466"/>
+  <rect x="620" y="340" width="170" height="48" rx="24" fill="#b85f4d"/>
+  <text x="150" y="560" font-family="Arial, sans-serif" font-size="52" font-weight="700" fill="#111111">Marajo Group</text>
+</svg>
