@@ -52,7 +52,7 @@ export function HeaderDropdown() {
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="focus-ring inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper"
+        className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper"
         aria-label="Open header menu"
         aria-expanded={open}
       >
@@ -64,7 +64,7 @@ export function HeaderDropdown() {
           <button
             type="button"
             onClick={openAskPalette}
-            className="flex w-full items-center justify-between gap-4 px-4 py-3 text-left text-sm font-medium hover:bg-white/70 dark:hover:bg-paper/10"
+            className="flex min-h-11 w-full items-center justify-between gap-4 px-4 py-3 text-left text-sm font-medium hover:bg-white/70 dark:hover:bg-paper/10"
           >
             <span className="inline-flex items-center gap-2">
               <Command className="h-4 w-4 text-moss" aria-hidden />
@@ -75,7 +75,7 @@ export function HeaderDropdown() {
 
           <div className="border-y border-line px-4 py-3 dark:border-moss">
             <div className="flex items-center gap-3 text-sm">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-moss dark:bg-paper">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-moss dark:bg-paper dark:text-moss">
                 <Users className="h-4 w-4" aria-hidden />
               </span>
               <span>{enabled ? `${count} people viewing now` : "Visitor counter ready"}</span>
@@ -103,7 +103,7 @@ export function HeaderDropdown() {
                     key={item.mode}
                     type="button"
                     onClick={() => setTheme(item.mode)}
-                    className={`focus-ring inline-flex h-9 w-9 items-center justify-center rounded-full border ${
+                    className={`focus-ring inline-flex h-11 w-11 items-center justify-center rounded-full border ${
                       theme === item.mode ? "border-moss text-moss" : "border-line text-steel dark:border-moss dark:text-paper"
                     }`}
                     aria-label={item.label}
@@ -119,7 +119,7 @@ export function HeaderDropdown() {
                 {profile.email}
               </a>
             </p>
-            <a className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-moss" href={`mailto:${profile.email}`}>
+            <a className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-moss" href={`mailto:${profile.email}`}>
               <Mail className="h-4 w-4" aria-hidden />
               Email me
             </a>
