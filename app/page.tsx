@@ -80,9 +80,14 @@ export default function Home() {
         <SectionHeading eyebrow="Selected work" title="Projects" />
         <div className="mt-8 grid gap-5 md:grid-cols-2">
           {projects.map((project) => (
-            <article key={project.name} className="overflow-hidden rounded-lg border border-line bg-white shadow-sm">
-              <div className="relative aspect-[16/10] bg-[#ebe6da]">
-                <Image src={project.image} alt={`${project.name} preview`} fill className="object-cover" />
+            <article key={project.name} className="group overflow-hidden rounded-lg border border-line bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft">
+              <div className="relative aspect-[16/10] bg-[#ebe6da] p-3">
+                <Image
+                  src={project.image}
+                  alt={`${project.name} preview`}
+                  fill
+                  className="object-contain p-3 transition duration-300 group-hover:scale-[1.03]"
+                />
               </div>
               <div className="space-y-4 p-5">
                 <div className="flex items-start justify-between gap-4">
