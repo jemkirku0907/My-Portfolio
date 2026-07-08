@@ -77,3 +77,7 @@ Thumbs.db
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Local generated workspace copies
+outputs/
+portfolio-next/
