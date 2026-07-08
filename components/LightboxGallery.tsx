@@ -33,11 +33,18 @@ export function LightboxGallery({ items, type }: { items: GalleryItem[]; type: "
             <div className="space-y-2 p-4">
               <p className="text-base font-semibold">{item.name ?? item.title}</p>
               <p className="text-sm text-steel">{item.issuer ?? item.category} {item.date ? `- ${item.date}` : ""}</p>
-              {item.verifyUrl ? (
-                <a className="inline-flex items-center gap-1 text-sm font-medium text-moss" href={item.verifyUrl}>
-                  Verify <ExternalLink className="h-3.5 w-3.5" />
-                </a>
-              ) : null}
+              <div className="flex flex-wrap gap-3">
+                {item.fileUrl ? (
+                  <a className="inline-flex items-center gap-1 text-sm font-medium text-moss" href={item.fileUrl} target="_blank" rel="noreferrer">
+                    Open certificate <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
+                ) : null}
+                {item.verifyUrl ? (
+                  <a className="inline-flex items-center gap-1 text-sm font-medium text-moss" href={item.verifyUrl} target="_blank" rel="noreferrer">
+                    Verify <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
+                ) : null}
+              </div>
             </div>
           </button>
         ))}
@@ -52,6 +59,16 @@ export function LightboxGallery({ items, type }: { items: GalleryItem[]; type: "
             <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-[#ebe6da]">
               <Image src={active.image} alt={active.name ?? active.title ?? "Gallery item"} fill className="object-contain" />
             </div>
+            {active.fileUrl ? (
+              <a
+                className="mt-3 inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-medium text-moss"
+                href={active.fileUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Open certificate <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+            ) : null}
           </div>
         </div>
       ) : null}

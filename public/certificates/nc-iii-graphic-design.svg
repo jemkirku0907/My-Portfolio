@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="NC III Graphic Design certificate placeholder">
-  <rect width="1200" height="900" fill="#f7f5ef"/>
-  <rect x="120" y="120" width="960" height="660" rx="18" fill="#ffffff" stroke="#ded9ce" stroke-width="6"/>
-  <rect x="185" y="185" width="830" height="530" rx="8" fill="none" stroke="#426451" stroke-width="3"/>
-  <text x="600" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#111111">Certificate Placeholder</text>
-  <text x="600" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#426451">NC III Graphic Design</text>
-  <text x="600" y="510" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#405466">Replace this file with the real certificate.</text>
-</svg>

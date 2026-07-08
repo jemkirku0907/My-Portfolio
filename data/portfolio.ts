@@ -60,17 +60,41 @@ export const certificates = [
     name: "NC III Graphic Design",
     issuer: "TESDA",
     date: "05/2025",
-    image: "/certificates/nc-iii-graphic-design.svg",
+    image: "/certificates/nc-iii-graphic-design.png",
     verifyUrl: "",
-    fileUrl: "/certificates/nc-iii-graphic-design.svg"
+    fileUrl: "/certificates/nc-iii-graphic-design.png"
   },
   {
     name: "Batang Techno: Building the Minds of Tomorrow's Innovators Hackathon - Participant",
     issuer: "Batangas State University - The National Engineering University",
     date: "03/2026",
-    image: "/certificates/batang-techno-hackathon.svg",
+    image: "/certificates/batang-techno-hackathon.jpg",
     verifyUrl: "",
     fileUrl: "/certificates/batang-techno-hackathon.pdf"
+  },
+  {
+    name: "InfoTechnOlympics 2025 Web Design Category - Participant",
+    issuer: "University of Makati - College of Computing and Information Sciences",
+    date: "10/2025",
+    image: "/certificates/infotechnolympics-2025.jpg",
+    verifyUrl: "",
+    fileUrl: "/certificates/infotechnolympics-2025.pdf"
+  },
+  {
+    name: "Math and Physics Quiz Bee 2025 - Participant",
+    issuer: "University of Makati - Department of Math and Physics",
+    date: "10/2025",
+    image: "/certificates/ai-tech-cover-participation.jpg",
+    verifyUrl: "",
+    fileUrl: "/certificates/ai-tech-cover-participation.pdf"
+  },
+  {
+    name: "AI Tech 2.0 - Participant",
+    issuer: "University of Makati - College of Computing and Information Sciences",
+    date: "04/2026",
+    image: "/certificates/ai-tech-2-participant.jpg",
+    verifyUrl: "",
+    fileUrl: "/certificates/ai-tech-2-participant.pdf"
   }
 ];
 
