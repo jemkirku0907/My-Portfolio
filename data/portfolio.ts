@@ -60,9 +60,9 @@ export const certificates = [
     name: "NC III Graphic Design",
     issuer: "TESDA",
     date: "05/2025",
-    image: "/certificates/nc-iii-graphic-design.png",
+    image: "/certificates/nc-iii-graphic-design.jpg",
     verifyUrl: "",
-    fileUrl: "/certificates/nc-iii-graphic-design.png"
+    fileUrl: "/certificates/nc-iii-graphic-design.pdf"
   },
   {
     name: "Batang Techno: Building the Minds of Tomorrow's Innovators Hackathon - Participant",
