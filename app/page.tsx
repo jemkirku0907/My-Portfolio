@@ -27,7 +27,22 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className={`${sectionClass} grid min-h-[78vh] content-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center`}>
+      <section className={`${sectionClass} grid min-h-[78vh] content-center gap-10 lg:grid-cols-[0.72fr_1fr] lg:items-center`}>
+        <div className="relative mx-auto w-full max-w-[18rem] sm:max-w-xs lg:order-none lg:max-w-sm">
+          <div className="absolute -inset-3 rounded-[2rem] border border-line bg-white/70" />
+          <div className="relative overflow-hidden rounded-[1.6rem] border border-line bg-white shadow-sm">
+            <div className="relative aspect-[4/5]">
+              <Image
+                src="/profile/hero-face.jpg"
+                alt={`${profile.name} portrait`}
+                fill
+                priority
+                sizes="(min-width: 1024px) 360px, 80vw"
+                className="object-cover object-top"
+              />
+            </div>
+          </div>
+        </div>
         <div className="max-w-3xl space-y-8">
           <VisitorPresence />
           <div className="space-y-5">
@@ -42,21 +57,6 @@ export default function Home() {
             <a className="focus-ring rounded-full border border-line bg-white px-5 py-3 text-sm font-semibold text-ink" href={`mailto:${profile.email}`}>
               Contact Me
             </a>
-          </div>
-        </div>
-        <div className="relative mx-auto w-full max-w-sm lg:max-w-md">
-          <div className="absolute -inset-4 rounded-[2rem] border border-line bg-white/60" />
-          <div className="relative overflow-hidden rounded-[1.6rem] border border-line bg-white shadow-sm">
-            <div className="relative aspect-[4/5]">
-              <Image
-                src="/profile/hero-face.jpg"
-                alt={`${profile.name} portrait`}
-                fill
-                priority
-                sizes="(min-width: 1024px) 420px, 85vw"
-                className="object-cover object-top"
-              />
-            </div>
           </div>
         </div>
       </section>
