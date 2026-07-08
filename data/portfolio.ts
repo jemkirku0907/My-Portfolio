@@ -62,7 +62,7 @@ export const certificates = [
     date: "05/2025",
     image: "/certificates/nc-iii-graphic-design.jpg",
     verifyUrl: "",
-    fileUrl: "/certificates/nc-iii-graphic-design.pdf"
+    fileUrl: "/certificates/nc-iii-graphic-design.jpg"
   },
   {
     name: "Batang Techno: Building the Minds of Tomorrow's Innovators Hackathon - Participant",
