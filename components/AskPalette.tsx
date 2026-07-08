@@ -31,6 +31,13 @@ export function AskPalette() {
   }, []);
 
   useEffect(() => {
+    const openPalette = () => setOpen(true);
+
+    window.addEventListener("open-ask-palette", openPalette);
+    return () => window.removeEventListener("open-ask-palette", openPalette);
+  }, []);
+
+  useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
 

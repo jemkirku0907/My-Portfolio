@@ -5,7 +5,7 @@ export const profile = {
   location: "Philippines",
   email: "jemkirku0907@gmail.com",
   github: "jemkirku0907",
-  linkedin: "https://www.linkedin.com/in/your-profile",
+  linkedin: "https://www.linkedin.com/in/jemkirk-utana-825892420",
   resume: "#"
 };
 
@@ -15,7 +15,7 @@ export const projects = [
     description:
       "Real estate company website migrated from PHP/MySQL/XAMPP to Next.js, Supabase, and Vercel, with listings, booking flows, an admin dashboard, and third-party integrations.",
     stack: ["Next.js", "Supabase", "Tailwind CSS", "Vercel"],
-    href: "#",
+    href: "https://marajogroup.vercel.app",
     image: "/projects/marajo-group.svg",
     status: "Live Site"
   },
@@ -33,9 +33,9 @@ export const projects = [
     description:
       "Multi-role community and childcare system with admin, staff, and guardian dashboards, password hashing, scholarship application flows, file uploads, and OTP verification.",
     stack: ["PHP", "Bootstrap 5", "MySQL", "Session Auth"],
-    href: "#",
+    href: "",
     image: "/projects/quacc.svg",
-    status: "Academic project"
+    status: "Private/Not Deployed"
   },
   {
     name: "NC III Graphic Design Work",
@@ -59,10 +59,18 @@ export const certificates = [
   {
     name: "NC III Graphic Design",
     issuer: "TESDA",
-    date: "Add date",
+    date: "05/2025",
     image: "/certificates/nc-iii-graphic-design.svg",
     verifyUrl: "",
     fileUrl: "/certificates/nc-iii-graphic-design.svg"
+  },
+  {
+    name: "Batang Techno: Building the Minds of Tomorrow's Innovators Hackathon - Participant",
+    issuer: "Batangas State University - The National Engineering University",
+    date: "03/2026",
+    image: "/certificates/batang-techno-hackathon.svg",
+    verifyUrl: "",
+    fileUrl: "/certificates/batang-techno-hackathon.pdf"
   }
 ];
 

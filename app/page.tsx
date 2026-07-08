@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import { AskPalette } from "@/components/AskPalette";
+import { HeaderDropdown } from "@/components/HeaderDropdown";
 import { LightboxGallery } from "@/components/LightboxGallery";
 import { VisitorPresence } from "@/components/VisitorPresence";
 import { certificates, designSamples, profile, projects, skills, timeline } from "@/data/portfolio";
@@ -14,7 +15,7 @@ export default function Home() {
     <main>
       <header className="sticky top-0 z-30 border-b border-line bg-paper/85 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
-          <a href="#" className="text-sm font-semibold tracking-[0.14em] text-ink">
+          <a href="/" className="text-sm font-semibold tracking-[0.14em] text-ink">
             {profile.name}
           </a>
           <div className="hidden items-center gap-5 text-sm text-steel md:flex">
@@ -23,14 +24,17 @@ export default function Home() {
             <a href="#certificates" className="hover:text-ink">Certificates</a>
             <a href="#contact" className="hover:text-ink">Contact</a>
           </div>
-          <AskPalette />
+          <div className="flex items-center gap-2">
+            <AskPalette />
+            <HeaderDropdown />
+          </div>
         </nav>
       </header>
 
       <section className={`${sectionClass} grid min-h-[78vh] content-center gap-10 lg:grid-cols-[0.72fr_1fr] lg:items-center`}>
         <div className="relative mx-auto w-full max-w-[18rem] sm:max-w-xs lg:order-none lg:max-w-sm">
-          <div className="absolute -inset-3 rounded-[2rem] border border-line bg-white/70" />
-          <div className="relative overflow-hidden rounded-[1.6rem] border border-line bg-white shadow-sm">
+          <div className="absolute -inset-3 rounded-[2rem] bg-white/70" />
+          <div className="relative overflow-hidden rounded-[1.6rem] border border-transparent bg-white shadow-sm dark:border-moss">
             <div className="relative aspect-[4/5]">
               <Image
                 src="/profile/hero-face.jpg"
@@ -86,9 +90,15 @@ export default function Home() {
                     <p className="text-sm font-medium text-moss">{project.status}</p>
                     <h3 className="mt-1 text-xl font-semibold">{project.name}</h3>
                   </div>
-                  <a className="focus-ring rounded-full border border-line p-2 hover:border-moss" href={project.href} aria-label={`Open ${project.name}`}>
-                    <ArrowUpRight className="h-4 w-4" />
-                  </a>
+                  {project.href ? (
+                    <a className="focus-ring rounded-full border border-line p-2 hover:border-moss" href={project.href} aria-label={`Open ${project.name}`}>
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  ) : (
+                    <span className="rounded-full border border-line px-3 py-1 text-xs font-medium text-steel" aria-label={`${project.name} is private and not deployed`}>
+                      Private
+                    </span>
+                  )}
                 </div>
                 <p className="leading-7 text-steel">{project.description}</p>
                 <div className="flex flex-wrap gap-2">

@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Jemkirk Utana - Web developer",
-  description: "Portfolio of Jemkirk Utana, a web developer building practical full-stack web systems.",
+  title: "Jemkirk Utana - Full-Stack Developer in the Philippines",
+  description: "Portfolio of Jemkirk Utana, a Full-Stack Developer in the Philippines building web systems with Next.js, React, Supabase, PHP, and MySQL.",
   icons: {
     icon: "/icon.jpg",
     shortcut: "/icon.jpg",
