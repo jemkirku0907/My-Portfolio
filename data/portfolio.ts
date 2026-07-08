@@ -1,10 +1,10 @@
 export const profile = {
-  name: "Your Name",
+  name: "Jemkirk L. Utana",
   title: "Web Developer | Full-Stack Next.js & PHP",
   tagline: "I build practical web systems across frontend, backend, databases, and deployment.",
   location: "Philippines",
-  email: "your.email@example.com",
-  github: "your-github-username",
+  email: "jemkirku0907@gmail.com",
+  github: "jemkirku0907",
   linkedin: "https://www.linkedin.com/in/your-profile",
   resume: "#"
 };
@@ -17,7 +17,7 @@ export const projects = [
     stack: ["Next.js", "Supabase", "Tailwind CSS", "Vercel"],
     href: "#",
     image: "/projects/marajo-group.svg",
-    status: "Case study"
+    status: "Live Site"
   },
   {
     name: "PharSayo",
@@ -26,7 +26,7 @@ export const projects = [
     stack: ["PWA", "React", "AI", "Healthcare"],
     href: "https://pharsayo.netlify.app",
     image: "/projects/pharsayo.svg",
-    status: "Live site"
+    status: "Live Site"
   },
   {
     name: "Queen of Angels (QUACC)",
