@@ -23,11 +23,14 @@ Portfolio context:
 const fallbackAnswer = "The assistant is temporarily unavailable. Please try asking again in a moment.";
 
 export async function POST(request: Request) {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
 
   if (!apiKey) {
     return NextResponse.json(
-      { answer: "The AI assistant needs GEMINI_API_KEY configured on the server before it can answer." },
+      {
+        answer:
+          "The AI assistant key is set locally, but the deployed server also needs GEMINI_API_KEY added in Vercel Environment Variables."
+      },
       { status: 500 }
     );
   }
