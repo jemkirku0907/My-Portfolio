@@ -52,10 +52,10 @@ export function AskPalette() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/chat", {
+      const response = await fetch("/api/ask-ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: nextMessages })
+        body: JSON.stringify({ prompt: question })
       });
       const data = await response.json();
       setMessages([...nextMessages, { role: "assistant", content: data.answer ?? "I could not answer that just now." }]);
