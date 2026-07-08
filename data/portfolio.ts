@@ -16,7 +16,7 @@ export const projects = [
       "Real estate company website migrated from PHP/MySQL/XAMPP to Next.js, Supabase, and Vercel, with listings, booking flows, an admin dashboard, and third-party integrations.",
     stack: ["Next.js", "Supabase", "Tailwind CSS", "Vercel"],
     href: "https://marajogroup.vercel.app",
-    image: "/projects/marajo-group.svg",
+    image: "/projects/marajo-group-preview.png",
     status: "Live Site"
   },
   {
@@ -34,7 +34,7 @@ export const projects = [
       "Multi-role community and childcare system with admin, staff, and guardian dashboards, password hashing, scholarship application flows, file uploads, and OTP verification.",
     stack: ["PHP", "Bootstrap 5", "MySQL", "Session Auth"],
     href: "",
-    image: "/projects/quacc.svg",
+    image: "/projects/quacc-preview.png",
     status: "Private/Not Deployed"
   },
   {
