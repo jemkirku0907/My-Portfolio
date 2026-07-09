@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Runner Game - Step 5 (with Face)</title>
+<style>
+  body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #f4f1ea;
+    font-family: system-ui, sans-serif;
+  }
+  canvas {
+    background: #ffffff;
+    border: 2px solid #1f6e34;
+    border-radius: 8px;
+  }
+  .info {
+    margin-top: 12px;
+    color: #555;
+    font-size: 14px;
+    text-align: center;
+  }
+  .info kbd {
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: monospace;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="gameCanvas" width="600" height="250"></canvas>
+<div class="info">Press <kbd>Space</kbd> or <kbd>↑</kbd> to jump — watch the face change!</div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+const groundY = 200;
+
+const character = {
+  x: 80,
+  y: groundY,
+  width: 30,
+  height: 40,
+  velocityY: 0,
+  isJumping: false
+};
+
+const GRAVITY = 0.6;
+const JUMP_FORCE = -12;
+
+let legFrame = 0;
+let animationTimer = 0;
+
+let groundOffset = 0;
+
+let score = 0;
+let isGameOver = false;
+let gameSpeed = 3;
+
+let obstacles = [];
+let obstacleTimer = 0;
+let nextObstacleGap = 90;
+
+document.addEventListener('keydown', (e) => {
+  if ((e.code === 'Space' || e.code === 'ArrowUp')) {
+    if (isGameOver) {
+      resetGame();
+      return;
+    }
+    if (!character.isJumping) {
+      character.velocityY = JUMP_FORCE;
+      character.isJumping = true;
+    }
+  }
+});
+
+function resetGame() {
+  character.y = groundY;
+  character.velocityY = 0;
+  character.isJumping = false;
+  obstacles = [];
+  score = 0;
+  gameSpeed = 3;
+  isGameOver = false;
+  obstacleTimer = 0;
+}
+
+function checkCollision(char, obs) {
+  return (
+    char.x < obs.x + obs.width &&
+    char.x + char.width > obs.x &&
+    char.y < obs.y + obs.height &&
+    char.y + char.height > obs.y
+  );
+}
+
+function update() {
+  if (isGameOver) return;
+
+  if (character.isJumping) {
+    character.velocityY += GRAVITY;
+    character.y += character.velocityY;
+
+    if (character.y >= groundY) {
+      character.y = groundY;
+      character.velocityY = 0;
+      character.isJumping = false;
+    }
+  }
+
+  if (!character.isJumping) {
+    animationTimer++;
+    if (animationTimer % 8 === 0) {
+      legFrame = legFrame === 0 ? 1 : 0;
+    }
+  }
+
+  groundOffset += gameSpeed;
+  if (groundOffset >= 40) groundOffset = 0;
+
+  obstacleTimer++;
+  if (obstacleTimer >= nextObstacleGap) {
+    // TODO 1: Gumawa ng array ng possible obstacle types.
+    // Idagdag mo pa ang 'flying' sa listahan.
+    const obstacleTypes = ['small', 'tall' /* , idagdag mo pa dito */];
+
+    // TODO 2: Random na pumili ng type gamit Math.random()
+    // Hint: Math.random() nagbabalik ng number between 0 and 1 (e.g. 0.42)
+    //       i-multiply mo sa obstacleTypes.length, tapos Math.floor() para 
+    //       maging whole number (valid index) siya.
+    const randomType = obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
+
+    // TODO 3: Base sa randomType, magkaiba ang width/height/y position.
+    // Simulan sa default values muna, papalitan natin base sa type.
+    let width = 20;
+    let height = 30;
+    let y = groundY + 10;
+
+    if (randomType === 'tall') {
+      // Hint: mas malaking height = mas mahirap talunin.
+      // Para hindi lumutang/lumubog, i-adjust ang y gamit:
+      // y = (groundY + character.height) - height
+      height = 55;
+      y = (groundY + character.height) - height;
+    }
+
+    // TODO 4: Idagdag mo dito yung 'flying' type.
+    // Hint: para "lumipad" siya, ilagay mo yung y sa mas mataas na position
+    // (mas maliit na number = mas mataas sa canvas, dahil canvas Y ay 
+    // "paibaba pataas" ang direction). Subukan mo: y = groundY - 20
+
+    obstacles.push({ x: canvas.width, y: y, width: width, height: height, type: randomType });
+    obstacleTimer = 0;
+    nextObstacleGap = 60 + Math.random() * 60;
+  }
+
+  for (let i = obstacles.length - 1; i >= 0; i--) {
+    obstacles[i].x -= gameSpeed;
+
+    if (checkCollision(character, obstacles[i])) {
+      isGameOver = true;
+    }
+
+    if (obstacles[i].x + obstacles[i].width < 0) {
+      obstacles.splice(i, 1);
+      score++;
+    }
+  }
+
+  gameSpeed += 0.001;
+}
+
+// ===== NEW: DRAW FACE FUNCTION =====
+// Hiwalay na function ito para malinis yung code — "separation of concerns"
+// Tumatanggap ng head position (headX, headY) at kung jumping ba o hindi
+function drawFace(headX, headY, jumping, gameOver) {
+  const eyeY = headY + 8;
+
+  if (gameOver) {
+    // ===== X_X eyes (game over face) =====
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    // Left eye (X shape)
+    ctx.beginPath();
+    ctx.moveTo(headX + 5, eyeY - 3);
+    ctx.lineTo(headX + 11, eyeY + 3);
+    ctx.moveTo(headX + 11, eyeY - 3);
+    ctx.lineTo(headX + 5, eyeY + 3);
+    ctx.stroke();
+    // Right eye (X shape)
+    ctx.beginPath();
+    ctx.moveTo(headX + 19, eyeY - 3);
+    ctx.lineTo(headX + 25, eyeY + 3);
+    ctx.moveTo(headX + 25, eyeY - 3);
+    ctx.lineTo(headX + 19, eyeY + 3);
+    ctx.stroke();
+    return;
+  }
+
+  if (jumping) {
+    // ===== EXCITED/SURPRISED FACE (big round eyes + open mouth) =====
+    ctx.fillStyle = '#fff';
+    // Big round eyes
+    ctx.beginPath();
+    ctx.arc(headX + 8, eyeY, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(headX + 22, eyeY, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Small black pupils (looking up, kasi tumatalon)
+    ctx.fillStyle = '#1f6e34';
+    ctx.beginPath();
+    ctx.arc(headX + 8, eyeY - 1, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(headX + 22, eyeY - 1, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Open "O" mouth (excited expression)
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(headX + 15, eyeY + 10, 3, 0, Math.PI * 2);
+    ctx.fill();
+
+  } else {
+    // ===== NORMAL WALKING FACE (simple dots + small smile) =====
+    ctx.fillStyle = '#fff';
+    // Simple dot eyes
+    ctx.beginPath();
+    ctx.arc(headX + 8, eyeY, 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(headX + 22, eyeY, 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Small smile (curve gamit arc)
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(headX + 15, eyeY + 5, 5, 0.2 * Math.PI, 0.8 * Math.PI);
+    ctx.stroke();
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const groundLineY = groundY + character.height;
+  ctx.strokeStyle = '#1f6e34';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, groundLineY);
+  ctx.lineTo(canvas.width, groundLineY);
+  ctx.stroke();
+
+  ctx.strokeStyle = '#c9c2b0';
+  ctx.lineWidth = 3;
+  for (let x = -groundOffset; x < canvas.width; x += 40) {
+    ctx.beginPath();
+    ctx.moveTo(x, groundLineY + 8);
+    ctx.lineTo(x + 20, groundLineY + 8);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = isGameOver ? '#b0453f' : '#1f6e34';
+  ctx.fillRect(character.x, character.y, character.width, character.height - 15);
+
+  // ===== NEW: DRAW FACE ON TOP OF THE BODY =====
+  // Tinatawag natin ito pagkatapos i-draw yung body, para nasa ibabaw yung face
+  drawFace(character.x, character.y, character.isJumping, isGameOver);
+
+  const legY = character.y + character.height - 15;
+  const legHeight = 15;
+
+  if (!character.isJumping && !isGameOver) {
+    // NEW: explicitly set leg color here — change this hex value to whatever
+    // color you want the legs to be (independent from the body color above)
+    ctx.fillStyle = '#0f4d22'; // <-- change this to your desired leg color
+    if (legFrame === 0) {
+      ctx.fillRect(character.x, legY, 10, legHeight);
+      ctx.fillRect(character.x + 18, legY - 3, 10, legHeight);
+    } else {
+      ctx.fillRect(character.x, legY - 3, 10, legHeight);
+      ctx.fillRect(character.x + 18, legY, 10, legHeight);
+    }
+  } else {
+    ctx.fillStyle = isGameOver ? '#b0453f' : '#1f6e34';
+    ctx.fillRect(character.x, legY, 10, legHeight);
+    ctx.fillRect(character.x + 18, legY, 10, legHeight);
+  }
+
+  ctx.fillStyle = '#333';
+  obstacles.forEach(obs => {
+    ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+  });
+
+  ctx.fillStyle = '#333';
+  ctx.font = '16px monospace';
+  ctx.fillText(`Score: ${score}`, canvas.width - 110, 30);
+
+  if (isGameOver) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 28px system-ui';
+    ctx.textAlign = 'center';
+    ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 10);
+
+    ctx.font = '14px system-ui';
+    ctx.fillText('Press Space to restart', canvas.width / 2, canvas.height / 2 + 20);
+    ctx.textAlign = 'left';
+  }
+}
+
+function gameLoop() {
+  update();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+</script>
+
+</body>
+</html>
