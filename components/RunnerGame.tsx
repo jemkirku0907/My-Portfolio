@@ -296,7 +296,11 @@ export function RunnerGame() {
         drawFace(character.x, character.y, character.isJumping);
 
         const legY = character.y + character.height - 15;
-        ctx.fillStyle = !character.isJumping && !isGameOver ? "#0f4d22" : ctx.fillStyle;
+        // FIX: explicitly pick the leg color instead of falling back to
+        // ctx.fillStyle, which by this point holds a stale "#fff" left over
+        // from drawFace()'s eyes — that stale white was leaking onto the legs
+        // whenever the character was jumping (or game over).
+        ctx.fillStyle = !character.isJumping && !isGameOver ? "#0f4d22" : isGameOver ? "#b0453f" : "#1f6e34";
         ctx.fillRect(character.x, legY - (legFrame === 1 && !character.isJumping ? 3 : 0), 10, 15);
         ctx.fillRect(character.x + 18, legY - (legFrame === 0 && !character.isJumping ? 3 : 0), 10, 15);
       }
