@@ -68,6 +68,11 @@ export function RunnerGame() {
     let nextObstacleGap = 90;
     let rafId = 0;
 
+    // High score — persisted in localStorage so it survives refreshes and
+    // repeat visits to /game.
+    const HIGH_SCORE_KEY = "runner-high-score";
+    let highScore = Number(window.localStorage.getItem(HIGH_SCORE_KEY)) || 0;
+
     function resetGame() {
       character.y = GROUND_Y;
       character.height = NORMAL_HEIGHT;
@@ -172,6 +177,10 @@ export function RunnerGame() {
         if (obstacle.x + obstacle.width < 0) {
           obstacles.splice(index, 1);
           score++;
+          if (score > highScore) {
+            highScore = score;
+            window.localStorage.setItem(HIGH_SCORE_KEY, String(highScore));
+          }
           if (score % 10 === 0) gameSpeed += 0.5;
         }
       }
@@ -321,6 +330,8 @@ export function RunnerGame() {
       ctx.fillStyle = `rgb(${scoreShade}, ${scoreShade}, ${scoreShade})`;
       ctx.font = "16px monospace";
       ctx.fillText(`Score: ${score}`, canvasWidth - 110, 30);
+      ctx.font = "12px monospace";
+      ctx.fillText(`Best: ${highScore}`, canvasWidth - 110, 48);
 
       if (isGameOver) {
         ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
@@ -329,8 +340,18 @@ export function RunnerGame() {
         ctx.font = "bold 28px system-ui";
         ctx.textAlign = "center";
         ctx.fillText("Game Over", canvasWidth / 2, canvasHeight / 2 - 10);
-        ctx.font = "14px system-ui";
-        ctx.fillText("Press Space to restart", canvasWidth / 2, canvasHeight / 2 + 20);
+
+        if (score > 0 && score === highScore) {
+          ctx.fillStyle = "#f5b942";
+          ctx.font = "bold 14px system-ui";
+          ctx.fillText("New High Score!", canvasWidth / 2, canvasHeight / 2 + 12);
+          ctx.fillStyle = "#fff";
+          ctx.font = "14px system-ui";
+          ctx.fillText("Press Space to restart", canvasWidth / 2, canvasHeight / 2 + 34);
+        } else {
+          ctx.font = "14px system-ui";
+          ctx.fillText("Press Space to restart", canvasWidth / 2, canvasHeight / 2 + 20);
+        }
         ctx.textAlign = "left";
       }
     }
