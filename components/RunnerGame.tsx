@@ -207,11 +207,20 @@ export function RunnerGame() {
       ctx.arc(headX + 22, eyeY, jumping ? 4 : 2, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.strokeStyle = "#fff";
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.arc(headX + 15, eyeY + 5, 5, 0.2 * Math.PI, 0.8 * Math.PI);
-      ctx.stroke();
+      if (jumping) {
+        // "Wow" mouth — open circle, wide-eyed surprise while airborne
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(headX + 15, eyeY + 10, 3, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // Regular smile while grounded
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(headX + 15, eyeY + 5, 5, 0.2 * Math.PI, 0.8 * Math.PI);
+        ctx.stroke();
+      }
     }
 
     function drawSkyIcon(cycle: number) {
