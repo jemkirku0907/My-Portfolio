@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, Command, Mail, MessageCircle, Monitor, Moon, Sun, Users } from "lucide-react";
+import Link from "next/link";
+import { ChevronDown, Command, Gamepad2, Mail, MessageCircle, Monitor, Moon, Sun, Users } from "lucide-react";
 import { profile } from "@/data/portfolio";
 import { useVisitorPresence } from "@/components/useVisitorPresence";
 
@@ -72,6 +73,18 @@ export function HeaderDropdown() {
             </span>
             <span className="rounded border border-line px-2 py-0.5 text-xs text-steel dark:border-moss dark:text-paper">Ctrl K</span>
           </button>
+
+          <Link
+            href="/game"
+            onClick={() => setOpen(false)}
+            className="flex min-h-11 w-full items-center justify-between gap-4 border-t border-line px-4 py-3 text-left text-sm font-medium hover:bg-white/70 dark:border-moss dark:hover:bg-paper/10"
+          >
+            <span className="inline-flex items-center gap-2">
+              <Gamepad2 className="h-4 w-4 text-moss" aria-hidden />
+              Mini Game
+            </span>
+            <span className="rounded border border-line px-2 py-0.5 text-xs text-steel dark:border-moss dark:text-paper">New</span>
+          </Link>
 
           <div className="border-y border-line px-4 py-3 dark:border-moss">
             <div className="flex items-center gap-3 text-sm">
