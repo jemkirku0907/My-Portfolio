@@ -147,12 +147,33 @@ export default function Home() {
 
       <section className={sectionClass}>
         <SectionHeading eyebrow="Activity" title="GitHub Contributions" />
-        <div className="mt-8 overflow-hidden rounded-lg border border-line bg-white p-4 dark:border-moss dark:bg-ink">
-          <img
-            src={`https://github-readme-stats.vercel.app/api?username=${githubUser}&show_icons=true&hide_border=true&theme=default`}
-            alt={`${githubUser} GitHub stats`}
-            className="h-auto w-full"
-          />
+        <div className="mt-8 grid gap-4">
+          <a
+            href={`https://github.com/${githubUser}`}
+            target="_blank"
+            rel="noreferrer"
+            className="group overflow-hidden rounded-lg border border-line bg-white p-4 transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss dark:bg-ink"
+            aria-label={`${githubUser} GitHub contributions`}
+          >
+            <img
+              src={`https://github-readme-activity-graph.vercel.app/graph?username=${githubUser}&hide_border=true&radius=8&area=true&bg_color=ffffff&color=2e5f46&line=2e5f46&point=d96c4a&area_color=2e5f46&title_color=111111&custom_title=${githubUser}%20Contribution%20Activity`}
+              alt={`${githubUser} GitHub contribution graph`}
+              className="h-auto w-full"
+            />
+          </a>
+          <a
+            href={`https://github.com/${githubUser}`}
+            target="_blank"
+            rel="noreferrer"
+            className="group overflow-hidden rounded-lg border border-line bg-white p-4 transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss dark:bg-ink"
+            aria-label={`${githubUser} GitHub stats`}
+          >
+            <img
+              src={`https://github-readme-stats.vercel.app/api?username=${githubUser}&show_icons=true&hide_border=true&theme=default`}
+              alt={`${githubUser} GitHub stats`}
+              className="h-auto w-full"
+            />
+          </a>
         </div>
       </section>
 
