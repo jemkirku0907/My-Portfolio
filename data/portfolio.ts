@@ -50,8 +50,8 @@ export const projects = [
 
 export const skills = [
   { group: "Frontend", items: ["Next.js", "React", "Tailwind CSS", "Responsive design"] },
-  { group: "Backend", items: ["Supabase", "PostgreSQL", "PHP", "MySQL", "REST APIs"] },
-  { group: "Tools", items: ["Git/GitHub", "Vercel", "Netlify"] },
+  { group: "Backend", items: ["Supabase", "PostgreSQL", "PHP", "MySQL", "REST APIs", "Node.js"] },
+  { group: "Tools", items: ["Git/GitHub", "Vercel", "Netlify", "Codex", "Figma", "Adobe Illustrator", "Adobe Photoshop"] },
   { group: "Design", items: ["Graphic design", "NC III certified", "Figma"] }
 ];
 
