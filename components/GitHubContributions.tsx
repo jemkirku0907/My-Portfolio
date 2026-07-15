@@ -59,6 +59,15 @@ function monthLabels(weeks: ContributionDay[][]) {
   });
 }
 
+function contributionLevel(day: Pick<ContributionDay, "count" | "level">) {
+  if (day.count <= 0) return 0;
+  if (day.level > 0) return day.level;
+  if (day.count >= 4) return 4;
+  if (day.count >= 3) return 3;
+  if (day.count >= 2) return 2;
+  return 1;
+}
+
 function colorForLevel(level: number) {
   return ["bg-[#ebedf0]", "bg-[#9be9a8]", "bg-[#40c463]", "bg-[#30a14e]", "bg-[#216e39]"][Math.max(0, Math.min(level, 4))];
 }
@@ -132,7 +141,7 @@ export function GitHubContributions({ username }: { username: string }) {
                 <span
                   key={day.date}
                   title={`${day.count} contributions on ${day.date}`}
-                  className={`h-3 w-3 rounded-[2px] border border-black/5 ${colorForLevel(day.level)}`}
+                  className={`h-3 w-3 rounded-[2px] border border-black/5 ${colorForLevel(contributionLevel(day))}`}
                 />
               ))}
             </div>
