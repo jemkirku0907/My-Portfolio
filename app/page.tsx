@@ -150,19 +150,6 @@ export default function Home() {
         <SectionHeading eyebrow="Activity" title="GitHub Contributions" />
         <div className="mt-8 grid gap-4">
           <GitHubContributions username={githubUser} />
-          <a
-            href={`https://github.com/${githubUser}`}
-            target="_blank"
-            rel="noreferrer"
-            className="group overflow-hidden rounded-lg border border-line bg-white p-4 transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss dark:bg-ink"
-            aria-label={`${githubUser} GitHub stats`}
-          >
-            <img
-              src={`https://github-readme-stats.vercel.app/api?username=${githubUser}&show_icons=true&hide_border=true&theme=default`}
-              alt={`${githubUser} GitHub stats`}
-              className="h-auto w-full"
-            />
-          </a>
         </div>
       </section>
 
