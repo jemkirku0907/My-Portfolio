@@ -32,8 +32,8 @@ export default function Home() {
       </header>
 
       <section className={`${sectionClass} grid min-h-[78vh] content-center gap-10 lg:grid-cols-[0.72fr_1fr] lg:items-center`}>
-        <div className="relative mx-auto w-full max-w-[10rem] sm:max-w-xs lg:order-none lg:max-w-sm">
-          <div className="absolute -inset-3 rounded-[5rem] bg-white/70 dark:bg-paper/10" />
+        <div className="relative mx-auto w-full max-w-[18rem] sm:max-w-xs lg:order-none lg:max-w-sm">
+          <div className="absolute -inset-3 rounded-[2rem] bg-white/70 dark:bg-paper/10" />
           <div className="relative overflow-hidden rounded-[1.6rem] border border-transparent bg-white shadow-sm dark:border-moss dark:bg-ink">
             <div className="relative aspect-[4/5]">
               <Image
