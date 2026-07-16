@@ -5,6 +5,7 @@ import { AskPalette } from "@/components/AskPalette";
 import { GitHubContributions } from "@/components/GitHubContributions";
 import { HeaderDropdown } from "@/components/HeaderDropdown";
 import { LightboxGallery } from "@/components/LightboxGallery";
+import { TechStackSection } from "@/components/TechStackSection";
 import { VisitorPresence } from "@/components/VisitorPresence";
 import { certificates, profile, projects, timeline } from "@/data/portfolio";
 
@@ -17,7 +18,6 @@ const beyondCodePhotos = [
   { src: "/profile/hero-face.jpg", alt: `${profile.name} profile photo`, rotation: "-rotate-2", hover: "group-hover:-rotate-4 group-hover:translate-y-2" }
 ];
 const avatarSlices = Array.from({ length: 8 }, (_, index) => index);
-const techStack = ["TypeScript", "React", "Next.js", "PHP", "MySQL", "PostgreSQL", "Supabase", "Tailwind CSS", "GitHub", "Vercel", "Netlify", "Figma", "Adobe Photoshop", "Adobe Illustrator", "Canva"];
 
 export default function Home() {
   const githubUser = process.env.NEXT_PUBLIC_GITHUB_USERNAME || profile.github;
@@ -190,27 +190,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="skills" className={`${sectionClass} border-y border-line dark:border-moss`}>
-        <div className="flex items-center justify-between gap-4">
-          <SectionHeading eyebrow="Stack" title="Technologies" />
-          <a className="text-sm font-medium uppercase tracking-[0.16em] text-steel transition hover:text-moss dark:text-paper" href="#skills">
-            View All →
-          </a>
-        </div>
-        <div className="mt-8 flex flex-wrap gap-3">
-          {techStack.map((item) => (
-            <span
-              key={item}
-              className="rounded-lg border border-line bg-white px-4 py-2 font-mono text-sm text-steel shadow-sm transition hover:-translate-y-0.5 hover:border-moss hover:text-ink dark:border-moss dark:bg-ink dark:text-paper dark:hover:text-moss sm:text-base"
-            >
-              {item}
-            </span>
-          ))}
-          <span className="rounded-lg border border-dashed border-line px-4 py-2 font-mono text-sm text-steel dark:border-moss dark:text-paper sm:text-base">
-            + more
-          </span>
-        </div>
-      </section>
+      <TechStackSection />
 
       <section id="certificates" className={sectionClass}>
         <div className="flex items-center justify-between gap-4">
