@@ -7,6 +7,11 @@ import { profile } from "@/data/portfolio";
 import { useVisitorPresence } from "@/components/useVisitorPresence";
 
 type ThemeMode = "system" | "light" | "dark";
+type DocumentWithViewTransition = Document & {
+  startViewTransition?: (callback: () => void) => {
+    ready: Promise<void>;
+  };
+};
 
 export function HeaderDropdown() {
   const [open, setOpen] = useState(false);
@@ -19,17 +24,21 @@ export function HeaderDropdown() {
     setTheme(savedTheme ?? "system");
   }, []);
 
-  useEffect(() => {
+  function applyTheme(nextTheme: ThemeMode) {
     const root = document.documentElement;
     const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const shouldUseDark = theme === "dark" || (theme === "system" && systemDark);
+    const shouldUseDark = nextTheme === "dark" || (nextTheme === "system" && systemDark);
 
     root.classList.toggle("dark", shouldUseDark);
-    if (theme === "system") {
+    if (nextTheme === "system") {
       window.localStorage.removeItem("theme-mode");
     } else {
-      window.localStorage.setItem("theme-mode", theme);
+      window.localStorage.setItem("theme-mode", nextTheme);
     }
+  }
+
+  useEffect(() => {
+    applyTheme(theme);
   }, [theme]);
 
   useEffect(() => {
@@ -46,6 +55,51 @@ export function HeaderDropdown() {
   function openAskPalette() {
     window.dispatchEvent(new Event("open-ask-palette"));
     setOpen(false);
+  }
+
+  function setThemeWithReveal(nextTheme: ThemeMode, event: React.MouseEvent<HTMLButtonElement>) {
+    if (nextTheme === theme) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const clickedButton = event.currentTarget;
+    const rect = clickedButton.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const endRadius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    const transitionDocument = document as DocumentWithViewTransition;
+
+    if (!transitionDocument.startViewTransition || prefersReducedMotion) {
+      setTheme(nextTheme);
+      return;
+    }
+
+    const transition = transitionDocument.startViewTransition(() => {
+      applyTheme(nextTheme);
+      setTheme(nextTheme);
+    });
+
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        {
+          clipPath: [`circle(${endRadius}px at ${x}px ${y}px)`, `circle(0px at ${x}px ${y}px)`]
+        },
+        {
+          duration: 620,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          pseudoElement: "::view-transition-old(root)"
+        }
+      );
+      document.documentElement.animate(
+        {
+          clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
+        },
+        {
+          duration: 620,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          pseudoElement: "::view-transition-new(root)"
+        }
+      );
+    });
   }
 
   return (
@@ -115,7 +169,7 @@ export function HeaderDropdown() {
                   <button
                     key={item.mode}
                     type="button"
-                    onClick={() => setTheme(item.mode)}
+                    onClick={(event) => setThemeWithReveal(item.mode, event)}
                     className={`focus-ring inline-flex h-11 w-11 items-center justify-center rounded-full border ${
                       theme === item.mode ? "border-moss text-moss" : "border-line text-steel dark:border-moss dark:text-paper"
                     }`}
