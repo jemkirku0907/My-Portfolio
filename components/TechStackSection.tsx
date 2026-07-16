@@ -1,13 +1,11 @@
-"use client";
+import Link from "next/link";
 
-import { useState } from "react";
+export const featuredStack = ["TypeScript", "React", "Next.js", "PHP", "MySQL", "PostgreSQL", "Supabase", "Tailwind CSS", "GitHub", "Vercel", "Netlify", "Figma", "Adobe Photoshop", "Adobe Illustrator", "Canva"];
 
-const featuredStack = ["TypeScript", "React", "Next.js", "PHP", "MySQL", "PostgreSQL", "Supabase", "Tailwind CSS", "GitHub", "Vercel", "Netlify", "Figma", "Adobe Photoshop", "Adobe Illustrator", "Canva"];
-
-const stackGroups = [
+export const stackGroups = [
   {
     title: "Frontend",
-    items: ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS"]
+    items: ["HTML", "CSS", "JavaScript", "React"]
   },
   {
     title: "Backend",
@@ -23,7 +21,7 @@ const stackGroups = [
   }
 ];
 
-function StackChip({ item, muted = false }: { item: string; muted?: boolean }) {
+export function StackChip({ item, muted = false }: { item: string; muted?: boolean }) {
   return (
     <span
       className={`rounded-lg border px-4 py-2 font-mono text-sm shadow-sm transition hover:-translate-y-0.5 hover:border-moss sm:text-base ${
@@ -38,8 +36,6 @@ function StackChip({ item, muted = false }: { item: string; muted?: boolean }) {
 }
 
 export function TechStackSection() {
-  const [expanded, setExpanded] = useState(false);
-
   return (
     <section id="skills" className="mx-auto w-full max-w-6xl border-y border-line px-5 py-16 dark:border-moss sm:px-8">
       <div className="flex items-center justify-between gap-4">
@@ -47,37 +43,20 @@ export function TechStackSection() {
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss">Stack</p>
           <h2 className="text-3xl font-semibold text-ink dark:text-paper sm:text-4xl">Technologies</h2>
         </div>
-        <button
-          type="button"
-          onClick={() => setExpanded((current) => !current)}
+        <Link
+          href="/tech-stack"
           className="focus-ring text-sm font-medium uppercase tracking-[0.16em] text-steel transition hover:text-moss dark:text-paper"
-          aria-expanded={expanded}
         >
-          {expanded ? "Show Less" : "View All"} →
-        </button>
+          View All →
+        </Link>
       </div>
 
       <div className="mt-8 flex flex-wrap gap-3">
         {featuredStack.map((item) => (
           <StackChip key={item} item={item} />
         ))}
-        {!expanded ? <StackChip item="+ more" muted /> : null}
+        <StackChip item="+ more" muted />
       </div>
-
-      {expanded ? (
-        <div className="mt-12 space-y-10">
-          {stackGroups.map((group) => (
-            <div key={group.title}>
-              <p className="mb-4 font-mono text-sm uppercase tracking-[0.16em] text-steel dark:text-paper">{group.title}</p>
-              <div className="flex flex-wrap gap-3">
-                {group.items.map((item) => (
-                  <StackChip key={`${group.title}-${item}`} item={item} />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : null}
     </section>
   );
 }
