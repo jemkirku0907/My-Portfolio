@@ -39,44 +39,44 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className={`${sectionClass} grid min-h-[78vh] content-center gap-10 lg:grid-cols-[0.72fr_1fr] lg:items-center`}>
-        <div className="group relative mx-auto w-full max-w-[18rem] sm:max-w-xs lg:order-none lg:max-w-sm">
-          <div className="absolute -inset-3 rounded-[2rem] bg-white/70 dark:bg-paper/10" />
+      <section className={`${sectionClass} flex min-h-[68vh] flex-col items-center justify-center text-center`}>
+        <div className="group relative mx-auto w-28 sm:w-32">
+          <div className="absolute -inset-2 rounded-full bg-white/70 dark:bg-paper/10" />
           <button
             type="button"
-            className="focus-ring relative block w-full overflow-hidden rounded-[1.6rem] border border-transparent bg-white shadow-sm dark:border-moss dark:bg-ink"
+            className="focus-ring relative block w-full overflow-hidden rounded-full border border-line bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-soft dark:border-moss dark:bg-ink"
             aria-label="Toggle portrait style"
           >
-            <div className="relative aspect-[4/5]">
+            <div className="relative aspect-square">
               <Image
                 src="/profile/hero-face.jpg"
                 alt={`${profile.name} portrait`}
                 fill
                 priority
-                sizes="(min-width: 1024px) 360px, 80vw"
-                className="object-cover object-top transition duration-500 group-hover:opacity-0 group-focus-within:opacity-0"
+                sizes="128px"
+                className="scale-110 object-cover object-top transition duration-500 group-hover:opacity-0 group-focus-within:opacity-0"
               />
               <Image
                 src="/profile/hero-anime.png"
                 alt={`${profile.name} anime portrait`}
                 fill
-                sizes="(min-width: 1024px) 360px, 80vw"
-                className="object-cover object-top opacity-0 transition duration-500 group-hover:opacity-100 group-focus-within:opacity-100"
+                sizes="128px"
+                className="scale-110 object-cover object-top opacity-0 transition duration-500 group-hover:opacity-100 group-focus-within:opacity-100"
               />
             </div>
           </button>
-          <span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full border border-line bg-white/90 px-3 py-1 text-xs font-medium text-steel shadow-sm transition duration-300 group-hover:text-moss dark:border-moss dark:bg-ink/90 dark:text-paper">
-            Hover for anime
+          <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-line bg-white/90 px-2.5 py-1 text-[0.68rem] font-medium text-steel shadow-sm transition duration-300 group-hover:text-moss dark:border-moss dark:bg-ink/90 dark:text-paper">
+            anime mode
           </span>
         </div>
-        <div className="max-w-3xl space-y-8">
+        <div className="mt-10 max-w-3xl space-y-8">
           <VisitorPresence />
           <div className="space-y-5">
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-moss">{profile.title}</p>
-            <h1 className="max-w-3xl text-5xl font-semibold leading-[1.02] text-ink dark:text-paper sm:text-7xl">{profile.name}</h1>
-            <p className="max-w-2xl text-xl leading-8 text-steel dark:text-paper">{profile.tagline}</p>
+            <h1 className="text-5xl font-semibold leading-[1.02] text-ink dark:text-paper sm:text-7xl">{profile.name}</h1>
+            <p className="mx-auto max-w-2xl text-xl leading-8 text-steel dark:text-paper">{profile.tagline}</p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap justify-center gap-3">
             <a className="focus-ring min-h-11 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white dark:bg-paper dark:text-ink" href="#projects">
               View Projects
             </a>
