@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import { ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import { AskPalette } from "@/components/AskPalette";
@@ -5,9 +6,15 @@ import { GitHubContributions } from "@/components/GitHubContributions";
 import { HeaderDropdown } from "@/components/HeaderDropdown";
 import { LightboxGallery } from "@/components/LightboxGallery";
 import { VisitorPresence } from "@/components/VisitorPresence";
-import { certificates, designSamples, profile, projects, skills, timeline } from "@/data/portfolio";
+import { certificates, profile, projects, skills, timeline } from "@/data/portfolio";
 
 const sectionClass = "mx-auto w-full max-w-6xl px-5 py-16 sm:px-8";
+const beyondCodeTags = ["Visual design", "Music", "Games", "Learning", "Quiet reset"];
+const beyondCodePhotos = [
+  { src: "/profile/hero-face.jpg", alt: `${profile.name} portrait`, rotation: "-rotate-6", hover: "group-hover:-rotate-9 group-hover:-translate-x-2" },
+  { src: "/profile/avatar.jpg", alt: `${profile.name} casual portrait`, rotation: "rotate-3", hover: "group-hover:rotate-6 group-hover:translate-x-2" },
+  { src: "/profile/hero-face.jpg", alt: `${profile.name} profile photo`, rotation: "-rotate-2", hover: "group-hover:-rotate-4 group-hover:translate-y-2" }
+];
 
 export default function Home() {
   const githubUser = process.env.NEXT_PUBLIC_GITHUB_USERNAME || profile.github;
@@ -77,44 +84,56 @@ export default function Home() {
         </div>
       </section>
 
+      <section className={`${sectionClass} border-t border-line dark:border-moss`}>
+        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+          <div>
+            <SectionHeading eyebrow="Beyond the code" title="Outside the editor" />
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-steel dark:text-paper">
+              I like keeping a little room for creative resets outside development, from visual ideas and music to casual games
+              and learning things that make the next build feel sharper.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {beyondCodeTags.map((tag) => (
+                <span key={tag} className="rounded-full border border-line bg-white px-4 py-2 text-sm text-steel dark:border-moss dark:bg-ink dark:text-paper">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="group grid gap-4 sm:grid-cols-3 lg:relative lg:min-h-[24rem] lg:block">
+            {beyondCodePhotos.map((photo, index) => (
+              <div
+                key={`${photo.src}-${index}`}
+                className={`relative aspect-[4/5] overflow-hidden rounded-xl border border-line bg-white p-2 shadow-soft transition duration-300 dark:border-moss dark:bg-ink lg:absolute lg:w-[42%] ${photo.rotation} ${photo.hover} ${
+                  index === 0 ? "lg:left-6 lg:top-8" : index === 1 ? "lg:left-[30%] lg:top-0" : "lg:right-6 lg:top-16"
+                }`}
+              >
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  sizes="(min-width: 1024px) 260px, (min-width: 640px) 30vw, 80vw"
+                  className="rounded-lg object-cover object-top p-2"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="projects" className={sectionClass}>
         <SectionHeading eyebrow="Selected work" title="Projects" />
         <div className="mt-8 grid gap-5 md:grid-cols-2">
-          {projects.map((project) => (
-            <article key={project.name} className="group overflow-hidden rounded-lg border border-line bg-white text-ink shadow-sm transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss dark:bg-ink dark:text-paper">
-              <div className="relative aspect-[16/10] bg-[#ebe6da] p-3">
-                <Image
-                  src={project.image}
-                  alt={`${project.name} preview`}
-                  fill
-                  className="object-contain p-3 transition duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <div className="space-y-4 p-5">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-medium text-moss">{project.status}</p>
-                    <h3 className="mt-1 text-xl font-semibold text-ink dark:text-paper">{project.name}</h3>
-                  </div>
-                  {project.href ? (
-                    <a className="focus-ring min-h-11 min-w-11 rounded-full border border-line p-2 hover:border-moss dark:border-moss dark:text-paper" href={project.href} aria-label={`Open ${project.name}`}>
-                      <ArrowUpRight className="h-4 w-4" />
-                    </a>
-                  ) : (
-                    <span className="rounded-full border border-line px-3 py-1 text-xs font-medium text-steel dark:border-moss dark:text-paper" aria-label={`${project.name} is private and not deployed`}>
-                      Private
-                    </span>
-                  )}
-                </div>
-                <p className="leading-7 text-steel dark:text-paper">{project.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {project.stack.map((item) => (
-                    <span key={item} className="rounded-full border border-line px-3 py-1 text-xs text-steel dark:border-moss dark:text-paper">{item}</span>
-                  ))}
-                </div>
-              </div>
-            </article>
-          ))}
+          {projects.map((project) =>
+            project.name === "NC III Graphic Design Work" ? (
+              <Fragment key={project.name}>
+                {/* Temporarily hidden: <ProjectCard project={project} /> */}
+              </Fragment>
+            ) : (
+              <ProjectCard key={project.name} project={project} />
+            )
+          )}
         </div>
       </section>
 
@@ -139,12 +158,14 @@ export default function Home() {
         </div>
       </section>
 
+      {/*
       <section id="design" className={`${sectionClass} border-y border-line dark:border-moss`}>
         <SectionHeading eyebrow="Visual work" title="Design Samples" />
         <div className="mt-8">
           <LightboxGallery items={designSamples} type="design" />
         </div>
       </section>
+      */}
 
       <section className={sectionClass}>
         <SectionHeading eyebrow="Activity" title="GitHub Contributions" />
@@ -196,5 +217,43 @@ function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) 
       <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss">{eyebrow}</p>
       <h2 className="text-3xl font-semibold text-ink dark:text-paper sm:text-4xl">{title}</h2>
     </div>
+  );
+}
+
+function ProjectCard({ project }: { project: (typeof projects)[number] }) {
+  return (
+    <article className="group overflow-hidden rounded-lg border border-line bg-white text-ink shadow-sm transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss dark:bg-ink dark:text-paper">
+      <div className="relative aspect-[16/10] bg-[#ebe6da] p-3">
+        <Image
+          src={project.image}
+          alt={`${project.name} preview`}
+          fill
+          className="object-contain p-3 transition duration-300 group-hover:scale-[1.03]"
+        />
+      </div>
+      <div className="space-y-4 p-5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-moss">{project.status}</p>
+            <h3 className="mt-1 text-xl font-semibold text-ink dark:text-paper">{project.name}</h3>
+          </div>
+          {project.href ? (
+            <a className="focus-ring min-h-11 min-w-11 rounded-full border border-line p-2 hover:border-moss dark:border-moss dark:text-paper" href={project.href} aria-label={`Open ${project.name}`}>
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          ) : (
+            <span className="rounded-full border border-line px-3 py-1 text-xs font-medium text-steel dark:border-moss dark:text-paper" aria-label={`${project.name} is private and not deployed`}>
+              Private
+            </span>
+          )}
+        </div>
+        <p className="leading-7 text-steel dark:text-paper">{project.description}</p>
+        <div className="flex flex-wrap gap-2">
+          {project.stack.map((item) => (
+            <span key={item} className="rounded-full border border-line px-3 py-1 text-xs text-steel dark:border-moss dark:text-paper">{item}</span>
+          ))}
+        </div>
+      </div>
+    </article>
   );
 }
