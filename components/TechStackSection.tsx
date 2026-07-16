@@ -1,30 +1,38 @@
 import Link from "next/link";
 
-export const featuredStack = ["TypeScript", "React", "Next.js", "PHP", "MySQL", "PostgreSQL", "Supabase", "Tailwind CSS", "GitHub", "Vercel", "Netlify", "Figma", "Adobe Photoshop", "Adobe Illustrator", "Canva"];
+export const featuredStack = ["TypeScript", "React", "Next.js", "PHP", "MySQL", "PostgreSQL", "Supabase", "Tailwind CSS", "GitHub", "Vercel", "Figma", "Canva"];
 
 export const stackGroups = [
   {
     title: "Frontend",
-    items: ["HTML", "CSS", "JavaScript", "React"]
+    items: ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS"]
   },
   {
     title: "Backend",
-    items: ["PHP", "MySQL", "PostgreSQL", "Java", "Node.js", "C++", "Visual Basic", "VB.NET"]
+    items: ["PHP", "Laravel", "MySQL", "PostgreSQL", "Supabase", "Java", "Node.js", "C++", "Visual Basic", "VB.NET", "REST APIs"]
+  },
+  {
+    title: "DevOps & Cloud",
+    items: ["Vercel", "Netlify", "GitHub Actions"]
   },
   {
     title: "AI",
-    items: ["Gemini API", "Codex", "Anthropic", "WordPress"]
+    items: ["Gemini API", "Codex", "Anthropic"]
+  },
+  {
+    title: "CMS & Design",
+    items: ["WordPress", "Figma", "Canva", "Adobe Photoshop", "Adobe Illustrator"]
   },
   {
     title: "Developer Tools",
-    items: ["Git", "GitHub", "GitHub Actions", "VS Code", "ClickUp", "Monday", "Discord", "IntelliJ IDEA"]
+    items: ["Git", "GitHub", "VS Code", "IntelliJ IDEA", "ClickUp", "Monday", "Discord"]
   }
 ];
 
 export function StackChip({ item, muted = false }: { item: string; muted?: boolean }) {
   return (
     <span
-      className={`rounded-lg border px-4 py-2 font-mono text-sm shadow-sm transition hover:-translate-y-0.5 hover:border-moss sm:text-base ${
+      className={`inline-flex min-h-11 items-center rounded-lg border px-4 py-2 font-mono text-sm shadow-sm transition hover:-translate-y-0.5 hover:border-moss sm:text-base ${
         muted
           ? "border-dashed border-line text-steel dark:border-moss dark:text-paper"
           : "border-line bg-white text-steel hover:text-ink dark:border-moss dark:bg-ink dark:text-paper dark:hover:text-moss"

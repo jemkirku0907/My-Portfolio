@@ -25,22 +25,25 @@ export default function TechStackPage() {
         </nav>
       </header>
 
-      <section className="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8">
-        <div className="flex items-center justify-between gap-4">
+      <section className="mx-auto w-full max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss">Stack</p>
-            <h1 className="text-4xl font-semibold text-ink dark:text-paper sm:text-5xl">All Technologies</h1>
+            <h1 className="text-4xl font-semibold text-ink dark:text-paper sm:text-5xl">Tech Stack</h1>
+            <p className="max-w-2xl text-base leading-7 text-steel dark:text-paper">
+              The tools, frameworks, and platforms I use across frontend, backend, AI, CMS, design, and developer workflows.
+            </p>
           </div>
           <Link className="focus-ring text-sm font-medium uppercase tracking-[0.16em] text-steel transition hover:text-moss dark:text-paper" href="/#skills">
             Back →
           </Link>
         </div>
 
-        <div className="mt-14 space-y-12">
+        <div className="mt-14 space-y-14">
           {stackGroups.map((group) => (
-            <section key={group.title}>
-              <p className="mb-5 font-mono text-sm uppercase tracking-[0.16em] text-steel dark:text-paper">{group.title}</p>
-              <div className="flex flex-wrap gap-3">
+            <section key={group.title} className="grid gap-5 md:grid-cols-[13rem_1fr] md:items-start">
+              <h2 className="font-mono text-sm uppercase tracking-[0.16em] text-steel dark:text-paper">{group.title}</h2>
+              <div className="flex flex-wrap items-center gap-3">
                 {group.items.map((item) => (
                   <StackChip key={`${group.title}-${item}`} item={item} />
                 ))}
