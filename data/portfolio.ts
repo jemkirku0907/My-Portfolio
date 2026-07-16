@@ -29,6 +29,15 @@ export const projects = [
     status: "Live Site"
   },
   {
+    name: "Suri.AI",
+    description:
+      "AI-powered fact-checking platform built for the InterCICSkwela hackathon. Users submit a news article or claim, then Suri.AI cross-checks it with reliable sources and surfaces connected articles based on the result, showing credible sources for legitimate claims or related debunked misinformation for false or misleading ones.",
+    stack: ["Next.js", "TypeScript", "Node.js", "Express", "Anthropic API", "Tailwind CSS"],
+    href: "#",
+    image: "/projects/suri-ai-preview.png",
+    status: "Hackathon Project"
+  },
+  {
     name: "Queen of Angels (QUACC)",
     description:
       "Multi-role community and childcare system with admin, staff, and guardian dashboards, password hashing, scholarship application flows, file uploads, and OTP verification.",
