@@ -6,9 +6,10 @@ import { GitHubContributions } from "@/components/GitHubContributions";
 import { HeaderDropdown } from "@/components/HeaderDropdown";
 import { LightboxGallery } from "@/components/LightboxGallery";
 import { VisitorPresence } from "@/components/VisitorPresence";
-import { certificates, profile, projects, skills, timeline } from "@/data/portfolio";
+import { certificates, profile, projects, timeline } from "@/data/portfolio";
 
 const sectionClass = "mx-auto w-full max-w-6xl px-5 py-16 sm:px-8";
+const heroSectionClass = "mx-auto w-full max-w-6xl px-5 pb-16 pt-10 sm:px-8 sm:pb-20 sm:pt-14";
 const beyondCodeTags = ["Visual design", "Music", "Games", "Learning", "Quiet reset"];
 const beyondCodePhotos = [
   { src: "/profile/hero-face.jpg", alt: `${profile.name} portrait`, rotation: "-rotate-6", hover: "group-hover:-rotate-9 group-hover:-translate-x-2" },
@@ -16,6 +17,7 @@ const beyondCodePhotos = [
   { src: "/profile/hero-face.jpg", alt: `${profile.name} profile photo`, rotation: "-rotate-2", hover: "group-hover:-rotate-4 group-hover:translate-y-2" }
 ];
 const avatarSlices = Array.from({ length: 8 }, (_, index) => index);
+const techStack = ["TypeScript", "React", "Next.js", "PHP", "MySQL", "PostgreSQL", "Supabase", "Tailwind CSS", "GitHub", "Vercel", "Netlify", "Figma", "Adobe Photoshop", "Adobe Illustrator", "Canva"];
 
 export default function Home() {
   const githubUser = process.env.NEXT_PUBLIC_GITHUB_USERNAME || profile.github;
@@ -40,8 +42,8 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className={`${sectionClass} flex min-h-[68vh] items-center`}>
-        <div className="w-full max-w-5xl space-y-9">
+      <section className={`${heroSectionClass} flex min-h-[calc(100vh-5rem)] items-center`}>
+        <div className="w-full max-w-5xl space-y-7">
           <div className="flex flex-col gap-7 sm:flex-row sm:items-center">
             <div className="group relative w-32 shrink-0 sm:w-40">
               <div className="absolute -inset-2 rounded-full bg-white/70 shadow-sm dark:bg-paper/10" />
@@ -98,7 +100,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="max-w-5xl space-y-7">
+          <div className="max-w-5xl space-y-6">
             <VisitorPresence />
             <h2 className="text-4xl font-light leading-tight text-ink dark:text-paper sm:text-5xl">
               Web Developer <span className="text-steel dark:text-paper">— Next.js &amp; PHP</span>
@@ -189,16 +191,24 @@ export default function Home() {
       </section>
 
       <section id="skills" className={`${sectionClass} border-y border-line dark:border-moss`}>
-        <SectionHeading eyebrow="Capabilities" title="Skills" />
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {skills.map((skill) => (
-            <div key={skill.group} className="rounded-lg border border-line bg-white p-5 dark:border-moss dark:bg-ink dark:text-paper">
-              <h3 className="font-semibold text-ink dark:text-paper">{skill.group}</h3>
-              <ul className="mt-4 space-y-2 text-sm text-steel dark:text-paper">
-                {skill.items.map((item) => <li key={item}>{item}</li>)}
-              </ul>
-            </div>
+        <div className="flex items-center justify-between gap-4">
+          <SectionHeading eyebrow="Stack" title="Technologies" />
+          <a className="text-sm font-medium uppercase tracking-[0.16em] text-steel transition hover:text-moss dark:text-paper" href="#skills">
+            View All →
+          </a>
+        </div>
+        <div className="mt-8 flex flex-wrap gap-3">
+          {techStack.map((item) => (
+            <span
+              key={item}
+              className="rounded-lg border border-line bg-white px-4 py-2 font-mono text-sm text-steel shadow-sm transition hover:-translate-y-0.5 hover:border-moss hover:text-ink dark:border-moss dark:bg-ink dark:text-paper dark:hover:text-moss sm:text-base"
+            >
+              {item}
+            </span>
           ))}
+          <span className="rounded-lg border border-dashed border-line px-4 py-2 font-mono text-sm text-steel dark:border-moss dark:text-paper sm:text-base">
+            + more
+          </span>
         </div>
       </section>
 
