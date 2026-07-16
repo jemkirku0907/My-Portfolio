@@ -24,10 +24,14 @@ export function HeaderDropdown() {
     setTheme(savedTheme ?? "system");
   }, []);
 
+  function resolveTheme(nextTheme: ThemeMode) {
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return nextTheme === "dark" || (nextTheme === "system" && systemDark);
+  }
+
   function applyTheme(nextTheme: ThemeMode) {
     const root = document.documentElement;
-    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const shouldUseDark = nextTheme === "dark" || (nextTheme === "system" && systemDark);
+    const shouldUseDark = resolveTheme(nextTheme);
 
     root.classList.toggle("dark", shouldUseDark);
     if (nextTheme === "system") {
@@ -61,6 +65,14 @@ export function HeaderDropdown() {
     if (nextTheme === theme) return;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const currentIsDark = document.documentElement.classList.contains("dark");
+    const nextIsDark = resolveTheme(nextTheme);
+
+    if (currentIsDark === nextIsDark) {
+      setTheme(nextTheme);
+      return;
+    }
+
     const clickedButton = event.currentTarget;
     const rect = clickedButton.getBoundingClientRect();
     const x = rect.left + rect.width / 2;
@@ -81,20 +93,10 @@ export function HeaderDropdown() {
     transition.ready.then(() => {
       document.documentElement.animate(
         {
-          clipPath: [`circle(${endRadius}px at ${x}px ${y}px)`, `circle(0px at ${x}px ${y}px)`]
-        },
-        {
-          duration: 620,
-          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-          pseudoElement: "::view-transition-old(root)"
-        }
-      );
-      document.documentElement.animate(
-        {
           clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`]
         },
         {
-          duration: 620,
+          duration: 460,
           easing: "cubic-bezier(0.22, 1, 0.36, 1)",
           pseudoElement: "::view-transition-new(root)"
         }

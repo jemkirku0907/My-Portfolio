@@ -32,25 +32,9 @@ html {
   z-index: 1;
 }
 
-html,
-body,
-body * {
-  transition:
-    background-color 280ms ease,
-    border-color 280ms ease,
-    color 280ms ease,
-    box-shadow 280ms ease,
-    fill 280ms ease,
-    stroke 280ms ease;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  html,
-  body,
-  body * {
-    transition-duration: 1ms !important;
-    animation-duration: 1ms !important;
-    scroll-behavior: auto !important;
+  html {
+    scroll-behavior: auto;
   }
 }
 
