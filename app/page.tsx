@@ -67,7 +67,7 @@ export default function Home() {
                         style={{
                           left: `${slice * 12.5}%`,
                           width: "12.5%",
-                          backgroundImage: "url('/profile/hero-anime.png')",
+                          backgroundImage: "url('/profile/avatar.png')",
                           backgroundPosition: `${slice === 0 ? 0 : (slice / 7) * 100}% center`,
                           transitionDelay: `${slice * 45}ms`
                         }}
