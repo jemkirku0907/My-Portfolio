@@ -12,13 +12,14 @@ import { certificates, profile, projects, timeline } from "@/data/portfolio";
 
 const sectionClass = "mx-auto w-full max-w-6xl px-5 py-16 sm:px-8";
 const heroSectionClass = "mx-auto w-full max-w-6xl px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10";
-const beyondCodeTags = ["Football", "Basketball", "Gym", "Friends", "Campus life", "Games", "Creative reset"];
+const beyondCodeTags = ["Football", "Basketball", "Taekwondo", "Gym", "Acting", "Friends", "Campus life"];
 const beyondCodePhotos = [
   { src: "/profile/outside-football.jpeg", alt: "Football team huddle after a game", label: "Football", note: "Field reset" },
   { src: "/profile/outside-taekwondo.jpg", alt: "Taekwondo sparring practice", label: "Taekwondo", note: "Training night" },
-  { src: "/profile/outside-friends.jpeg", alt: "Friends taking a group photo outside", label: "Basketball", note: "After class runs" },
-  { src: "/profile/outside-football.jpeg", alt: "Outdoor activity photo used for gym interest", label: "Gym", note: "Strength habit" },
-  { src: "/profile/outside-friends.jpeg", alt: "Group photo used for acting interest", label: "Acting", note: "Creative side" }
+  { src: "/profile/outside-basketball.jpg", alt: "Basketball team photo on court", label: "Basketball", note: "After class runs" },
+  { src: "/profile/outside-gym.jpg", alt: "Gym mirror photo with friends", label: "Gym", note: "Strength habit" },
+  { src: "/profile/outside-acting.jpg", alt: "Acting performance preparation", label: "Acting", note: "Creative side" },
+  { src: "/profile/outside-friends.jpeg", alt: "Friends taking a group photo outside", label: "Friends", note: "Campus life" }
 ];
 const avatarSlices = Array.from({ length: 8 }, (_, index) => index);
 
