@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import Image from "next/image";
 import { ArrowUpRight, BadgeCheck, Github, Linkedin, Mail } from "lucide-react";
 import { AskPalette } from "@/components/AskPalette";
+import { BeyondCodeSlider } from "@/components/BeyondCodeSlider";
 import { GitHubContributions } from "@/components/GitHubContributions";
 import { HeaderDropdown } from "@/components/HeaderDropdown";
 import { LightboxGallery } from "@/components/LightboxGallery";
@@ -13,8 +14,11 @@ const sectionClass = "mx-auto w-full max-w-6xl px-5 py-16 sm:px-8";
 const heroSectionClass = "mx-auto w-full max-w-6xl px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10";
 const beyondCodeTags = ["Football", "Basketball", "Gym", "Friends", "Campus life", "Games", "Creative reset"];
 const beyondCodePhotos = [
-  { src: "/profile/outside-football.jpeg", alt: "Football team huddle after a game", rotation: "-rotate-6", hover: "group-hover:-rotate-9 group-hover:-translate-x-2" },
-  { src: "/profile/outside-friends.jpeg", alt: "Friends taking a group photo outside", rotation: "rotate-3", hover: "group-hover:rotate-6 group-hover:translate-x-2" }
+  { src: "/profile/outside-football.jpeg", alt: "Football team huddle after a game", label: "Football", note: "Field reset" },
+  { src: "/profile/outside-taekwondo.jpg", alt: "Taekwondo sparring practice", label: "Taekwondo", note: "Training night" },
+  { src: "/profile/outside-friends.jpeg", alt: "Friends taking a group photo outside", label: "Basketball", note: "After class runs" },
+  { src: "/profile/outside-football.jpeg", alt: "Outdoor activity photo used for gym interest", label: "Gym", note: "Strength habit" },
+  { src: "/profile/outside-friends.jpeg", alt: "Group photo used for acting interest", label: "Acting", note: "Creative side" }
 ];
 const avatarSlices = Array.from({ length: 8 }, (_, index) => index);
 
@@ -153,24 +157,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="group grid gap-4 sm:grid-cols-2 lg:relative lg:min-h-[22rem] lg:block">
-            {beyondCodePhotos.map((photo, index) => (
-              <div
-                key={`${photo.src}-${index}`}
-                className={`relative aspect-[4/5] overflow-hidden rounded-xl border border-line bg-white p-2 shadow-soft transition duration-300 dark:border-moss dark:bg-ink lg:absolute lg:w-[42%] ${photo.rotation} ${photo.hover} ${
-                  index === 0 ? "lg:left-10 lg:top-8" : "lg:right-16 lg:top-2"
-                }`}
-              >
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  sizes="(min-width: 1024px) 260px, (min-width: 640px) 30vw, 80vw"
-                  className="rounded-lg object-cover object-top p-2"
-                />
-              </div>
-            ))}
-          </div>
+          <BeyondCodeSlider photos={beyondCodePhotos} />
         </div>
       </section>
 
