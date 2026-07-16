@@ -11,11 +11,10 @@ import { certificates, profile, projects, timeline } from "@/data/portfolio";
 
 const sectionClass = "mx-auto w-full max-w-6xl px-5 py-16 sm:px-8";
 const heroSectionClass = "mx-auto w-full max-w-6xl px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10";
-const beyondCodeTags = ["Visual design", "Music", "Games", "Learning", "Quiet reset"];
+const beyondCodeTags = ["Football", "Friends", "Campus life", "Games", "Creative reset"];
 const beyondCodePhotos = [
-  { src: "/profile/hero-face.jpg", alt: `${profile.name} portrait`, rotation: "-rotate-6", hover: "group-hover:-rotate-9 group-hover:-translate-x-2" },
-  { src: "/profile/avatar.jpg", alt: `${profile.name} casual portrait`, rotation: "rotate-3", hover: "group-hover:rotate-6 group-hover:translate-x-2" },
-  { src: "/profile/hero-face.jpg", alt: `${profile.name} profile photo`, rotation: "-rotate-2", hover: "group-hover:-rotate-4 group-hover:translate-y-2" }
+  { src: "/profile/outside-football.jpeg", alt: "Football team huddle after a game", rotation: "-rotate-6", hover: "group-hover:-rotate-9 group-hover:-translate-x-2" },
+  { src: "/profile/outside-friends.jpeg", alt: "Friends taking a group photo outside", rotation: "rotate-3", hover: "group-hover:rotate-6 group-hover:translate-x-2" }
 ];
 const avatarSlices = Array.from({ length: 8 }, (_, index) => index);
 
@@ -154,12 +153,12 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="group grid gap-4 sm:grid-cols-3 lg:relative lg:min-h-[24rem] lg:block">
+          <div className="group grid gap-4 sm:grid-cols-2 lg:relative lg:min-h-[22rem] lg:block">
             {beyondCodePhotos.map((photo, index) => (
               <div
                 key={`${photo.src}-${index}`}
                 className={`relative aspect-[4/5] overflow-hidden rounded-xl border border-line bg-white p-2 shadow-soft transition duration-300 dark:border-moss dark:bg-ink lg:absolute lg:w-[42%] ${photo.rotation} ${photo.hover} ${
-                  index === 0 ? "lg:left-6 lg:top-8" : index === 1 ? "lg:left-[30%] lg:top-0" : "lg:right-6 lg:top-16"
+                  index === 0 ? "lg:left-10 lg:top-8" : "lg:right-16 lg:top-2"
                 }`}
               >
                 <Image
