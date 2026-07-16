@@ -40,9 +40,13 @@ export default function Home() {
       </header>
 
       <section className={`${sectionClass} grid min-h-[78vh] content-center gap-10 lg:grid-cols-[0.72fr_1fr] lg:items-center`}>
-        <div className="relative mx-auto w-full max-w-[18rem] sm:max-w-xs lg:order-none lg:max-w-sm">
+        <div className="group relative mx-auto w-full max-w-[18rem] sm:max-w-xs lg:order-none lg:max-w-sm">
           <div className="absolute -inset-3 rounded-[2rem] bg-white/70 dark:bg-paper/10" />
-          <div className="relative overflow-hidden rounded-[1.6rem] border border-transparent bg-white shadow-sm dark:border-moss dark:bg-ink">
+          <button
+            type="button"
+            className="focus-ring relative block w-full overflow-hidden rounded-[1.6rem] border border-transparent bg-white shadow-sm dark:border-moss dark:bg-ink"
+            aria-label="Toggle portrait style"
+          >
             <div className="relative aspect-[4/5]">
               <Image
                 src="/profile/hero-face.jpg"
@@ -50,10 +54,20 @@ export default function Home() {
                 fill
                 priority
                 sizes="(min-width: 1024px) 360px, 80vw"
-                className="object-cover object-top"
+                className="object-cover object-top transition duration-500 group-hover:opacity-0 group-focus-within:opacity-0"
+              />
+              <Image
+                src="/profile/hero-anime.png"
+                alt={`${profile.name} anime portrait`}
+                fill
+                sizes="(min-width: 1024px) 360px, 80vw"
+                className="object-cover object-top opacity-0 transition duration-500 group-hover:opacity-100 group-focus-within:opacity-100"
               />
             </div>
-          </div>
+          </button>
+          <span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full border border-line bg-white/90 px-3 py-1 text-xs font-medium text-steel shadow-sm transition duration-300 group-hover:text-moss dark:border-moss dark:bg-ink/90 dark:text-paper">
+            Hover for anime
+          </span>
         </div>
         <div className="max-w-3xl space-y-8">
           <VisitorPresence />
