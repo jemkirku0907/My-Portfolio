@@ -9,7 +9,7 @@ import { VisitorPresence } from "@/components/VisitorPresence";
 import { certificates, profile, projects, timeline } from "@/data/portfolio";
 
 const sectionClass = "mx-auto w-full max-w-6xl px-5 py-16 sm:px-8";
-const heroSectionClass = "mx-auto w-full max-w-6xl px-5 pb-16 pt-10 sm:px-8 sm:pb-20 sm:pt-14";
+const heroSectionClass = "mx-auto w-full max-w-6xl px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10";
 const beyondCodeTags = ["Visual design", "Music", "Games", "Learning", "Quiet reset"];
 const beyondCodePhotos = [
   { src: "/profile/hero-face.jpg", alt: `${profile.name} portrait`, rotation: "-rotate-6", hover: "group-hover:-rotate-9 group-hover:-translate-x-2" },
@@ -42,8 +42,8 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className={`${heroSectionClass} flex min-h-[calc(100vh-5rem)] items-center`}>
-        <div className="w-full max-w-5xl space-y-7">
+      <section className={`${heroSectionClass} flex min-h-[calc(100svh-10rem)] items-center`}>
+        <div className="w-full max-w-5xl space-y-5">
           <div className="flex flex-col gap-7 sm:flex-row sm:items-center">
             <div className="group relative w-32 shrink-0 sm:w-40">
               <div className="absolute -inset-2 rounded-full bg-white/70 shadow-sm dark:bg-paper/10" />
@@ -86,26 +86,26 @@ export default function Home() {
                 <h1 className="text-4xl font-semibold leading-tight text-ink dark:text-paper sm:text-5xl">{profile.name}</h1>
                 <BadgeCheck className="h-7 w-7 fill-[#1d9bf0] text-white" aria-hidden />
               </div>
-              <div className="flex gap-3 text-steel dark:text-paper">
-                <a className="transition hover:text-ink dark:hover:text-moss" href={`https://github.com/${githubUser}`} aria-label="GitHub">
+              <div className="flex gap-2 text-steel dark:text-paper">
+                <a className="focus-ring inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-moss hover:text-ink dark:border-moss dark:bg-ink dark:hover:text-moss" href={`https://github.com/${githubUser}`} aria-label="GitHub">
                   <Github className="h-5 w-5" />
                 </a>
-                <a className="transition hover:text-ink dark:hover:text-moss" href={profile.linkedin} aria-label="LinkedIn">
+                <a className="focus-ring inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-moss hover:text-ink dark:border-moss dark:bg-ink dark:hover:text-moss" href={profile.linkedin} aria-label="LinkedIn">
                   <Linkedin className="h-5 w-5" />
                 </a>
-                <a className="transition hover:text-ink dark:hover:text-moss" href={`mailto:${profile.email}`} aria-label="Email">
+                <a className="focus-ring inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-moss hover:text-ink dark:border-moss dark:bg-ink dark:hover:text-moss" href={`mailto:${profile.email}`} aria-label="Email">
                   <Mail className="h-5 w-5" />
                 </a>
               </div>
             </div>
           </div>
 
-          <div className="max-w-5xl space-y-6">
+          <div className="max-w-5xl space-y-5">
             <VisitorPresence />
             <h2 className="text-4xl font-light leading-tight text-ink dark:text-paper sm:text-5xl">
               Web Developer <span className="text-steel dark:text-paper">— Next.js &amp; PHP</span>
             </h2>
-            <p className="max-w-4xl text-xl leading-9 text-steel dark:text-paper">
+            <p className="max-w-4xl text-lg leading-8 text-steel dark:text-paper sm:text-xl">
               I build practical web systems across frontend, backend, databases, and deployment with{" "}
               <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">Next.js</span>
               ,{" "}
