@@ -15,6 +15,7 @@ const beyondCodePhotos = [
   { src: "/profile/avatar.jpg", alt: `${profile.name} casual portrait`, rotation: "rotate-3", hover: "group-hover:rotate-6 group-hover:translate-x-2" },
   { src: "/profile/hero-face.jpg", alt: `${profile.name} profile photo`, rotation: "-rotate-2", hover: "group-hover:-rotate-4 group-hover:translate-y-2" }
 ];
+const avatarSlices = Array.from({ length: 8 }, (_, index) => index);
 
 export default function Home() {
   const githubUser = process.env.NEXT_PUBLIC_GITHUB_USERNAME || profile.github;
@@ -46,7 +47,7 @@ export default function Home() {
               <div className="absolute -inset-2 rounded-full bg-white/70 shadow-sm dark:bg-paper/10" />
               <button
                 type="button"
-                className="focus-ring relative block w-full overflow-hidden rounded-full border border-line bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-soft dark:border-moss dark:bg-ink"
+                className="focus-ring avatar-swap relative block w-full overflow-hidden rounded-full border border-line bg-white shadow-sm transition duration-500 hover:-translate-y-1 hover:shadow-soft dark:border-moss dark:bg-ink"
                 aria-label="Toggle portrait style"
               >
                 <div className="relative aspect-square">
@@ -56,15 +57,24 @@ export default function Home() {
                     fill
                     priority
                     sizes="160px"
-                    className="scale-110 object-cover object-top transition duration-500 group-hover:opacity-0 group-focus-within:opacity-0"
+                    className="scale-110 object-cover object-top transition duration-700 group-hover:scale-[1.16] group-focus-within:scale-[1.16]"
                   />
-                  <Image
-                    src="/profile/hero-anime.png"
-                    alt={`${profile.name} anime portrait`}
-                    fill
-                    sizes="160px"
-                    className="scale-110 object-cover object-top opacity-0 transition duration-500 group-hover:opacity-100 group-focus-within:opacity-100"
-                  />
+                  <div className="absolute inset-0" aria-hidden>
+                    {avatarSlices.map((slice) => (
+                      <span
+                        key={slice}
+                        className="avatar-slice absolute top-0 h-full"
+                        style={{
+                          left: `${slice * 12.5}%`,
+                          width: "12.5%",
+                          backgroundImage: "url('/profile/hero-anime.png')",
+                          backgroundPosition: `${slice === 0 ? 0 : (slice / 7) * 100}% center`,
+                          transitionDelay: `${slice * 45}ms`
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <span className="avatar-scan absolute inset-y-0 -left-1/3 w-1/3 rotate-12 bg-white/25 blur-md" aria-hidden />
                 </div>
               </button>
             </div>
