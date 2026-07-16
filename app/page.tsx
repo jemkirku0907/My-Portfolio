@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Image from "next/image";
-import { ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowUpRight, BadgeCheck, Github, Linkedin, Mail } from "lucide-react";
 import { AskPalette } from "@/components/AskPalette";
 import { GitHubContributions } from "@/components/GitHubContributions";
 import { HeaderDropdown } from "@/components/HeaderDropdown";
@@ -39,50 +39,77 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className={`${sectionClass} flex min-h-[68vh] flex-col items-center justify-center text-center`}>
-        <div className="group relative mx-auto w-28 sm:w-32">
-          <div className="absolute -inset-2 rounded-full bg-white/70 dark:bg-paper/10" />
-          <button
-            type="button"
-            className="focus-ring relative block w-full overflow-hidden rounded-full border border-line bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-soft dark:border-moss dark:bg-ink"
-            aria-label="Toggle portrait style"
-          >
-            <div className="relative aspect-square">
-              <Image
-                src="/profile/hero-face.jpg"
-                alt={`${profile.name} portrait`}
-                fill
-                priority
-                sizes="128px"
-                className="scale-110 object-cover object-top transition duration-500 group-hover:opacity-0 group-focus-within:opacity-0"
-              />
-              <Image
-                src="/profile/hero-anime.png"
-                alt={`${profile.name} anime portrait`}
-                fill
-                sizes="128px"
-                className="scale-110 object-cover object-top opacity-0 transition duration-500 group-hover:opacity-100 group-focus-within:opacity-100"
-              />
+      <section className={`${sectionClass} flex min-h-[68vh] items-center`}>
+        <div className="w-full max-w-5xl space-y-9">
+          <div className="flex flex-col gap-7 sm:flex-row sm:items-center">
+            <div className="group relative w-32 shrink-0 sm:w-40">
+              <div className="absolute -inset-2 rounded-full bg-white/70 shadow-sm dark:bg-paper/10" />
+              <button
+                type="button"
+                className="focus-ring relative block w-full overflow-hidden rounded-full border border-line bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-soft dark:border-moss dark:bg-ink"
+                aria-label="Toggle portrait style"
+              >
+                <div className="relative aspect-square">
+                  <Image
+                    src="/profile/hero-face.jpg"
+                    alt={`${profile.name} portrait`}
+                    fill
+                    priority
+                    sizes="160px"
+                    className="scale-110 object-cover object-top transition duration-500 group-hover:opacity-0 group-focus-within:opacity-0"
+                  />
+                  <Image
+                    src="/profile/hero-anime.png"
+                    alt={`${profile.name} anime portrait`}
+                    fill
+                    sizes="160px"
+                    className="scale-110 object-cover object-top opacity-0 transition duration-500 group-hover:opacity-100 group-focus-within:opacity-100"
+                  />
+                </div>
+              </button>
             </div>
-          </button>
-          <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-line bg-white/90 px-2.5 py-1 text-[0.68rem] font-medium text-steel shadow-sm transition duration-300 group-hover:text-moss dark:border-moss dark:bg-ink/90 dark:text-paper">
-            anime mode
-          </span>
-        </div>
-        <div className="mt-10 max-w-3xl space-y-8">
-          <VisitorPresence />
-          <div className="space-y-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-moss">{profile.title}</p>
-            <h1 className="text-5xl font-semibold leading-[1.02] text-ink dark:text-paper sm:text-7xl">{profile.name}</h1>
-            <p className="mx-auto max-w-2xl text-xl leading-8 text-steel dark:text-paper">{profile.tagline}</p>
+
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <h1 className="text-4xl font-semibold leading-tight text-ink dark:text-paper sm:text-5xl">{profile.name}</h1>
+                <BadgeCheck className="h-7 w-7 fill-[#1d9bf0] text-white" aria-hidden />
+              </div>
+              <div className="flex gap-3 text-steel dark:text-paper">
+                <a className="transition hover:text-ink dark:hover:text-moss" href={`https://github.com/${githubUser}`} aria-label="GitHub">
+                  <Github className="h-5 w-5" />
+                </a>
+                <a className="transition hover:text-ink dark:hover:text-moss" href={profile.linkedin} aria-label="LinkedIn">
+                  <Linkedin className="h-5 w-5" />
+                </a>
+                <a className="transition hover:text-ink dark:hover:text-moss" href={`mailto:${profile.email}`} aria-label="Email">
+                  <Mail className="h-5 w-5" />
+                </a>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-wrap justify-center gap-3">
-            <a className="focus-ring min-h-11 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white dark:bg-paper dark:text-ink" href="#projects">
-              View Projects
-            </a>
-            <a className="focus-ring min-h-11 rounded-full border border-line bg-white px-5 py-3 text-sm font-semibold text-ink dark:border-moss dark:bg-ink dark:text-paper" href={`mailto:${profile.email}`}>
-              Contact Me
-            </a>
+
+          <div className="max-w-5xl space-y-7">
+            <VisitorPresence />
+            <h2 className="text-4xl font-light leading-tight text-ink dark:text-paper sm:text-5xl">
+              Web Developer <span className="text-steel dark:text-paper">— Next.js &amp; PHP</span>
+            </h2>
+            <p className="max-w-4xl text-xl leading-9 text-steel dark:text-paper">
+              I build practical web systems across frontend, backend, databases, and deployment with{" "}
+              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">Next.js</span>
+              ,{" "}
+              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">React</span>
+              ,{" "}
+              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">Supabase</span>
+              , and PHP/MySQL.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a className="focus-ring min-h-11 rounded-lg bg-ink px-5 py-3 text-sm font-semibold text-white dark:bg-paper dark:text-ink" href="#projects">
+                View Projects
+              </a>
+              <a className="focus-ring min-h-11 rounded-lg border border-line bg-white px-5 py-3 text-sm font-semibold text-ink dark:border-moss dark:bg-ink dark:text-paper" href={`mailto:${profile.email}`}>
+                Contact Me
+              </a>
+            </div>
           </div>
         </div>
       </section>
