@@ -122,11 +122,6 @@ export const designSamples = [
 
 export const timeline = [
   {
-    year: "2024 - 2025",
-    title: "PHP and MySQL foundations",
-    body: "Built academic systems and database labs, including Queen of Angels / QUACC with multi-role workflows."
-  },
-  {
     year: "May 2025",
     title: "NC III Graphic Design",
     body: "Developed layout, visual design, and presentation skills that support product and interface work."
@@ -135,11 +130,6 @@ export const timeline = [
     year: "2026 - Present",
     title: "Officium Inc. / Marajo Group",
     body: "Currently working on real-world web projects for Officium Inc. and Marajo Group across Next.js, Supabase, Vercel, booking flows, dashboards, and integrations."
-  },
-  {
-    year: "2026 - Present",
-    title: "PharSayo",
-    body: "Building health-tech PWA features around medication management, role-based access, and AI-assisted scanning."
   }
 ];
 
