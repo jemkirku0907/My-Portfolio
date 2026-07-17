@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Image from "next/image";
-import { ArrowUpRight, BadgeCheck, Github, Linkedin, Mail } from "lucide-react";
+import { BadgeCheck, Github, Linkedin, Mail } from "lucide-react";
 import { AskPalette } from "@/components/AskPalette";
 import { BeyondCodeSlider } from "@/components/BeyondCodeSlider";
 import { GitHubContributions } from "@/components/GitHubContributions";
@@ -272,15 +272,9 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
             <p className="text-sm font-medium text-moss">{project.status}</p>
             <h3 className="mt-1 text-xl font-semibold text-ink dark:text-paper">{project.name}</h3>
           </div>
-          {project.href ? (
-            <a className="focus-ring min-h-11 min-w-11 rounded-full border border-line p-2 hover:border-moss dark:border-moss dark:text-paper" href={project.href} aria-label={`Open ${project.name}`}>
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-          ) : (
-            <span className="rounded-full border border-line px-3 py-1 text-xs font-medium text-steel dark:border-moss dark:text-paper" aria-label={`${project.name} is private and not deployed`}>
-              Private
-            </span>
-          )}
+          <span className="rounded-full border border-line px-3 py-1 text-xs font-medium text-steel dark:border-moss dark:text-paper">
+            Preview
+          </span>
         </div>
         <p className="leading-7 text-steel dark:text-paper">{project.description}</p>
         <div className="flex flex-wrap gap-2">

@@ -15,27 +15,27 @@ export const projects = [
     description:
       "Real estate company website migrated from PHP/MySQL/XAMPP to Next.js, Supabase, and Vercel, with listings, booking flows, an admin dashboard, and third-party integrations.",
     stack: ["Next.js", "Supabase", "Tailwind CSS", "Vercel"],
-    href: "https://marajogroup.vercel.app",
+    href: "",
     image: "/projects/marajo-group-preview.png",
-    status: "Live Site"
+    status: "Preview Only"
   },
   {
     name: "PharSayo",
     description:
       "Medication management PWA for barangay health units with role-based access, AI-assisted medication scanning, adherence tracking, and dashboards.",
     stack: ["PWA", "React", "AI", "Healthcare"],
-    href: "https://pharsayo.netlify.app",
+    href: "",
     image: "/projects/pharsayo-preview.png",
-    status: "Live Site"
+    status: "Preview Only"
   },
   {
     name: "Suri.AI",
     description:
       "AI-powered fact-checking platform built for the InterCICSkwela hackathon. Users submit a news article or claim, then Suri.AI cross-checks it with reliable sources and surfaces connected articles based on the result, showing credible sources for legitimate claims or related debunked misinformation for false or misleading ones.",
     stack: ["Next.js", "TypeScript", "Node.js", "Express", "Anthropic API", "Tailwind CSS"],
-    href: "#",
+    href: "",
     image: "/projects/suri-ai-preview.png",
-    status: "Hackathon Project"
+    status: "Hackathon Preview"
   },
   {
     name: "Queen of Angels (QUACC)",
@@ -51,7 +51,7 @@ export const projects = [
     description:
       "A collection of layout, poster, and branding samples that shows visual design range alongside software development work.",
     stack: ["Graphic Design", "Layout", "Branding"],
-    href: "#design",
+    href: "",
     image: "/projects/design-work.svg",
     status: "Gallery"
   }
