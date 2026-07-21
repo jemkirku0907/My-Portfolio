@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { assistantKnowledge } from "@/data/portfolio";
 
 type AskAiRequest = {
   prompt?: string;
@@ -6,21 +7,30 @@ type AskAiRequest = {
 
 const portfolioAssistantInstruction = `You are Jeo's concise portfolio assistant.
 Use only the public portfolio context below. Answer questions about Jeo's work, projects, skills, certifications, and background.
+Project cards are preview-only for privacy, so do not send visitors to live company or private project links.
 Politely redirect unrelated or off-topic questions back to Jeo's portfolio.
-Keep answers concise because this is a small portfolio command palette.
+Keep answers under 90 words because this is a small portfolio command palette.
 
-Portfolio context:
-- Name: Jeo
-- Role: Intern/Developer
-- Stack: PHP/MySQL, Next.js, React, Supabase, TypeScript
-- Projects:
-  - Marajo Group: real estate site at https://marajogroup.vercel.app
-  - PharSayo: medication management PWA at https://pharsayo.netlify.app
-  - QUACC: child care center system, not deployed
-- Certifications: NC III Graphic Design, Batang Techno Hackathon participant, InfoTechnOlympics participant, Math and Physics Quiz Bee participant, AI Tech 2.0 participant
-- Based in the Philippines`;
+${assistantKnowledge}`;
 
 const fallbackAnswer = "The assistant is temporarily unavailable. Please try asking again in a moment.";
+const model = "gemini-2.0-flash";
+
+function fallbackForStatus(status: number, message = "") {
+  if (status === 400 || status === 401 || status === 403) {
+    return "The assistant key could not be authorized on the server. Please check the Gemini API key in Vercel Environment Variables.";
+  }
+
+  if (status === 429) {
+    if (message.toLowerCase().includes("quota")) {
+      return "The assistant is connected, but the Gemini API quota for this key/project is currently unavailable. Please check Google AI Studio quota or billing, then try again.";
+    }
+
+    return "The assistant is getting a lot of questions right now. Please try again shortly.";
+  }
+
+  return fallbackAnswer;
+}
 
 export async function POST(request: Request) {
   const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
@@ -44,10 +54,13 @@ export async function POST(request: Request) {
     }
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey
+        },
         body: JSON.stringify({
           systemInstruction: {
             parts: [{ text: portfolioAssistantInstruction }]
@@ -66,22 +79,18 @@ export async function POST(request: Request) {
       }
     );
 
-    if (response.status === 429) {
-      return NextResponse.json(
-        { answer: "The assistant is getting a lot of questions right now. Please try again shortly." },
-        { status: 429 }
-      );
-    }
-
     if (!response.ok) {
-      return NextResponse.json({ answer: fallbackAnswer }, { status: 502 });
+      const errorData = await response.json().catch(() => null);
+      const errorMessage = errorData?.error?.message ?? "";
+
+      return NextResponse.json({ answer: fallbackForStatus(response.status, errorMessage) }, { status: 200 });
     }
 
     const data = await response.json();
     const answer = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
 
     if (!answer) {
-      return NextResponse.json({ answer: "I could not generate a useful answer just now. Please try rephrasing your question." }, { status: 502 });
+      return NextResponse.json({ answer: "I could not generate a useful answer just now. Please try rephrasing your question." }, { status: 200 });
     }
 
     return NextResponse.json({ answer });
