@@ -69,7 +69,13 @@ function contributionLevel(day: Pick<ContributionDay, "count" | "level">) {
 }
 
 function colorForLevel(level: number) {
-  return ["bg-[#ebedf0]", "bg-[#9be9a8]", "bg-[#40c463]", "bg-[#30a14e]", "bg-[#216e39]"][Math.max(0, Math.min(level, 4))];
+  return [
+    "bg-[#ebedf0] dark:bg-[#161b22]",
+    "bg-[#9be9a8] dark:bg-[#0e4429]",
+    "bg-[#40c463] dark:bg-[#006d32]",
+    "bg-[#30a14e] dark:bg-[#26a641]",
+    "bg-[#216e39] dark:bg-[#39d353]"
+  ][Math.max(0, Math.min(level, 4))];
 }
 
 export function GitHubContributions({ username }: { username: string }) {
@@ -109,7 +115,7 @@ export function GitHubContributions({ username }: { username: string }) {
       href={`https://github.com/${username}`}
       target="_blank"
       rel="noreferrer"
-      className="block rounded-lg border border-line bg-white p-4 text-ink transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss dark:bg-ink dark:text-paper"
+      className="block rounded-lg border border-line bg-white p-4 text-ink transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss/70 dark:bg-ink dark:text-paper"
       aria-label={`${username} GitHub contributions`}
     >
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -117,7 +123,7 @@ export function GitHubContributions({ username }: { username: string }) {
         <span className="text-sm text-steel dark:text-paper">Contribution settings</span>
       </div>
 
-      <div className="overflow-x-auto rounded-md border border-line p-4 dark:border-moss">
+      <div className="overflow-x-auto rounded-md border border-line bg-white p-4 dark:border-moss/70 dark:bg-[#0d1117]">
         <div className="min-w-[760px]">
           <div className="ml-9 grid grid-cols-[repeat(53,12px)] gap-[3px] text-xs text-steel dark:text-paper">
             {months.map((month, index) => (
@@ -141,7 +147,7 @@ export function GitHubContributions({ username }: { username: string }) {
                 <span
                   key={day.date}
                   title={`${day.count} contributions on ${day.date}`}
-                  className={`h-3 w-3 rounded-[2px] border border-black/5 ${colorForLevel(contributionLevel(day))}`}
+                  className={`h-3 w-3 rounded-[2px] border border-black/5 dark:border-white/5 ${colorForLevel(contributionLevel(day))}`}
                 />
               ))}
             </div>
@@ -152,7 +158,7 @@ export function GitHubContributions({ username }: { username: string }) {
             <div className="flex items-center gap-1">
               <span>Less</span>
               {[0, 1, 2, 3, 4].map((level) => (
-                <span key={level} className={`h-3 w-3 rounded-[2px] border border-black/5 ${colorForLevel(level)}`} />
+                <span key={level} className={`h-3 w-3 rounded-[2px] border border-black/5 dark:border-white/5 ${colorForLevel(level)}`} />
               ))}
               <span>More</span>
             </div>
