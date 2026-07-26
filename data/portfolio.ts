@@ -1,6 +1,6 @@
 export const profile = {
   name: "Jemkirk L. Utana",
-  title: "Web Developer | Full-Stack Next.js & PHP",
+  title: "Web Developer | Full-Stack Web Developer | Graphic Designer",
   tagline: "I build practical web systems across frontend, backend, databases, and deployment.",
   location: "Philippines",
   email: "jemkirku0907@gmail.com",
