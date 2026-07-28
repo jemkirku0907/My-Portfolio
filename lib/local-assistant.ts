@@ -49,5 +49,5 @@ export function answerPortfolioQuestion(prompt: string) {
     return `${profile.name} is a ${profile.title} based in the ${profile.location}. ${profile.tagline}`;
   }
 
-  return "I can answer questions about Jemkirk's projects, skills, certificates, experience, and contact details. Try asking about Suri.AI, Marajo Group, PharSayo, QUACC, NC III, or his tech stack.";
+  return "I can answer questions about Jemkirk's projects, skills, certificates, experience, and contact details. Try asking about Suri.AI, Marajo Group, PharSayo, Assignify, BasuCash, QUACC, NC III, or his tech stack.";
 }

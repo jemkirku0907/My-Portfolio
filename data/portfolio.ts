@@ -38,6 +38,24 @@ export const projects = [
     status: "Hackathon Preview"
   },
   {
+    name: "Assignify",
+    description:
+      "Assignment management web app for organizing tasks, tracking progress, and keeping academic submissions easier to monitor in one focused workspace.",
+    stack: ["Web App", "Task Management", "Dashboard", "Productivity"],
+    href: "",
+    image: "/projects/assignify-preview.svg",
+    status: "Preview Only"
+  },
+  {
+    name: "BasuCash",
+    description:
+      "Cash flow and budget tracking project for managing transactions, monitoring expenses, and keeping simple financial records easier to review.",
+    stack: ["Web App", "Finance", "Dashboard", "Tracking"],
+    href: "",
+    image: "/projects/basucash-preview.svg",
+    status: "Preview Only"
+  },
+  {
     name: "Queen of Angels (QUACC)",
     description:
       "Multi-role community and childcare system with admin, staff, and guardian dashboards, password hashing, scholarship application flows, file uploads, and OTP verification.",
