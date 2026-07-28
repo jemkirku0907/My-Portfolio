@@ -125,6 +125,9 @@ export default function Home() {
               <a className="focus-ring min-h-11 rounded-lg border border-line bg-white px-5 py-3 text-sm font-semibold text-ink dark:border-moss dark:bg-ink dark:text-paper" href={`mailto:${profile.email}`}>
                 Contact Me
               </a>
+              <a className="focus-ring min-h-11 rounded-lg border border-line bg-white px-5 py-3 text-sm font-semibold text-ink dark:border-moss dark:bg-ink dark:text-paper" href={profile.resume} target="_blank" rel="noreferrer">
+                View CV
+              </a>
             </div>
           </div>
         </div>

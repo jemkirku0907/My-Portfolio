@@ -6,7 +6,7 @@ export const profile = {
   email: "jemkirku0907@gmail.com",
   github: "jemkirku0907",
   linkedin: "https://www.linkedin.com/in/jemkirk-utana-825892420",
-  resume: "#"
+  resume: "/resume/Jemkirk-Utana-CV.pdf"
 };
 
 export const projects = [
