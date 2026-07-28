@@ -1,8 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { Command, Send, X } from "lucide-react";
-import { answerPortfolioQuestion } from "@/lib/local-assistant";
+import { Command, Loader2, Send, X } from "lucide-react";
 
 type Message = {
   role: "user" | "assistant";
@@ -15,6 +14,7 @@ export function AskPalette() {
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "Ask me about projects, skills, certificates, or experience." }
   ]);
+  const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -44,12 +44,33 @@ export function AskPalette() {
   async function submit(event: FormEvent) {
     event.preventDefault();
     const question = input.trim();
-    if (!question) return;
+    if (!question || loading) return;
 
     const nextMessages: Message[] = [...messages, { role: "user", content: question }];
     setMessages(nextMessages);
     setInput("");
-    setMessages([...nextMessages, { role: "assistant", content: answerPortfolioQuestion(question) }]);
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/ask-ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: question })
+      });
+      const data = await response.json();
+
+      setMessages([...nextMessages, { role: "assistant", content: data.answer ?? "I could not answer that just now." }]);
+    } catch {
+      setMessages([
+        ...nextMessages,
+        {
+          role: "assistant",
+          content: "The assistant is taking a quick breather. Please try again in a moment."
+        }
+      ]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -86,8 +107,8 @@ export function AskPalette() {
                 placeholder="Ask about Marajo, PharSayo, skills..."
                 className="focus-ring min-h-11 min-w-0 flex-1 rounded-md border border-line bg-white px-3 py-2 text-base text-ink outline-none dark:border-moss dark:bg-ink dark:text-paper"
               />
-              <button className="focus-ring min-h-11 rounded-md bg-ink px-3 text-white dark:bg-paper dark:text-ink" aria-label="Send question">
-                <Send className="h-5 w-5" />
+              <button className="focus-ring min-h-11 rounded-md bg-ink px-3 text-white disabled:opacity-50 dark:bg-paper dark:text-ink" disabled={loading} aria-label="Send question">
+                {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
               </button>
             </form>
             <div className="max-h-[50vh] space-y-3 overflow-y-auto p-4">
