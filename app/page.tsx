@@ -46,7 +46,7 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className={`${heroSectionClass} flex min-h-[calc(100svh-10rem)] items-center`}>
+      <section className={`${heroSectionClass} flex min-h-[calc(100svh-4.5rem)] items-center`}>
         <div className="w-full max-w-5xl space-y-5">
           <div className="flex flex-col gap-7 sm:flex-row sm:items-center">
             <div className="group relative w-32 shrink-0 sm:w-40">
