@@ -33,6 +33,14 @@ function fallbackForStatus(status: number, message = "") {
   return fallbackAnswer;
 }
 
+function cleanAssistantText(answer: string) {
+  return answer
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/\*(.*?)\*/g, "$1")
+    .replace(/^\s*[-*]\s+/gm, "")
+    .trim();
+}
+
 export async function POST(request: Request) {
   const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
 
@@ -69,7 +77,7 @@ export async function POST(request: Request) {
 
       return NextResponse.json(
         {
-          answer: `${answerPortfolioQuestion(question)}\n\n${fallbackForStatus(response.status, errorMessage)}`,
+          answer: cleanAssistantText(`${answerPortfolioQuestion(question)}\n\n${fallbackForStatus(response.status, errorMessage)}`),
           source: "local"
         },
         { status: 200 }
@@ -90,7 +98,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ answer: answerPortfolioQuestion(question), source: "local" }, { status: 200 });
     }
 
-    return NextResponse.json({ answer, source: "gemini" });
+    return NextResponse.json({ answer: cleanAssistantText(answer), source: "gemini" });
   } catch {
     return NextResponse.json({ answer: fallbackAnswer }, { status: 500 });
   }
