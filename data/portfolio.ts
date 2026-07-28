@@ -43,7 +43,7 @@ export const projects = [
       "Assignment management web app for organizing tasks, tracking progress, and keeping academic submissions easier to monitor in one focused workspace.",
     stack: ["Web App", "Task Management", "Dashboard", "Productivity"],
     href: "",
-    image: "/projects/assignify-preview.svg",
+    image: "/projects/assignify-preview.png",
     status: "Preview Only"
   },
   {
@@ -52,7 +52,7 @@ export const projects = [
       "Cash flow and budget tracking project for managing transactions, monitoring expenses, and keeping simple financial records easier to review.",
     stack: ["Web App", "Finance", "Dashboard", "Tracking"],
     href: "",
-    image: "/projects/basucash-preview.svg",
+    image: "/projects/basucash-preview.png",
     status: "Preview Only"
   },
   {
