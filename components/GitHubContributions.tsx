@@ -13,6 +13,7 @@ type ContributionsResponse = {
     lastYear?: number;
   };
   contributions?: ContributionDay[];
+  source?: "github-graphql" | "github-profile";
 };
 
 const dayLabels = ["", "Mon", "", "Wed", "", "Fri", ""];
@@ -86,17 +87,20 @@ export function GitHubContributions({ username }: { username: string }) {
     let cancelled = false;
 
     async function loadContributions() {
+      setError(false);
+
       try {
-        const response = await fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`, {
-          next: { revalidate: 60 * 60 * 6 }
-        });
+        const response = await fetch(`/api/github-contributions?username=${encodeURIComponent(username)}`);
 
         if (!response.ok) throw new Error("Unable to load GitHub contributions");
 
         const payload = (await response.json()) as ContributionsResponse;
         if (!cancelled) setData(payload);
       } catch {
-        if (!cancelled) setError(true);
+        if (!cancelled) {
+          setData(null);
+          setError(true);
+        }
       }
     }
 
@@ -109,6 +113,7 @@ export function GitHubContributions({ username }: { username: string }) {
   const weeks = useMemo(() => buildCalendarDays(data?.contributions ?? []), [data]);
   const months = useMemo(() => monthLabels(weeks), [weeks]);
   const total = data?.total?.lastYear ?? 0;
+  const settingsLabel = data?.source === "github-graphql" ? "GitHub API" : "GitHub profile graph";
 
   return (
     <a
@@ -119,12 +124,12 @@ export function GitHubContributions({ username }: { username: string }) {
       aria-label={`${username} GitHub contributions`}
     >
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-lg font-medium">{error ? "GitHub contributions" : `${total} contributions in the last year`}</p>
-        <span className="text-sm text-steel dark:text-paper">Contribution settings</span>
+        <p className="text-lg font-medium">{error ? "GitHub contributions unavailable" : `${total} contributions in the last year`}</p>
+        <span className="text-sm text-steel dark:text-paper">{error ? "Open GitHub profile" : settingsLabel}</span>
       </div>
 
       <div className="overflow-x-auto rounded-md border border-line bg-white p-4 dark:border-moss/70 dark:bg-[#0d1117]">
-        <div className="min-w-[760px]">
+        <div className="min-w-[760px]" aria-hidden={error}>
           <div className="ml-9 grid grid-cols-[repeat(53,12px)] gap-[3px] text-xs text-steel dark:text-paper">
             {months.map((month, index) => (
               <span key={`${month}-${index}`} className="h-5">
