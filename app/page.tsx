@@ -208,7 +208,7 @@ export default function Home() {
       <section className={sectionClass}>
         <SectionHeading eyebrow="Activity" title="GitHub Contributions" />
         <div className="mt-8 grid gap-4">
-          <GitHubContributions username={githubUser} />
+          <GitHubContributions username={githubUser} verifiedTotal={542} />
         </div>
       </section>
 
