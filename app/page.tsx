@@ -252,7 +252,7 @@ export default function Home() {
 function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <div className="space-y-2">
-      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss">{eyebrow}</p>
+      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss dark:text-[#8fbc9f]">{eyebrow}</p>
       <h2 className="text-3xl font-semibold text-ink dark:text-paper sm:text-4xl">{title}</h2>
     </div>
   );

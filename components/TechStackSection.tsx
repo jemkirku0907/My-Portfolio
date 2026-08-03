@@ -48,7 +48,7 @@ export function TechStackSection() {
     <section id="skills" className="mx-auto w-full max-w-6xl border-y border-line px-5 py-16 dark:border-moss sm:px-8">
       <div className="flex items-center justify-between gap-4">
         <div className="space-y-2">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss">Stack</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss dark:text-[#8fbc9f]">Stack</p>
           <h2 className="text-3xl font-semibold text-ink dark:text-paper sm:text-4xl">Technologies</h2>
         </div>
         <Link
