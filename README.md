@@ -46,13 +46,15 @@ Ctrl+K on Windows
 Cmd+K on Mac
 ```
 
-The browser calls `app/api/chat/route.ts`, which calls Gemini server-side. Set this environment variable locally and in Vercel:
+The browser calls `app/api/ask-ai/route.ts`, which calls Gemini server-side. Set this environment variable locally and in Vercel:
 
 ```txt
 GEMINI_API_KEY=your_google_gemini_api_key
 ```
 
-The route currently uses `gemini-1.5-flash`. You can change the model name in `app/api/chat/route.ts` if your Gemini free-tier account exposes a newer preferred model.
+The assistant grounds its answers in the curated public portfolio data from `data/portfolio.ts`. Because the dataset is small, the full context is included in the prompt instead of using embeddings or a vector database. If Gemini is unavailable or rate-limited, the route falls back to the local portfolio assistant.
+
+The route currently uses `gemini-3.6-flash`. You can change the model name in `app/api/ask-ai/route.ts` if your Gemini account exposes a different preferred model.
 
 ## Supabase visitor presence
 
