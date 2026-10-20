@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import Image from "next/image";
 import { BadgeCheck, Github, Linkedin, Mail } from "lucide-react";
 import { AskPalette } from "@/components/AskPalette";
@@ -6,9 +5,10 @@ import { BeyondCodeSlider } from "@/components/BeyondCodeSlider";
 import { GitHubContributions } from "@/components/GitHubContributions";
 import { HeaderDropdown } from "@/components/HeaderDropdown";
 import { LightboxGallery } from "@/components/LightboxGallery";
+import { ProjectsSection } from "@/components/ProjectsSection";
 import { TechStackSection } from "@/components/TechStackSection";
 import { VisitorPresence } from "@/components/VisitorPresence";
-import { certificates, profile, projects, timeline } from "@/data/portfolio";
+import { certificates, profile, timeline } from "@/data/portfolio";
 
 const sectionClass = "mx-auto w-full max-w-6xl px-5 py-16 sm:px-8";
 const heroSectionClass = "mx-auto w-full max-w-6xl px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10";
@@ -107,7 +107,7 @@ export default function Home() {
           <div className="max-w-5xl space-y-5">
             <VisitorPresence />
             <h2 className="text-4xl font-light leading-tight text-ink dark:text-paper sm:text-5xl">
-              Web Developer <span className="text-steel dark:text-paper">— Next.js &amp; PHP</span>
+              Web Developer <span className="text-steel dark:text-paper">— Next.js, C# &amp; Full-Stack</span>
             </h2>
             <p className="max-w-4xl text-lg leading-8 text-steel dark:text-paper sm:text-xl">
               I build practical web systems across frontend, backend, databases, and deployment with{" "}
@@ -116,6 +116,8 @@ export default function Home() {
               <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">React</span>
               ,{" "}
               <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">Supabase</span>
+              ,{" "}
+              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">C# / .NET</span>
               , and PHP/MySQL.
             </p>
             <div className="flex flex-wrap gap-3">
@@ -138,8 +140,8 @@ export default function Home() {
           <h2 className="text-2xl font-semibold dark:text-paper">About</h2>
           <p className="text-lg leading-8 text-steel dark:text-paper">
             I am a developer working on practical, real-world projects across frontend, backend, database, and deployment work.
-            My current experience includes Officium / Marajo Group work in a general, non-confidential capacity, plus portfolio
-            projects like PharSayo and academic systems. I enjoy building systems that are clear, useful, and maintainable.
+            My experience includes Officium / Marajo Group real estate platforms, hackathon-winning solutions like TAGA-asK AI (2nd Runner Up)
+            and Suri.AI, C#/.NET arcade games, and academic systems. I enjoy building systems that are clear, useful, and maintainable.
           </p>
         </div>
       </section>
@@ -165,20 +167,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="projects" className={sectionClass}>
-        <SectionHeading eyebrow="Selected work" title="Projects" />
-        <div className="mt-8 grid gap-5 md:grid-cols-2">
-          {projects.map((project) =>
-            project.name === "NC III Graphic Design Work" ? (
-              <Fragment key={project.name}>
-                {/* Temporarily hidden: <ProjectCard project={project} /> */}
-              </Fragment>
-            ) : (
-              <ProjectCard key={project.name} project={project} />
-            )
-          )}
-        </div>
-      </section>
+      <ProjectsSection sectionClass={sectionClass} />
 
       <TechStackSection />
 
@@ -195,15 +184,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      {/*
-      <section id="design" className={`${sectionClass} border-y border-line dark:border-moss`}>
-        <SectionHeading eyebrow="Visual work" title="Design Samples" />
-        <div className="mt-8">
-          <LightboxGallery items={designSamples} type="design" />
-        </div>
-      </section>
-      */}
 
       <section className={sectionClass}>
         <SectionHeading eyebrow="Activity" title="GitHub Contributions" />
@@ -255,38 +235,6 @@ function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) 
       <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss">{eyebrow}</p>
       <h2 className="text-3xl font-semibold text-ink dark:text-paper sm:text-4xl">{title}</h2>
     </div>
-  );
-}
-
-function ProjectCard({ project }: { project: (typeof projects)[number] }) {
-  return (
-    <article className="group overflow-hidden rounded-lg border border-line bg-white text-ink shadow-sm transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss dark:bg-ink dark:text-paper">
-      <div className="relative aspect-[16/10] bg-[#ebe6da] p-3">
-        <Image
-          src={project.image}
-          alt={`${project.name} preview`}
-          fill
-          className="object-contain p-3 transition duration-300 group-hover:scale-[1.03]"
-        />
-      </div>
-      <div className="space-y-4 p-5">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-sm font-medium text-moss">{project.status}</p>
-            <h3 className="mt-1 text-xl font-semibold text-ink dark:text-paper">{project.name}</h3>
-          </div>
-          <span className="rounded-full border border-line px-3 py-1 text-xs font-medium text-steel dark:border-moss dark:text-paper">
-            Preview
-          </span>
-        </div>
-        <p className="leading-7 text-steel dark:text-paper">{project.description}</p>
-        <div className="flex flex-wrap gap-2">
-          {project.stack.map((item) => (
-            <span key={item} className="rounded-full border border-line px-3 py-1 text-xs text-steel dark:border-moss dark:text-paper">{item}</span>
-          ))}
-        </div>
-      </div>
-    </article>
   );
 }
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export const featuredStack = ["TypeScript", "React", "Next.js", "PHP", "MySQL", "PostgreSQL", "Supabase", "Tailwind CSS", "GitHub", "Vercel", "Figma", "Canva"];
+export const featuredStack = ["TypeScript", "React", "Next.js", "C#", "PHP", "MySQL", "PostgreSQL", "Supabase", "Tailwind CSS", "GitHub", "Vercel", "Figma", "Canva"];
 
 export const stackGroups = [
   {
@@ -9,7 +9,7 @@ export const stackGroups = [
   },
   {
     title: "Backend",
-    items: ["PHP", "Laravel", "MySQL", "PostgreSQL", "Supabase", "Java", "Node.js", "C++", "Visual Basic", "VB.NET", "REST APIs"]
+    items: ["C#", ".NET", "PHP", "Laravel", "MySQL", "PostgreSQL", "Supabase", "Java", "Node.js", "C++", "Visual Basic", "VB.NET", "REST APIs"]
   },
   {
     title: "DevOps & Cloud",
@@ -25,7 +25,7 @@ export const stackGroups = [
   },
   {
     title: "Developer Tools",
-    items: ["Git", "GitHub", "VS Code", "IntelliJ IDEA", "ClickUp", "Monday", "Discord"]
+    items: ["Visual Studio", "Git", "GitHub", "VS Code", "IntelliJ IDEA", "ClickUp", "Monday", "Discord"]
   }
 ];
 

@@ -20,13 +20,13 @@ export const projects = [
     status: "Preview Only"
   },
   {
-    name: "PharSayo",
+    name: "TAGA-asK AI",
     description:
-      "Medication management PWA for barangay health units with role-based access, AI-assisted medication scanning, adherence tracking, and dashboards.",
-    stack: ["PWA", "React", "AI", "Healthcare"],
-    href: "",
-    image: "/projects/pharsayo-preview.png",
-    status: "Preview Only"
+      "AI-powered verified campus knowledge companion and student assistant for the University of Makati (UMak). Built with Team DoErrorIn, providing instant citation-backed answers grounded strictly in official institutional documents and the UMak Student Handbook, interactive campus map visualization, and Taglish natural language query resolution. Awarded 2nd Runner Up in the hackathon.",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel", "RAG / AI", "Vector Search"],
+    href: "https://taga-askai.vercel.app",
+    image: "/projects/taga-ask-preview.png",
+    status: "Hackathon 2nd Runner Up"
   },
   {
     name: "Suri.AI",
@@ -36,6 +36,33 @@ export const projects = [
     href: "",
     image: "/projects/suri-ai-preview.png",
     status: "Hackathon Preview"
+  },
+  {
+    name: "Queen of Angels (QUACC)",
+    description:
+      "Multi-role community and childcare system with admin, staff, and guardian dashboards, password hashing, scholarship application flows, file uploads, and OTP verification.",
+    stack: ["PHP", "Bootstrap 5", "MySQL", "Session Auth"],
+    href: "",
+    image: "/projects/quacc-preview.png",
+    status: "Private/Not Deployed"
+  },
+  {
+    name: "Street Fighter Arcade (.NET / C#)",
+    description:
+      "Classic 2D retro arcade fighting game developed in Visual Studio using C# and Windows Forms, featuring custom character sprite sheets (Ryu, Rene, Fumiko, Elena, Vincent), real-time combat physics, rage meters, stage selection, sound effects, and CPU AI. Recreated as an interactive playable arcade mini-game right in this portfolio.",
+    stack: ["C#", ".NET", "WinForms", "Visual Studio", "Game Dev", "HTML5 Canvas"],
+    href: "/game",
+    image: "/projects/street-fighter-preview.jpg",
+    status: "Playable Mini Game"
+  },
+  {
+    name: "PharSayo",
+    description:
+      "Medication management PWA for barangay health units with role-based access, AI-assisted medication scanning, adherence tracking, and dashboards.",
+    stack: ["PWA", "React", "AI", "Healthcare"],
+    href: "",
+    image: "/projects/pharsayo-preview.png",
+    status: "Preview Only"
   },
   {
     name: "Assignify",
@@ -56,15 +83,6 @@ export const projects = [
     status: "Preview Only"
   },
   {
-    name: "Queen of Angels (QUACC)",
-    description:
-      "Multi-role community and childcare system with admin, staff, and guardian dashboards, password hashing, scholarship application flows, file uploads, and OTP verification.",
-    stack: ["PHP", "Bootstrap 5", "MySQL", "Session Auth"],
-    href: "",
-    image: "/projects/quacc-preview.png",
-    status: "Private/Not Deployed"
-  },
-  {
     name: "NC III Graphic Design Work",
     description:
       "A collection of layout, poster, and branding samples that shows visual design range alongside software development work.",
@@ -76,9 +94,9 @@ export const projects = [
 ];
 
 export const skills = [
-  { group: "Frontend", items: ["Next.js", "React", "Tailwind CSS", "Responsive design"] },
-  { group: "Backend", items: ["Supabase", "PostgreSQL", "PHP", "MySQL", "REST APIs", "Node.js"] },
-  { group: "Tools", items: ["Git/GitHub", "Vercel", "Netlify", "Figma", "Adobe Illustrator", "Adobe Photoshop"] },
+  { group: "Frontend", items: ["Next.js", "React", "Tailwind CSS", "TypeScript", "Responsive design"] },
+  { group: "Backend", items: ["C# / .NET", "Supabase", "PostgreSQL", "PHP", "MySQL", "REST APIs", "Node.js"] },
+  { group: "Tools", items: ["Visual Studio", "VS Code", "Git/GitHub", "Vercel", "Netlify", "Figma", "Adobe Illustrator", "Adobe Photoshop"] },
   { group: "Design", items: ["Graphic design", "NC III certified", "Figma"] }
 ];
 
@@ -140,6 +158,11 @@ export const designSamples = [
 
 export const timeline = [
   {
+    year: "Oct 2026",
+    title: "TAGA-asK AI — Hackathon 2nd Runner Up",
+    body: "Built TAGA-asK AI with Team DoErrorIn, an authentic AI knowledge companion and interactive campus map for the University of Makati community, earning 2nd Runner Up honors in the hackathon."
+  },
+  {
     year: "May 2025",
     title: "NC III Graphic Design",
     body: "Developed layout, visual design, and presentation skills that support product and interface work."
@@ -156,7 +179,7 @@ Portfolio owner: ${profile.name}
 Title: ${profile.title}
 Summary: ${profile.tagline}
 Projects:
-${projects.map((project) => `- ${project.name}: ${project.description} Tech: ${project.stack.join(", ")}.`).join("\n")}
+${projects.map((project) => `- ${project.name}: ${project.description} Tech: ${project.stack.join(", ")}. Status: ${project.status}.`).join("\n")}
 Skills:
 ${skills.map((skill) => `- ${skill.group}: ${skill.items.join(", ")}`).join("\n")}
 Certificates:

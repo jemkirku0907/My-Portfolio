@@ -137,9 +137,9 @@ export function HeaderDropdown() {
           >
             <span className="inline-flex items-center gap-2">
               <Gamepad2 className="h-4 w-4 text-moss" aria-hidden />
-              Mini Game
+              Street Fighter Arena
             </span>
-            <span className="rounded border border-line px-2 py-0.5 text-xs text-steel dark:border-moss dark:text-paper">New</span>
+            <span className="rounded border border-line px-2 py-0.5 text-xs text-steel dark:border-moss dark:text-paper">C# Port</span>
           </Link>
 
           <div className="border-y border-line px-4 py-3 dark:border-moss">
