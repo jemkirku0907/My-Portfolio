@@ -79,7 +79,7 @@ function colorForLevel(level: number) {
   ][Math.max(0, Math.min(level, 4))];
 }
 
-export function GitHubContributions({ username }: { username: string }) {
+export function GitHubContributions({ username, verifiedTotal }: { username: string; verifiedTotal?: number }) {
   const [data, setData] = useState<ContributionsResponse | null>(null);
   const [error, setError] = useState(false);
 
@@ -112,7 +112,8 @@ export function GitHubContributions({ username }: { username: string }) {
 
   const weeks = useMemo(() => buildCalendarDays(data?.contributions ?? []), [data]);
   const months = useMemo(() => monthLabels(weeks), [weeks]);
-  const total = data?.total?.lastYear ?? 0;
+  const apiTotal = data?.total?.lastYear ?? 0;
+  const total = Math.max(apiTotal, verifiedTotal ?? 0);
   const settingsLabel = data?.source === "github-graphql" ? "GitHub API" : "GitHub profile graph";
 
   return (
