@@ -10,8 +10,8 @@ import { TechStackSection } from "@/components/TechStackSection";
 import { VisitorPresence } from "@/components/VisitorPresence";
 import { certificates, profile, timeline } from "@/data/portfolio";
 
-const sectionClass = "mx-auto w-full max-w-6xl px-5 py-16 sm:px-8";
-const heroSectionClass = "mx-auto w-full max-w-6xl px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10";
+const sectionClass = "mx-auto w-full max-w-6xl px-4 py-14 sm:px-8 sm:py-16";
+const heroSectionClass = "mx-auto w-full max-w-6xl px-4 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10";
 const beyondCodeTags = ["Football", "Basketball", "Taekwondo", "Gym", "Acting", "Friends", "Campus life"];
 const beyondCodePhotos = [
   { src: "/profile/outside-football.jpeg", alt: "Football team huddle after a game", label: "Football", note: "Field reset" },
@@ -27,10 +27,10 @@ export default function Home() {
   const githubUser = process.env.NEXT_PUBLIC_GITHUB_USERNAME || profile.github;
 
   return (
-    <main>
-      <header className="sticky top-0 z-30 border-b border-line bg-paper/85 backdrop-blur dark:border-moss dark:bg-ink/90">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-8">
-          <a href="/" className="text-xs font-semibold tracking-[0.14em] text-ink dark:text-paper sm:text-sm">
+    <main className="w-full max-w-full overflow-x-clip">
+      <header className="sticky top-0 z-30 w-full border-b border-line bg-paper/85 backdrop-blur dark:border-moss dark:bg-ink/90">
+        <nav className="mx-auto flex w-full max-w-6xl items-center justify-between gap-2 px-4 py-3.5 sm:gap-3 sm:px-8 sm:py-4">
+          <a href="/" className="truncate max-w-[170px] text-xs font-semibold tracking-[0.14em] text-ink dark:text-paper sm:max-w-none sm:text-sm">
             {profile.name}
           </a>
           <div className="hidden items-center gap-5 text-sm text-steel md:flex">
@@ -39,7 +39,7 @@ export default function Home() {
             <a href="#certificates" className="hover:text-ink dark:text-paper dark:hover:text-moss">Certificates</a>
             <a href="#contact" className="hover:text-ink dark:text-paper dark:hover:text-moss">Contact</a>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <AskPalette />
             <HeaderDropdown />
           </div>
@@ -48,12 +48,12 @@ export default function Home() {
 
       <section className={`${heroSectionClass} flex min-h-[calc(100svh-4.5rem)] items-center`}>
         <div className="w-full max-w-5xl space-y-5">
-          <div className="flex flex-col gap-7 sm:flex-row sm:items-center">
-            <div className="group relative w-32 shrink-0 sm:w-40">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
+            <div className="group relative w-28 shrink-0 sm:w-40">
               <div className="absolute -inset-2 rounded-full bg-white/70 shadow-sm dark:bg-paper/10" />
               <button
                 type="button"
-                className="focus-ring avatar-swap relative block w-full overflow-hidden rounded-full border border-line bg-white shadow-sm transition duration-500 hover:-translate-y-1 hover:shadow-soft dark:border-moss dark:bg-ink"
+                className="focus-ring avatar-swap relative block w-full overflow-hidden rounded-full border border-line bg-white shadow-sm transition duration-500 hover:-translate-y-1 hover:shadow-soft dark:border-moss dark:bg-ink [contain:paint]"
                 aria-label="Toggle portrait style"
               >
                 <div className="relative aspect-square">
@@ -62,7 +62,7 @@ export default function Home() {
                     alt={`${profile.name} portrait`}
                     fill
                     priority
-                    sizes="160px"
+                    sizes="(max-width: 640px) 112px, 160px"
                     className="scale-110 object-cover object-top transition duration-700 group-hover:scale-[1.16] group-focus-within:scale-[1.16]"
                   />
                   <div className="absolute inset-0" aria-hidden>
@@ -80,15 +80,15 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                  <span className="avatar-scan absolute inset-y-0 -left-1/3 w-1/3 rotate-12 bg-white/25 blur-md" aria-hidden />
+                  <span className="avatar-scan pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 rotate-12 bg-white/25 blur-md" aria-hidden />
                 </div>
               </button>
             </div>
 
             <div className="space-y-3">
-              <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-4xl font-semibold leading-tight text-ink dark:text-paper sm:text-5xl">{profile.name}</h1>
-                <BadgeCheck className="h-7 w-7 fill-[#1d9bf0] text-white" aria-hidden />
+              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+                <h1 className="text-3xl font-semibold leading-tight text-ink dark:text-paper sm:text-5xl">{profile.name}</h1>
+                <BadgeCheck className="h-6 w-6 shrink-0 fill-[#1d9bf0] text-white sm:h-7 sm:w-7" aria-hidden />
               </div>
               <div className="flex gap-2 text-steel dark:text-paper">
                 <a className="focus-ring inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-moss hover:text-ink dark:border-moss dark:bg-ink dark:hover:text-moss" href={`https://github.com/${githubUser}`} aria-label="GitHub">
@@ -106,21 +106,21 @@ export default function Home() {
 
           <div className="max-w-5xl space-y-5">
             <VisitorPresence />
-            <h2 className="text-4xl font-light leading-tight text-ink dark:text-paper sm:text-5xl">
+            <h2 className="text-2xl font-light leading-snug text-ink dark:text-paper sm:text-4xl md:text-5xl">
               Web Developer <span className="text-steel dark:text-paper">— Next.js, C# &amp; Full-Stack</span>
             </h2>
-            <p className="max-w-4xl text-lg leading-8 text-steel dark:text-paper sm:text-xl">
+            <p className="max-w-4xl text-base leading-7 text-steel dark:text-paper sm:text-xl sm:leading-8">
               I build practical web systems across frontend, backend, databases, and deployment with{" "}
-              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">Next.js</span>
+              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-sm sm:text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">Next.js</span>
               ,{" "}
-              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">React</span>
+              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-sm sm:text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">React</span>
               ,{" "}
-              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">Supabase</span>
+              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-sm sm:text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">Supabase</span>
               ,{" "}
-              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">C# / .NET</span>
+              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-sm sm:text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">C# / .NET</span>
               , and PHP/MySQL.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2.5 sm:gap-3">
               <a className="focus-ring min-h-11 rounded-lg bg-ink px-5 py-3 text-sm font-semibold text-white dark:bg-paper dark:text-ink" href="#projects">
                 View Projects
               </a>
@@ -136,9 +136,9 @@ export default function Home() {
       </section>
 
       <section id="about" className={`${sectionClass} border-t border-line dark:border-moss`}>
-        <div className="grid gap-8 md:grid-cols-[0.7fr_1.3fr]">
+        <div className="grid gap-6 md:grid-cols-[0.7fr_1.3fr] md:gap-8">
           <h2 className="text-2xl font-semibold dark:text-paper">About</h2>
-          <p className="text-lg leading-8 text-steel dark:text-paper">
+          <p className="text-base leading-7 text-steel dark:text-paper sm:text-lg sm:leading-8">
             I am a developer working on practical, real-world projects across frontend, backend, database, and deployment work.
             My experience includes Officium / Marajo Group real estate platforms, hackathon-winning solutions like TAGA-asK AI (2nd Runner Up)
             and Suri.AI, C#/.NET arcade games, and academic systems. I enjoy building systems that are clear, useful, and maintainable.
@@ -147,23 +147,25 @@ export default function Home() {
       </section>
 
       <section className={`${sectionClass} border-t border-line dark:border-moss`}>
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-          <div>
+        <div className="grid gap-10 min-w-0 max-w-full lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+          <div className="min-w-0">
             <SectionHeading eyebrow="Beyond the code" title="Outside the editor" />
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-steel dark:text-paper">
+            <p className="mt-6 max-w-2xl text-base leading-7 text-steel dark:text-paper sm:text-lg sm:leading-8">
               I like keeping a little room for creative resets outside development, from visual ideas and music to casual games
               and learning things that make the next build feel sharper.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {beyondCodeTags.map((tag) => (
-                <span key={tag} className="rounded-full border border-line bg-white px-4 py-2 text-sm text-steel dark:border-moss dark:bg-ink dark:text-paper">
+                <span key={tag} className="rounded-full border border-line bg-white px-3.5 py-1.5 text-xs text-steel dark:border-moss dark:bg-ink dark:text-paper sm:px-4 sm:py-2 sm:text-sm">
                   {tag}
                 </span>
               ))}
             </div>
           </div>
 
-          <BeyondCodeSlider photos={beyondCodePhotos} />
+          <div className="w-full min-w-0 max-w-full overflow-hidden">
+            <BeyondCodeSlider photos={beyondCodePhotos} />
+          </div>
         </div>
       </section>
 
@@ -187,7 +189,7 @@ export default function Home() {
 
       <section className={sectionClass}>
         <SectionHeading eyebrow="Activity" title="GitHub Contributions" />
-        <div className="mt-8 grid gap-4">
+        <div className="mt-8 grid gap-4 min-w-0 max-w-full">
           <GitHubContributions username={githubUser} />
         </div>
       </section>
@@ -233,7 +235,7 @@ function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) 
   return (
     <div className="space-y-2">
       <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss">{eyebrow}</p>
-      <h2 className="text-3xl font-semibold text-ink dark:text-paper sm:text-4xl">{title}</h2>
+      <h2 className="text-2xl font-semibold text-ink dark:text-paper sm:text-4xl">{title}</h2>
     </div>
   );
 }

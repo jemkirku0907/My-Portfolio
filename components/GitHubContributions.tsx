@@ -123,7 +123,7 @@ export function GitHubContributions({ username, verifiedTotal }: { username: str
       href={`https://github.com/${username}`}
       target="_blank"
       rel="noreferrer"
-      className="block rounded-lg border border-line bg-white p-4 text-ink transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss/70 dark:bg-ink dark:text-paper"
+      className="block w-full min-w-0 max-w-full overflow-hidden rounded-lg border border-line bg-white p-4 text-ink transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss/70 dark:bg-ink dark:text-paper"
       aria-label={`${username} GitHub contributions`}
     >
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -135,7 +135,7 @@ export function GitHubContributions({ username, verifiedTotal }: { username: str
         </span>
       </div>
 
-      <div className="overflow-x-auto rounded-md border border-line bg-white p-4 dark:border-moss/70 dark:bg-[#0d1117]">
+      <div className="w-full min-w-0 max-w-full overflow-x-auto rounded-md border border-line bg-white p-4 dark:border-moss/70 dark:bg-[#0d1117]">
         <div className="min-w-[760px]" aria-hidden={error} suppressHydrationWarning>
           <div className="ml-9 grid grid-cols-[repeat(53,12px)] gap-[3px] text-xs text-steel dark:text-paper">
             {months.map((month, index) => (

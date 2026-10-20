@@ -59,10 +59,10 @@ export function BeyondCodeSlider({ photos }: BeyondCodeSliderProps) {
 
   return (
     <>
-      <div className="w-full min-w-0 max-w-full space-y-4 lg:max-w-xl">
+      <div className="w-full min-w-0 max-w-full overflow-hidden space-y-4 lg:max-w-xl">
         <div
           ref={scrollerRef}
-          className="flex w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex w-full min-w-0 max-w-full snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           onScroll={(event) => {
             updateActiveIndex(event.currentTarget);
           }}
