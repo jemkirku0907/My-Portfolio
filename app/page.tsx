@@ -188,7 +188,7 @@ export default function Home() {
       <section className={sectionClass}>
         <SectionHeading eyebrow="Activity" title="GitHub Contributions" />
         <div className="mt-8 grid gap-4">
-          <GitHubContributions username={githubUser} verifiedTotal={542} />
+          <GitHubContributions username={githubUser} />
         </div>
       </section>
 
@@ -232,7 +232,7 @@ export default function Home() {
 function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
     <div className="space-y-2">
-      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss dark:text-[#8fbc9f]">{eyebrow}</p>
+      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss">{eyebrow}</p>
       <h2 className="text-3xl font-semibold text-ink dark:text-paper sm:text-4xl">{title}</h2>
     </div>
   );
