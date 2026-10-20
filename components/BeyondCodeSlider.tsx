@@ -102,17 +102,21 @@ export function BeyondCodeSlider({ photos }: BeyondCodeSliderProps) {
         </div>
 
         <div className="flex items-center justify-between gap-3">
-          <div className="flex gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             {photos.map((photo, index) => (
               <button
                 key={photo.label}
                 type="button"
-                className={`h-2.5 rounded-full transition-all ${
-                  activeIndex === index ? "w-8 bg-moss" : "w-2.5 bg-line dark:bg-steel"
-                }`}
-                aria-label={`Show ${photo.label}`}
+                className="focus-ring inline-flex h-8 items-center justify-center px-1"
+                aria-label={`Show ${photo.label} slide`}
                 onClick={() => scrollToSlide(index)}
-              />
+              >
+                <span
+                  className={`h-2.5 rounded-full transition-all pointer-events-none ${
+                    activeIndex === index ? "w-8 bg-moss" : "w-2.5 bg-line dark:bg-steel"
+                  }`}
+                />
+              </button>
             ))}
           </div>
           <div className="flex gap-2">

@@ -112,8 +112,16 @@ export function GitHubContributions({ username, verifiedTotal }: { username: str
     };
   }, [username]);
 
-  const weeks = useMemo(() => buildCalendarDays(data?.contributions ?? []), [data]);
-  const months = useMemo(() => monthLabels(weeks), [weeks]);
+  const weeks = useMemo(() => {
+    if (!mounted) return [];
+    return buildCalendarDays(data?.contributions ?? []);
+  }, [data, mounted]);
+
+  const months = useMemo(() => {
+    if (!mounted || weeks.length === 0) return [];
+    return monthLabels(weeks);
+  }, [weeks, mounted]);
+
   const apiTotal = data?.total?.lastYear ?? 0;
   const total = Math.max(apiTotal, verifiedTotal ?? 0);
   const settingsLabel = data?.source === "github-graphql" ? "GitHub API" : "GitHub profile graph";
@@ -124,7 +132,6 @@ export function GitHubContributions({ username, verifiedTotal }: { username: str
       target="_blank"
       rel="noreferrer"
       className="block w-full min-w-0 max-w-full overflow-hidden rounded-lg border border-line bg-white p-4 text-ink transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss/70 dark:bg-ink dark:text-paper"
-      aria-label={`${username} GitHub contributions`}
     >
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-lg font-medium" suppressHydrationWarning>
@@ -136,45 +143,53 @@ export function GitHubContributions({ username, verifiedTotal }: { username: str
       </div>
 
       <div className="w-full min-w-0 max-w-full overflow-x-auto rounded-md border border-line bg-white p-4 dark:border-moss/70 dark:bg-[#0d1117]">
-        <div className="min-w-[760px]" aria-hidden={error} suppressHydrationWarning>
-          <div className="ml-9 grid grid-cols-[repeat(53,12px)] gap-[3px] text-xs text-steel dark:text-paper">
-            {months.map((month, index) => (
-              <span key={`${month}-${index}`} className="h-5">
-                {month}
-              </span>
-            ))}
-          </div>
+        <div className="min-w-[760px] min-h-[136px]" aria-hidden={error} suppressHydrationWarning>
+          {mounted ? (
+            <>
+              <div className="ml-9 grid grid-cols-[repeat(53,12px)] gap-[3px] text-xs text-steel dark:text-paper">
+                {months.map((month, index) => (
+                  <span key={`${month}-${index}`} className="h-5">
+                    {month}
+                  </span>
+                ))}
+              </div>
 
-          <div className="flex gap-3">
-            <div className="grid grid-rows-7 gap-[3px] pt-[2px] text-xs text-steel dark:text-paper">
-              {dayLabels.map((label, index) => (
-                <span key={`${label}-${index}`} className="h-3 leading-3">
-                  {label}
-                </span>
-              ))}
-            </div>
+              <div className="flex gap-3">
+                <div className="grid grid-rows-7 gap-[3px] pt-[2px] text-xs text-steel dark:text-paper">
+                  {dayLabels.map((label, index) => (
+                    <span key={`${label}-${index}`} className="h-3 leading-3">
+                      {label}
+                    </span>
+                  ))}
+                </div>
 
-            <div className="grid grid-flow-col grid-rows-7 gap-[3px]">
-              {weeks.flat().map((day) => (
-                <span
-                  key={day.date}
-                  title={`${day.count} contributions on ${day.date}`}
-                  className={`h-3 w-3 rounded-[2px] border border-black/5 dark:border-white/5 ${colorForLevel(contributionLevel(day))}`}
-                />
-              ))}
-            </div>
-          </div>
+                <div className="grid grid-flow-col grid-rows-7 gap-[3px]">
+                  {weeks.flat().map((day) => (
+                    <span
+                      key={day.date}
+                      title={`${day.count} contributions on ${day.date}`}
+                      className={`h-3 w-3 rounded-[2px] border border-black/5 dark:border-white/5 ${colorForLevel(contributionLevel(day))}`}
+                    />
+                  ))}
+                </div>
+              </div>
 
-          <div className="mt-4 flex flex-col gap-3 text-sm text-steel dark:text-paper sm:flex-row sm:items-center sm:justify-between">
-            <span>Learn how we count contributions</span>
-            <div className="flex items-center gap-1">
-              <span>Less</span>
-              {[0, 1, 2, 3, 4].map((level) => (
-                <span key={level} className={`h-3 w-3 rounded-[2px] border border-black/5 dark:border-white/5 ${colorForLevel(level)}`} />
-              ))}
-              <span>More</span>
+              <div className="mt-4 flex flex-col gap-3 text-sm text-steel dark:text-paper sm:flex-row sm:items-center sm:justify-between">
+                <span>Learn how we count contributions</span>
+                <div className="flex items-center gap-1">
+                  <span>Less</span>
+                  {[0, 1, 2, 3, 4].map((level) => (
+                    <span key={level} className={`h-3 w-3 rounded-[2px] border border-black/5 dark:border-white/5 ${colorForLevel(level)}`} />
+                  ))}
+                  <span>More</span>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center justify-center py-10 text-xs text-steel dark:text-paper">
+              Loading activity graph...
             </div>
-          </div>
+          )}
         </div>
       </div>
     </a>

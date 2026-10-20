@@ -13,7 +13,7 @@ export function VisitorPresence() {
   }, []);
 
   return (
-    <div className="inline-flex items-center gap-3 rounded-full border border-line bg-white/70 px-3 py-1.5 text-sm text-ink backdrop-blur dark:border-moss dark:bg-ink dark:text-paper">
+    <div className="inline-flex items-center gap-3 rounded-full border border-line bg-white/70 px-3 py-1.5 text-sm text-ink backdrop-blur dark:border-moss dark:bg-ink dark:text-paper" suppressHydrationWarning>
       <div className="flex -space-x-2" aria-hidden>
         {[0, 1, 2].map((index) => (
           <span

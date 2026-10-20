@@ -77,7 +77,8 @@ export function AskPalette() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-3 py-2 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-4"
+        aria-label="Open AI assistant (Ctrl+K)"
+        className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-3 py-2 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-4 shrink-0"
       >
         <Command className="h-4 w-4" aria-hidden />
         <span className="hidden sm:inline">Ask anything</span>
@@ -87,7 +88,7 @@ export function AskPalette() {
       {open ? (
         <div className="fixed inset-0 z-40 bg-ink/35 p-4 backdrop-blur-sm" onMouseDown={() => setOpen(false)}>
           <div
-            className="mx-auto mt-20 w-full max-w-2xl overflow-hidden rounded-lg border border-line bg-paper shadow-soft dark:border-moss dark:bg-ink dark:text-paper"
+            className="mx-auto mt-14 sm:mt-20 w-full max-w-2xl overflow-hidden rounded-lg border border-line bg-paper shadow-soft dark:border-moss dark:bg-ink dark:text-paper"
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-line px-4 py-3 dark:border-moss">
@@ -104,23 +105,33 @@ export function AskPalette() {
                 ref={inputRef}
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
-                placeholder="Ask about Marajo, PharSayo, skills..."
-                className="focus-ring min-h-11 min-w-0 flex-1 rounded-md border border-line bg-white px-3 py-2 text-base text-ink outline-none dark:border-moss dark:bg-ink dark:text-paper"
+                placeholder="Ask about my projects, stack, or certificates..."
+                className="w-full bg-transparent px-2 py-1 text-sm outline-none dark:text-paper"
+                disabled={loading}
               />
-              <button className="focus-ring min-h-11 rounded-md bg-ink px-3 text-white disabled:opacity-50 dark:bg-paper dark:text-ink" disabled={loading} aria-label="Send question">
-                {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+              <button
+                type="submit"
+                disabled={loading}
+                className="focus-ring inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-ink px-3 text-white transition disabled:opacity-50 dark:bg-paper dark:text-ink"
+                aria-label="Send question"
+              >
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               </button>
             </form>
-            <div className="max-h-[50vh] space-y-3 overflow-y-auto p-4">
+            <div className="max-h-72 space-y-3 overflow-y-auto p-4 text-sm">
               {messages.map((message, index) => (
-                <div key={`${message.role}-${index}`} className={message.role === "user" ? "text-right" : "text-left"}>
-                  <p
-                    className={`inline-block max-w-[88%] rounded-lg px-3 py-2 text-sm leading-6 ${
-                      message.role === "user" ? "bg-ink text-white dark:bg-paper dark:text-ink" : "border border-line bg-white text-ink dark:border-moss dark:bg-ink dark:text-paper"
-                    }`}
-                  >
-                    {message.content}
+                <div
+                  key={index}
+                  className={`rounded-lg p-3 ${
+                    message.role === "user"
+                      ? "ml-8 bg-white dark:bg-ink/80 border border-line dark:border-moss"
+                      : "mr-8 bg-white/70 dark:bg-ink/40 border border-line/60 dark:border-moss/40"
+                  }`}
+                >
+                  <p className="font-semibold text-xs uppercase tracking-wider text-moss mb-1">
+                    {message.role === "user" ? "You" : "Jem's Assistant"}
                   </p>
+                  <p className="whitespace-pre-wrap text-steel dark:text-paper leading-relaxed">{message.content}</p>
                 </div>
               ))}
             </div>
