@@ -8,16 +8,18 @@ export const metadata: Metadata = {
   title: "Jemkirk Utana - Full-Stack Developer in the Philippines",
   description: "Portfolio of Jemkirk Utana, a Full-Stack Developer in the Philippines building web systems with Next.js, React, Supabase, PHP, and MySQL.",
   icons: {
-    icon: "/icon.jpg",
-    shortcut: "/icon.jpg",
-    apple: "/icon.jpg"
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico"
   }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }

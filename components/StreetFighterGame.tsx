@@ -1000,7 +1000,7 @@ export function StreetFighterGame() {
 
           <div className="mt-4 flex items-center justify-between border-t border-line/60 pt-3 text-xs text-steel dark:border-moss/40 dark:text-paper">
             <span>Opponent (CPU):</span>
-            <select
+            <select id="cpu-opponent-select" name="cpu-opponent-select" aria-label="Opponent CPU selection"
               value={selectedP2}
               onChange={(e) => {
                 setSelectedP2(e.target.value as FighterId);
