@@ -102,12 +102,12 @@ export function BeyondCodeSlider({ photos }: BeyondCodeSliderProps) {
         </div>
 
         <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {photos.map((photo, index) => (
               <button
                 key={photo.label}
                 type="button"
-                className="focus-ring inline-flex h-8 items-center justify-center px-1"
+                className="focus-ring inline-flex h-8 min-w-6 items-center justify-center rounded px-1.5"
                 aria-label={`Show ${photo.label} slide`}
                 onClick={() => scrollToSlide(index)}
               >
