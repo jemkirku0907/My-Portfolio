@@ -16,10 +16,12 @@ type DocumentWithViewTransition = Document & {
 export function HeaderDropdown() {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>("system");
+  const [mounted, setMounted] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const { count, enabled } = useVisitorPresence();
 
   useEffect(() => {
+    setMounted(true);
     const savedTheme = window.localStorage.getItem("theme-mode") as ThemeMode | null;
     setTheme(savedTheme ?? "system");
   }, []);
@@ -147,7 +149,9 @@ export function HeaderDropdown() {
               <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-moss dark:bg-paper dark:text-moss">
                 <Users className="h-4 w-4" aria-hidden />
               </span>
-              <span>{enabled ? `${count} people viewing now` : "Visitor counter ready"}</span>
+              <span suppressHydrationWarning>
+                {mounted && enabled ? `${count} people viewing now` : "Visitor counter ready"}
+              </span>
             </div>
             <div className="mt-3 flex items-center justify-between gap-3 text-sm text-steel dark:text-paper">
               <span className="inline-flex items-center gap-2">

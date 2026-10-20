@@ -1,11 +1,18 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Users } from "lucide-react";
 import { useVisitorPresence } from "@/components/useVisitorPresence";
 
 export function VisitorPresence() {
   const { count, enabled } = useVisitorPresence();
-  const displayCount = enabled ? count : 0;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const displayCount = mounted && enabled ? count : 0;
 
   return (
     <div className="inline-flex items-center gap-3 rounded-full border border-line bg-white/70 px-3 py-1.5 text-sm text-ink backdrop-blur dark:border-moss dark:bg-ink dark:text-paper">
@@ -20,7 +27,9 @@ export function VisitorPresence() {
         ))}
       </div>
       <Users className="h-4 w-4 text-moss" aria-hidden />
-      <span>{enabled ? `${displayCount} people viewing now` : "Visitor counter ready"}</span>
+      <span suppressHydrationWarning>
+        {mounted && enabled ? `${displayCount} people viewing now` : "Visitor counter ready"}
+      </span>
     </div>
   );
 }

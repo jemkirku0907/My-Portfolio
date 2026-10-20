@@ -82,8 +82,10 @@ function colorForLevel(level: number) {
 export function GitHubContributions({ username, verifiedTotal }: { username: string; verifiedTotal?: number }) {
   const [data, setData] = useState<ContributionsResponse | null>(null);
   const [error, setError] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     let cancelled = false;
 
     async function loadContributions() {
@@ -125,12 +127,16 @@ export function GitHubContributions({ username, verifiedTotal }: { username: str
       aria-label={`${username} GitHub contributions`}
     >
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-lg font-medium">{error ? "GitHub contributions unavailable" : `${total} contributions in the last year`}</p>
-        <span className="text-sm text-steel dark:text-paper">{error ? "Open GitHub profile" : settingsLabel}</span>
+        <p className="text-lg font-medium" suppressHydrationWarning>
+          {error ? "GitHub contributions unavailable" : `${total} contributions in the last year`}
+        </p>
+        <span className="text-sm text-steel dark:text-paper" suppressHydrationWarning>
+          {error ? "Open GitHub profile" : settingsLabel}
+        </span>
       </div>
 
       <div className="overflow-x-auto rounded-md border border-line bg-white p-4 dark:border-moss/70 dark:bg-[#0d1117]">
-        <div className="min-w-[760px]" aria-hidden={error}>
+        <div className="min-w-[760px]" aria-hidden={error} suppressHydrationWarning>
           <div className="ml-9 grid grid-cols-[repeat(53,12px)] gap-[3px] text-xs text-steel dark:text-paper">
             {months.map((month, index) => (
               <span key={`${month}-${index}`} className="h-5">
