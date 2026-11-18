@@ -154,7 +154,7 @@ export const certificates = [
     name: "Data Privacy Awareness (Cybersecurity Awareness Month 2026) - Participant",
     issuer: "Department of Information and Communications Technology (DICT) – Caraga Region",
     date: "10/2026",
-    image: "/certificates/dict-data-privacy-awareness-2026.jpg",
+    image: "/certificates/dict-data-privacy-awareness-2026.png",
     verifyUrl: "",
     fileUrl: "/certificates/dict-data-privacy-awareness-2026.pdf"
   }
