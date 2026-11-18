@@ -110,16 +110,7 @@ export default function Home() {
           </div>
 
           <div className="max-w-5xl space-y-5">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <VisitorPresence />
-              <a
-                href="#contact"
-                className="focus-ring inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1.5 text-xs font-medium text-emerald-800 transition hover:border-emerald-500/60 dark:border-emerald-400/30 dark:bg-emerald-950/40 dark:text-emerald-300"
-              >
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden />
-                Available for freelance &amp; internships
-              </a>
-            </div>
+            <VisitorPresence />
             <HeroIntro />
             <div className="flex flex-wrap gap-2.5 sm:gap-3">
               <a className="focus-ring min-h-11 rounded-lg bg-ink px-5 py-3 text-sm font-semibold text-white dark:bg-paper dark:text-ink" href="#projects">
