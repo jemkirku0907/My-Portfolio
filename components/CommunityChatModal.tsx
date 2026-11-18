@@ -167,24 +167,14 @@ export function CommunityChatModal() {
 
     (async () => {
       try {
-        const sinceIso = new Date(Date.now() - DAY_MS).toISOString();
-        const { data, error } = await supabase
-          .from("community_messages")
-          .select("id, sender, body, created_at")
-          .gte("created_at", sinceIso)
-          .order("created_at", { ascending: true })
-          .limit(80);
-        if (!cancelled && !error && Array.isArray(data) && data.length > 0) {
-          const rows: ChatMessage[] = data.map((row) => ({
-            id: String(row.id),
-            sender: String(row.sender ?? "Visitor"),
-            body: String(row.body ?? ""),
-            createdAt: String(row.created_at ?? new Date().toISOString())
-          }));
-          setMessages((prev) => mergeMessages(prev, rows));
+        const res = await fetch("/api/community-chat", { cache: "no-store" });
+        if (!res.ok) return;
+        const payload = await res.json();
+        if (!cancelled && Array.isArray(payload?.messages) && payload.messages.length > 0) {
+          setMessages((prev) => mergeMessages(prev, payload.messages));
         }
       } catch {
-        // Table optional; localStorage + live broadcast still work
+        // localStorage + live broadcast still work
       }
     })();
 
@@ -266,17 +256,14 @@ export function CommunityChatModal() {
       }
     }
 
-    const supabase = getSupabaseBrowserClient();
-    if (supabase) {
-      try {
-        await supabase.from("community_messages").insert({
-          id: msg.id,
-          sender: msg.sender,
-          body: msg.body
-        });
-      } catch {
-        // Table optional
-      }
+    try {
+      await fetch("/api/community-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: msg.id, sender: msg.sender, body: msg.body })
+      });
+    } catch {
+      // Table optional
     }
   }
 
