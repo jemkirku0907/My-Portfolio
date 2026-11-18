@@ -120,7 +120,7 @@ export function AskPalette() {
         aria-label="Ask anything"
         className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-2.5 py-1.5 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-3.5 shrink-0"
       >
-        <span aria-hidden="true" className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-[#0d101b]">
+        <span aria-hidden="true" className="flex h-7 w-7 items-center justify-center">
           <MiniMeMascot size={28} bubble={false} />
         </span>
         <span className="hidden sm:inline">Ask anything</span>
@@ -135,7 +135,7 @@ export function AskPalette() {
           >
             <div className="flex items-center justify-between border-b border-line px-4 py-3 dark:border-moss">
               <div className="flex items-center gap-2.5 text-sm font-medium">
-                <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-[#0d101b]">
+                <span className="flex h-12 w-12 items-center justify-center">
                   <MiniMeMascot size={48} bubble={false} />
                 </span>
                 <div>
@@ -189,7 +189,7 @@ export function AskPalette() {
                 >
                   <div className="mb-1 flex items-center gap-2">
                     {message.role === "assistant" ? (
-                      <span className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-[#0d101b]">
+                      <span className="flex h-6 w-6 items-center justify-center">
                         <MiniMeMascot size={24} bubble={false} />
                       </span>
                     ) : null}
