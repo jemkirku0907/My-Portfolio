@@ -20,11 +20,22 @@ export function ProjectsSection({ sectionClass }: { sectionClass: string }) {
 
   useEffect(() => {
     if (!selectedProject) return;
+
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setSelectedProject(null);
     };
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, [selectedProject]);
 
   return (
@@ -69,17 +80,17 @@ export function ProjectsSection({ sectionClass }: { sectionClass: string }) {
 
       {selectedProject ? (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center overscroll-contain bg-ink/50 p-4 backdrop-blur-sm sm:p-6"
           onMouseDown={() => setSelectedProject(null)}
         >
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="case-study-title"
-            className="max-h-[88vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-line bg-paper text-ink shadow-soft dark:border-moss dark:bg-ink dark:text-paper"
+            className="flex max-h-[86vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-line bg-paper text-ink shadow-soft dark:border-moss dark:bg-ink dark:text-paper"
             onMouseDown={(e) => e.stopPropagation()}
           >
-            <div className="relative aspect-[16/9] w-full overflow-hidden border-b border-line bg-[#ebe6da] dark:border-moss dark:bg-[#1a201c]">
+            <div className="relative aspect-[16/9] w-full shrink-0 overflow-hidden border-b border-line bg-[#ebe6da] dark:border-moss dark:bg-[#1a201c]">
               <Image
                 src={selectedProject.image}
                 alt={`${selectedProject.name} preview`}
@@ -97,7 +108,7 @@ export function ProjectsSection({ sectionClass }: { sectionClass: string }) {
               </button>
             </div>
 
-            <div className="space-y-5 p-6">
+            <div className="flex-1 space-y-5 overflow-y-auto overscroll-contain p-6">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <p className="font-mono text-xs uppercase tracking-[0.14em] text-moss dark:text-[#8fbc9f]">
