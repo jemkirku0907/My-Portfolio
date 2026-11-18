@@ -1,7 +1,8 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { Command, Loader2, Send, X } from "lucide-react";
+import Image from "next/image";
+import { Loader2, Send, X } from "lucide-react";
 
 type Message = {
   role: "user" | "assistant";
@@ -78,12 +79,39 @@ export function AskPalette() {
       <button
         onClick={() => setOpen(true)}
         aria-label="Open AI assistant (Ctrl+K)"
-        className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-3 py-2 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-4 shrink-0"
+        className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-2.5 py-1.5 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-3.5 shrink-0"
       >
-        <Command className="h-4 w-4" aria-hidden />
+        <span className="relative h-6 w-6 overflow-hidden rounded-full border border-line dark:border-moss">
+          <Image
+            src="/profile/ai-mascot.png"
+            alt="Jem's AI mascot"
+            fill
+            sizes="24px"
+            className="object-cover"
+          />
+        </span>
         <span className="hidden sm:inline">Ask anything</span>
         <span className="hidden rounded border border-line px-1.5 py-0.5 text-xs text-steel dark:border-moss dark:text-paper sm:inline">Ctrl K</span>
       </button>
+
+      {!open ? (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-label="Chat with Jem's AI Assistant"
+          className="focus-ring group fixed bottom-5 right-5 z-30 flex items-center gap-2 rounded-full border border-line bg-[#0d101b] p-1.5 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-moss dark:border-moss"
+        >
+          <span className="relative h-12 w-12 overflow-hidden rounded-full sm:h-14 sm:w-14">
+            <Image
+              src="/profile/ai-mascot.png"
+              alt="Ask Jem's AI Assistant"
+              fill
+              sizes="56px"
+              className="object-cover transition duration-300 group-hover:scale-105"
+            />
+          </span>
+        </button>
+      ) : null}
 
       {open ? (
         <div className="fixed inset-0 z-40 bg-ink/35 p-4 backdrop-blur-sm" onMouseDown={() => setOpen(false)}>
@@ -92,8 +120,16 @@ export function AskPalette() {
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-line px-4 py-3 dark:border-moss">
-              <div className="flex items-center gap-2 text-sm font-medium">
-                <Command className="h-4 w-4 text-moss" aria-hidden />
+              <div className="flex items-center gap-2.5 text-sm font-medium">
+                <span className="relative h-7 w-7 overflow-hidden rounded-full border border-line dark:border-moss">
+                  <Image
+                    src="/profile/ai-mascot.png"
+                    alt="Jem's AI mascot"
+                    fill
+                    sizes="28px"
+                    className="object-cover"
+                  />
+                </span>
                 Ask Anything
               </div>
               <button className="focus-ring min-h-11 min-w-11 rounded p-1" onClick={() => setOpen(false)} aria-label="Close assistant">
@@ -128,9 +164,22 @@ export function AskPalette() {
                       : "mr-8 bg-white/70 dark:bg-ink/40 border border-line/60 dark:border-moss/40"
                   }`}
                 >
-                  <p className="font-semibold text-xs uppercase tracking-wider text-moss mb-1">
-                    {message.role === "user" ? "You" : "Jem's Assistant"}
-                  </p>
+                  <div className="mb-1 flex items-center gap-2">
+                    {message.role === "assistant" ? (
+                      <span className="relative h-5 w-5 overflow-hidden rounded-full border border-line dark:border-moss">
+                        <Image
+                          src="/profile/ai-mascot.png"
+                          alt="Jem's Assistant"
+                          fill
+                          sizes="20px"
+                          className="object-cover"
+                        />
+                      </span>
+                    ) : null}
+                    <p className="font-semibold text-xs uppercase tracking-wider text-moss">
+                      {message.role === "user" ? "You" : "Jem's Assistant"}
+                    </p>
+                  </div>
                   <p className="whitespace-pre-wrap text-steel dark:text-paper leading-relaxed">{message.content}</p>
                 </div>
               ))}
