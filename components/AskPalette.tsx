@@ -1,8 +1,25 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
 import { FormEvent, useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { Loader2, Send, X } from "lucide-react";
+
+function MascotPicture({ className }: { className: string }) {
+  return (
+    <picture className="block h-full w-full">
+      <source srcSet="/mascot/jeo-mini-me-goat-bonnet.webp" type="image/webp" />
+      <img
+        src="/mascot/jeo-mini-me-goat-bonnet.png"
+        width={400}
+        height={400}
+        alt="Mini me mascot"
+        loading="eager"
+        decoding="async"
+        className={className}
+      />
+    </picture>
+  );
+}
 
 type Message = {
   role: "user" | "assistant";
@@ -81,36 +98,26 @@ export function AskPalette() {
         aria-label="Open AI assistant (Ctrl+K)"
         className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-2.5 py-1.5 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-3.5 shrink-0"
       >
-        <span className="relative h-6 w-6 overflow-hidden rounded-full border border-line dark:border-moss">
-          <Image
-            src="/profile/ai-mascot.png"
-            alt="Jem's AI mascot"
-            fill
-            sizes="24px"
-            className="object-cover"
-          />
+        <span className="h-6 w-6 overflow-hidden rounded-full border border-line dark:border-moss">
+          <MascotPicture className="h-full w-full object-cover" />
         </span>
         <span className="hidden sm:inline">Ask anything</span>
         <span className="hidden rounded border border-line px-1.5 py-0.5 text-xs text-steel dark:border-moss dark:text-paper sm:inline">Ctrl K</span>
       </button>
 
       {!open ? (
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          aria-label="Chat with Jem's AI Assistant"
-          className="focus-ring group fixed bottom-5 right-5 z-30 flex items-center gap-2 rounded-full border border-line bg-[#0d101b] p-1.5 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-moss dark:border-moss"
-        >
-          <span className="relative h-12 w-12 overflow-hidden rounded-full sm:h-14 sm:w-14">
-            <Image
-              src="/profile/ai-mascot.png"
-              alt="Ask Jem's AI Assistant"
-              fill
-              sizes="56px"
-              className="object-cover transition duration-300 group-hover:scale-105"
-            />
-          </span>
-        </button>
+        <div className="mascot-float fixed bottom-5 right-5 z-30">
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Chat with Jem's AI Assistant"
+            className="focus-ring group flex items-center rounded-full border border-line bg-[#0d101b] p-1 shadow-soft transition duration-300 hover:scale-105 hover:border-moss dark:border-moss"
+          >
+            <span className="h-24 w-24 overflow-hidden rounded-full sm:h-36 sm:w-36">
+              <MascotPicture className="h-full w-full object-cover" />
+            </span>
+          </button>
+        </div>
       ) : null}
 
       {open ? (
@@ -121,14 +128,8 @@ export function AskPalette() {
           >
             <div className="flex items-center justify-between border-b border-line px-4 py-3 dark:border-moss">
               <div className="flex items-center gap-2.5 text-sm font-medium">
-                <span className="relative h-7 w-7 overflow-hidden rounded-full border border-line dark:border-moss">
-                  <Image
-                    src="/profile/ai-mascot.png"
-                    alt="Jem's AI mascot"
-                    fill
-                    sizes="28px"
-                    className="object-cover"
-                  />
+                <span className="h-7 w-7 overflow-hidden rounded-full border border-line dark:border-moss">
+                  <MascotPicture className="h-full w-full object-cover" />
                 </span>
                 Ask Anything
               </div>
@@ -166,14 +167,8 @@ export function AskPalette() {
                 >
                   <div className="mb-1 flex items-center gap-2">
                     {message.role === "assistant" ? (
-                      <span className="relative h-5 w-5 overflow-hidden rounded-full border border-line dark:border-moss">
-                        <Image
-                          src="/profile/ai-mascot.png"
-                          alt="Jem's Assistant"
-                          fill
-                          sizes="20px"
-                          className="object-cover"
-                        />
+                      <span className="h-5 w-5 overflow-hidden rounded-full border border-line dark:border-moss">
+                        <MascotPicture className="h-full w-full object-cover" />
                       </span>
                     ) : null}
                     <p className="font-semibold text-xs uppercase tracking-wider text-moss">
