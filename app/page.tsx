@@ -8,7 +8,9 @@ import { HeaderDropdown } from "@/components/HeaderDropdown";
 import { HeroIntro } from "@/components/HeroIntro";
 import { LightboxGallery } from "@/components/LightboxGallery";
 import { ProjectsSection } from "@/components/ProjectsSection";
+import { ScrollReveal } from "@/components/ScrollReveal";
 import { TechStackSection } from "@/components/TechStackSection";
+import { ThreeScrollScene } from "@/components/ThreeScrollScene";
 import { VisitorPresence } from "@/components/VisitorPresence";
 import { profile, timeline } from "@/data/portfolio";
 
@@ -29,7 +31,8 @@ export default function Home() {
   const githubUser = process.env.NEXT_PUBLIC_GITHUB_USERNAME || profile.github;
 
   return (
-    <main className="w-full max-w-full overflow-x-clip">
+    <main className="relative w-full max-w-full overflow-x-clip">
+      <ThreeScrollScene />
       <header className="sticky top-0 z-30 w-full border-b border-line bg-paper/85 backdrop-blur dark:border-moss dark:bg-ink/90">
         <nav className="mx-auto flex w-full max-w-6xl items-center justify-between gap-2 px-4 py-3.5 sm:gap-3 sm:px-8 sm:py-4">
           <a href="/" className="truncate max-w-[170px] text-xs font-semibold tracking-[0.14em] text-ink dark:text-paper sm:max-w-none sm:text-sm">
@@ -48,6 +51,7 @@ export default function Home() {
         </nav>
       </header>
 
+      <div className="relative z-10">
       <section className={`${heroSectionClass} flex min-h-[calc(100svh-4.5rem)] items-center`}>
         <div className="w-full max-w-5xl space-y-5">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
@@ -158,37 +162,47 @@ export default function Home() {
         </div>
       </section>
 
-      <ProjectsSection sectionClass={sectionClass} />
+      <ScrollReveal>
+        <ProjectsSection sectionClass={sectionClass} />
+      </ScrollReveal>
 
-      <TechStackSection />
+      <ScrollReveal>
+        <TechStackSection />
+      </ScrollReveal>
 
-      <section id="certificates" className={sectionClass}>
-        <div className="flex items-center justify-between gap-4">
-          <SectionHeading eyebrow="Proof of work" title="Certificates" />
-        </div>
-        <CertificatesShowcase />
-      </section>
+      <ScrollReveal>
+        <section id="certificates" className={sectionClass}>
+          <div className="flex items-center justify-between gap-4">
+            <SectionHeading eyebrow="Proof of work" title="Certificates" />
+          </div>
+          <CertificatesShowcase />
+        </section>
+      </ScrollReveal>
 
-      <section className={sectionClass}>
-        <SectionHeading eyebrow="Activity" title="GitHub Contributions" />
-        <div className="mt-8 grid gap-4 min-w-0 max-w-full">
-          <GitHubContributions username={githubUser} />
-        </div>
-      </section>
+      <ScrollReveal>
+        <section className={sectionClass}>
+          <SectionHeading eyebrow="Activity" title="GitHub Contributions" />
+          <div className="mt-8 grid gap-4 min-w-0 max-w-full">
+            <GitHubContributions username={githubUser} />
+          </div>
+        </section>
+      </ScrollReveal>
 
-      <section className={`${sectionClass} border-y border-line dark:border-moss`}>
-        <SectionHeading eyebrow="Timeline" title="Experience" />
-        <div className="mt-8 space-y-0 border-l border-line dark:border-moss">
-          {timeline.map((item) => (
-            <div key={`${item.year}-${item.title}`} className="relative pb-8 pl-6">
-              <span className="absolute -left-[5px] top-1 h-2.5 w-2.5 rounded-full bg-moss" />
-              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-coral">{item.year}</p>
-              <h3 className="mt-2 text-lg font-semibold text-ink dark:text-paper">{item.title}</h3>
-              <p className="mt-2 max-w-2xl leading-7 text-steel dark:text-paper">{item.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <ScrollReveal>
+        <section className={`${sectionClass} border-y border-line dark:border-moss`}>
+          <SectionHeading eyebrow="Timeline" title="Experience" />
+          <div className="mt-8 space-y-0 border-l border-line dark:border-moss">
+            {timeline.map((item) => (
+              <div key={`${item.year}-${item.title}`} className="relative pb-8 pl-6">
+                <span className="absolute -left-[5px] top-1 h-2.5 w-2.5 rounded-full bg-moss" />
+                <p className="text-sm font-semibold uppercase tracking-[0.14em] text-coral">{item.year}</p>
+                <h3 className="mt-2 text-lg font-semibold text-ink dark:text-paper">{item.title}</h3>
+                <p className="mt-2 max-w-2xl leading-7 text-steel dark:text-paper">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </ScrollReveal>
 
       <footer id="contact" className={sectionClass}>
         <div className="flex flex-col justify-between gap-6 border-t border-line pt-8 dark:border-moss md:flex-row md:items-end">
@@ -209,6 +223,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      </div>
     </main>
   );
 }
