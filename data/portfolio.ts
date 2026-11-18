@@ -9,6 +9,25 @@ export const profile = {
   resume: "/resume/Jemkirk-Utana-CV.pdf"
 };
 
+export const services = [
+  {
+    title: "Full-Stack Web Apps",
+    description: "End-to-end production websites and SaaS platforms with Next.js, React, PostgreSQL, and Vercel."
+  },
+  {
+    title: "Dashboards & Auth",
+    description: "Multi-role portals, booking flows, OTP verification, and database-backed CRUD admin systems."
+  },
+  {
+    title: "AI & Web3 Prototypes",
+    description: "Practical Gemini/Anthropic AI tools, RAG search, and smart-contract integrations on EVM chains."
+  },
+  {
+    title: "UI & Graphic Design",
+    description: "Clean responsive interfaces, layouts, and branding backed by TESDA NC III certification."
+  }
+];
+
 export const projects = [
   {
     name: "Marajo Group",
@@ -17,7 +36,14 @@ export const projects = [
     stack: ["Next.js", "Supabase", "Tailwind CSS", "Vercel"],
     href: "",
     image: "/projects/marajo-group-preview.png",
-    status: "Preview Only"
+    status: "Preview Only",
+    role: "Full-Stack Web Developer Intern",
+    problem: "Legacy PHP/XAMPP setup made deployments slow and property/booking updates manual.",
+    highlights: [
+      "Migrated frontend and database workflows to Next.js, Supabase, and PostgreSQL",
+      "Built responsive property listings, booking flows, and admin dashboard updates",
+      "Handled production deployment checks and third-party integrations on Vercel"
+    ]
   },
   {
     name: "TAGA-asK AI",
@@ -26,7 +52,14 @@ export const projects = [
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel", "RAG / AI", "Vector Search"],
     href: "https://taga-askai.vercel.app",
     image: "/projects/taga-ask-preview.png",
-    status: "Hackathon 2nd Runner Up"
+    status: "Hackathon 2nd Runner Up",
+    role: "Full-Stack & AI Developer (Team DoErrorIn)",
+    problem: "Students struggled to find verified rules, schedules, and locations across scattered UMak documents.",
+    highlights: [
+      "Grounded AI responses strictly in official UMak Student Handbook citations via RAG",
+      "Added Taglish natural-language query support and interactive campus map navigation",
+      "Won 2nd Runner Up in the University of Makati hackathon"
+    ]
   },
   {
     name: "OrgVault",
@@ -35,7 +68,14 @@ export const projects = [
     stack: ["Next.js", "TypeScript", "Solidity", "BNB Smart Chain", "Gemini AI", "EIP-712", "Tailwind CSS", "Vercel"],
     href: "https://orgvault-eosin.vercel.app/",
     image: "/projects/orgvault-preview.png",
-    status: "Binance Hackathon"
+    status: "Binance Hackathon",
+    role: "Full-Stack & Web3 Developer",
+    problem: "Student organizations lacked transparent, verifiable tracking for member dues and expense approvals.",
+    highlights: [
+      "Built MockPHP dues payments and public ledger transparency on BSC Testnet (Chain ID 97)",
+      "Integrated Gemini AI receipt extraction paired with backend EIP-712 typed attestations",
+      "Enforced category spending caps and allowlisted vendors on-chain via OrgVault.sol"
+    ]
   },
   {
     name: "Suri.AI",
@@ -44,7 +84,14 @@ export const projects = [
     stack: ["Next.js", "TypeScript", "Node.js", "Express", "Anthropic API", "Tailwind CSS"],
     href: "",
     image: "/projects/suri-ai-preview.png",
-    status: "Hackathon Preview"
+    status: "Hackathon Preview",
+    role: "Full-Stack Developer (InterCICSkwela Hackathon)",
+    problem: "Readers needed a fast way to verify claims and see supporting or debunking evidence side by side.",
+    highlights: [
+      "Built the Next.js submission UI and Node.js/Express verification API pipeline",
+      "Integrated Anthropic API claim analysis with cross-referenced article matching",
+      "Surfaced credible citations or related debunked misinformation clearly per claim"
+    ]
   },
   {
     name: "Queen of Angels (QUACC)",
@@ -53,7 +100,14 @@ export const projects = [
     stack: ["PHP", "Bootstrap 5", "MySQL", "Session Auth"],
     href: "",
     image: "/projects/quacc-preview.png",
-    status: "Private/Not Deployed"
+    status: "Private/Not Deployed",
+    role: "Full-Stack PHP Developer",
+    problem: "Childcare and scholarship tracking relied on manual forms without role-based access or verification.",
+    highlights: [
+      "Implemented separate dashboards for Admin, Staff, and Guardians with session auth",
+      "Added OTP verification, password hashing, document uploads, and scholarship workflows",
+      "Designed normalized MySQL schemas for student, staff, and application records"
+    ]
   },
   {
     name: "Street Fighter Arcade (.NET / C#)",
@@ -62,7 +116,14 @@ export const projects = [
     stack: ["C#", ".NET", "WinForms", "Visual Studio", "Game Dev", "HTML5 Canvas"],
     href: "/game",
     image: "/projects/street-fighter-preview.jpg",
-    status: "Playable Mini Game"
+    status: "Playable Mini Game",
+    role: "Game & Software Developer",
+    problem: "Built as a desktop .NET fighting game and ported to the web so visitors can play directly in-browser.",
+    highlights: [
+      "Created multi-character sprite animation, hitboxes, rage meters, and CPU AI logic",
+      "Recreated the combat engine in HTML5 Canvas as a playable portfolio mini-game",
+      "Supports keyboard controls, stage selection, and arcade sound effects"
+    ]
   },
   {
     name: "PharSayo",
@@ -71,7 +132,14 @@ export const projects = [
     stack: ["PWA", "React", "AI", "Healthcare"],
     href: "",
     image: "/projects/pharsayo-preview.png",
-    status: "Preview Only"
+    status: "Preview Only",
+    role: "Frontend & Product Developer",
+    problem: "Barangay health units needed mobile-friendly tools to track patient medication schedules and adherence.",
+    highlights: [
+      "Built an installable React PWA tailored for low-bandwidth community health workflows",
+      "Added AI-assisted medication scanning and patient adherence dashboards",
+      "Designed role-based views for health workers and patients"
+    ]
   },
   {
     name: "Assignify",
@@ -80,7 +148,13 @@ export const projects = [
     stack: ["Web App", "Task Management", "Dashboard", "Productivity"],
     href: "",
     image: "/projects/assignify-preview.png",
-    status: "Preview Only"
+    status: "Preview Only",
+    role: "Web Developer",
+    problem: "Students juggling multiple deadlines lacked a distraction-free submission tracker.",
+    highlights: [
+      "Designed a clean status-driven dashboard for upcoming and completed coursework",
+      "Organized tasks by priority, subject, and submission deadline"
+    ]
   },
   {
     name: "BasuCash",
@@ -89,7 +163,13 @@ export const projects = [
     stack: ["Web App", "Finance", "Dashboard", "Tracking"],
     href: "",
     image: "/projects/basucash-preview.png",
-    status: "Preview Only"
+    status: "Preview Only",
+    role: "Web Developer",
+    problem: "Everyday personal budgeting needed a quick, straightforward transaction and balance tracker.",
+    highlights: [
+      "Built income/expense logging with clear category summaries",
+      "Focused on readable financial tables and mobile-friendly entry"
+    ]
   },
   {
     name: "NC III Graphic Design Work",
@@ -98,7 +178,13 @@ export const projects = [
     stack: ["Graphic Design", "Layout", "Branding"],
     href: "",
     image: "/projects/design-work.svg",
-    status: "Gallery"
+    status: "Gallery",
+    role: "Graphic Designer (TESDA NC III)",
+    problem: "Showcasing visual hierarchy, typography, and layout fundamentals alongside engineering.",
+    highlights: [
+      "Poster compositions, brand identity concepts, and layout grids",
+      "Applies directly to UI polish and product presentation"
+    ]
   }
 ];
 
@@ -181,6 +267,11 @@ export const designSamples = [
 
 export const timeline = [
   {
+    year: "2026 - Present",
+    title: "Officium Inc. / Marajo Group",
+    body: "Currently working on real-world web projects for Officium Inc. and Marajo Group across Next.js, Supabase, Vercel, booking flows, dashboards, and integrations."
+  },
+  {
     year: "Nov 2026",
     title: "OrgVault — Binance Hackathon",
     body: "Built OrgVault, a guarded AI treasury for student organizations on BNB Smart Chain Testnet (Chain ID 97) combining Gemini AI receipt verification, EIP-712 attestations, and smart contract budget enforcement."
@@ -194,11 +285,6 @@ export const timeline = [
     year: "May 2025",
     title: "NC III Graphic Design",
     body: "Developed layout, visual design, and presentation skills that support product and interface work."
-  },
-  {
-    year: "2026 - Present",
-    title: "Officium Inc. / Marajo Group",
-    body: "Currently working on real-world web projects for Officium Inc. and Marajo Group across Next.js, Supabase, Vercel, booking flows, dashboards, and integrations."
   }
 ];
 

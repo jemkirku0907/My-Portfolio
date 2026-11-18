@@ -3,6 +3,7 @@ import { BadgeCheck, Github, Linkedin, Mail } from "lucide-react";
 import { AskPalette } from "@/components/AskPalette";
 import { BeyondCodeSlider } from "@/components/BeyondCodeSlider";
 import { CertificatesShowcase } from "@/components/CertificatesShowcase";
+import { ContactSection } from "@/components/ContactSection";
 import { GitHubContributions } from "@/components/GitHubContributions";
 import { HeaderDropdown } from "@/components/HeaderDropdown";
 import { HeroIntro } from "@/components/HeroIntro";
@@ -11,7 +12,7 @@ import { ProjectsSection } from "@/components/ProjectsSection";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { TechStackSection } from "@/components/TechStackSection";
 import { VisitorPresence } from "@/components/VisitorPresence";
-import { profile, timeline } from "@/data/portfolio";
+import { profile, services, timeline } from "@/data/portfolio";
 
 const sectionClass = "mx-auto w-full max-w-6xl px-4 py-14 sm:px-8 sm:py-16";
 const heroSectionClass = "mx-auto w-full max-w-6xl px-4 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10";
@@ -109,13 +110,22 @@ export default function Home() {
           </div>
 
           <div className="max-w-5xl space-y-5">
-            <VisitorPresence />
+            <div className="flex flex-wrap items-center gap-2.5">
+              <VisitorPresence />
+              <a
+                href="#contact"
+                className="focus-ring inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1.5 text-xs font-medium text-emerald-800 transition hover:border-emerald-500/60 dark:border-emerald-400/30 dark:bg-emerald-950/40 dark:text-emerald-300"
+              >
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden />
+                Available for freelance &amp; internships
+              </a>
+            </div>
             <HeroIntro />
             <div className="flex flex-wrap gap-2.5 sm:gap-3">
               <a className="focus-ring min-h-11 rounded-lg bg-ink px-5 py-3 text-sm font-semibold text-white dark:bg-paper dark:text-ink" href="#projects">
                 View Projects
               </a>
-              <a className="focus-ring min-h-11 rounded-lg border border-line bg-white px-5 py-3 text-sm font-semibold text-ink dark:border-moss dark:bg-ink dark:text-paper" href={`mailto:${profile.email}`}>
+              <a className="focus-ring min-h-11 rounded-lg border border-line bg-white px-5 py-3 text-sm font-semibold text-ink dark:border-moss dark:bg-ink dark:text-paper" href="#contact">
                 Contact Me
               </a>
               <a className="focus-ring min-h-11 rounded-lg border border-line bg-white px-5 py-3 text-sm font-semibold text-ink dark:border-moss dark:bg-ink dark:text-paper" href={profile.resume} target="_blank" rel="noreferrer">
@@ -129,11 +139,26 @@ export default function Home() {
       <section id="about" className={`${sectionClass} border-t border-line dark:border-moss`}>
         <div className="grid gap-6 md:grid-cols-[0.7fr_1.3fr] md:gap-8">
           <h2 className="text-2xl font-semibold dark:text-paper">About</h2>
-          <p className="text-base leading-7 text-steel dark:text-paper sm:text-lg sm:leading-8">
-            I am a developer working on practical, real-world projects across frontend, backend, database, and deployment work.
-            My experience includes Officium / Marajo Group real estate platforms, hackathon-winning solutions like TAGA-asK AI (2nd Runner Up)
-            and Suri.AI, C#/.NET arcade games, and academic systems. I enjoy building systems that are clear, useful, and maintainable.
-          </p>
+          <div className="space-y-6">
+            <p className="text-base leading-7 text-steel dark:text-paper sm:text-lg sm:leading-8">
+              I am a full-stack web developer working on practical, real-world projects across frontend, backend, database, and deployment work.
+              My experience includes Officium / Marajo Group real estate platforms, hackathon builds like OrgVault (Binance Hackathon),
+              TAGA-asK AI (2nd Runner Up), and Suri.AI, C#/.NET arcade games, and academic systems.
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {services.map((service) => (
+                <div
+                  key={service.title}
+                  className="rounded-xl border border-line bg-white/80 p-4 dark:border-moss dark:bg-ink/80"
+                >
+                  <h3 className="text-sm font-semibold text-ink dark:text-paper">{service.title}</h3>
+                  <p className="mt-1 text-xs leading-5 text-steel dark:text-paper/80 sm:text-sm">
+                    {service.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -202,25 +227,7 @@ export default function Home() {
         </section>
       </ScrollReveal>
 
-      <footer id="contact" className={sectionClass}>
-        <div className="flex flex-col justify-between gap-6 border-t border-line pt-8 dark:border-moss md:flex-row md:items-end">
-          <div>
-            <p className="text-2xl font-semibold text-ink dark:text-paper">Let&apos;s build something useful.</p>
-            <p className="mt-2 text-steel dark:text-paper">{profile.location}</p>
-          </div>
-          <div className="flex gap-3">
-            <a className="focus-ring min-h-11 min-w-11 rounded-full border border-line bg-white p-3 text-ink dark:border-moss dark:bg-ink dark:text-paper" href={`mailto:${profile.email}`} aria-label="Email">
-              <Mail className="h-5 w-5" />
-            </a>
-            <a className="focus-ring min-h-11 min-w-11 rounded-full border border-line bg-white p-3 text-ink dark:border-moss dark:bg-ink dark:text-paper" href={`https://github.com/${githubUser}`} aria-label="GitHub">
-              <Github className="h-5 w-5" />
-            </a>
-            <a className="focus-ring min-h-11 min-w-11 rounded-full border border-line bg-white p-3 text-ink dark:border-moss dark:bg-ink dark:text-paper" href={profile.linkedin} aria-label="LinkedIn">
-              <Linkedin className="h-5 w-5" />
-            </a>
-          </div>
-        </div>
-      </footer>
+      <ContactSection sectionClass={sectionClass} githubUser={githubUser} />
       </div>
     </main>
   );
