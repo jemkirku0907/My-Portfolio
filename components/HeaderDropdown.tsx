@@ -165,10 +165,6 @@ export function HeaderDropdown() {
                 <MessageCircle className="h-4 w-4 text-moss" aria-hidden />
                 Community chat
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Live
-              </span>
             </button>
           </div>
 
