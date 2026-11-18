@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronDown, Command, Gamepad2, Mail, MessageCircle, Monitor, Moon, Sun, Users } from "lucide-react";
 import { profile } from "@/data/portfolio";
+import { CommunityChatModal } from "@/components/CommunityChatModal";
 import { useVisitorPresence } from "@/components/useVisitorPresence";
 
 type ThemeMode = "system" | "light" | "dark";
@@ -15,6 +16,7 @@ type DocumentWithViewTransition = Document & {
 
 export function HeaderDropdown() {
   const [open, setOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>("system");
   const [mounted, setMounted] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -153,13 +155,23 @@ export function HeaderDropdown() {
                 {mounted && enabled ? `${count} people viewing now` : "Visitor counter ready"}
               </span>
             </div>
-            <div className="mt-3 flex items-center justify-between gap-3 text-sm text-steel dark:text-paper">
-              <span className="inline-flex items-center gap-2">
-                <MessageCircle className="h-4 w-4" aria-hidden />
-                community chat
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                setChatOpen(true);
+              }}
+              className="mt-3 flex min-h-10 w-full items-center justify-between gap-3 rounded-md px-1.5 py-1 text-sm text-ink transition hover:bg-white/70 dark:text-paper dark:hover:bg-paper/10"
+            >
+              <span className="inline-flex items-center gap-2 font-medium">
+                <MessageCircle className="h-4 w-4 text-moss" aria-hidden />
+                Community chat
               </span>
-              <span className="rounded-full border border-line px-2 py-0.5 text-xs dark:border-moss">Coming soon</span>
-            </div>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Live
+              </span>
+            </button>
           </div>
 
           <div className="px-4 py-3">
@@ -199,6 +211,7 @@ export function HeaderDropdown() {
           </div>
         </div>
       ) : null}
+      <CommunityChatModal open={chatOpen} onClose={() => setChatOpen(false)} />
     </div>
   );
 }
