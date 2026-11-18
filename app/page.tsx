@@ -10,7 +10,6 @@ import { LightboxGallery } from "@/components/LightboxGallery";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { TechStackSection } from "@/components/TechStackSection";
-import { ThreeScrollScene } from "@/components/ThreeScrollScene";
 import { VisitorPresence } from "@/components/VisitorPresence";
 import { profile, timeline } from "@/data/portfolio";
 
@@ -32,7 +31,6 @@ export default function Home() {
 
   return (
     <main className="relative w-full max-w-full overflow-x-clip">
-      <ThreeScrollScene />
       <header className="sticky top-0 z-30 w-full border-b border-line bg-paper/85 backdrop-blur dark:border-moss dark:bg-ink/90">
         <nav className="mx-auto flex w-full max-w-6xl items-center justify-between gap-2 px-4 py-3.5 sm:gap-3 sm:px-8 sm:py-4">
           <a href="/" className="truncate max-w-[170px] text-xs font-semibold tracking-[0.14em] text-ink dark:text-paper sm:max-w-none sm:text-sm">
