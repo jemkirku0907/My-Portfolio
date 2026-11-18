@@ -1,25 +1,8 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { Loader2, Send, X } from "lucide-react";
-
-function MascotPicture({ className }: { className: string }) {
-  return (
-    <picture className="block h-full w-full">
-      <source srcSet="/mascot/jeo-mini-me-goat-bonnet.webp" type="image/webp" />
-      <img
-        src="/mascot/jeo-mini-me-goat-bonnet.png"
-        width={400}
-        height={400}
-        alt="Mini me mascot"
-        loading="eager"
-        decoding="async"
-        className={className}
-      />
-    </picture>
-  );
-}
+import MiniMeMascot from "@/components/MiniMeMascot";
 
 type Message = {
   role: "user" | "assistant";
@@ -98,8 +81,8 @@ export function AskPalette() {
         aria-label="Open AI assistant (Ctrl+K)"
         className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-2.5 py-1.5 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-3.5 shrink-0"
       >
-        <span className="mascot-float h-6 w-6 overflow-hidden rounded-full border border-line dark:border-moss">
-          <MascotPicture className="h-full w-full object-cover" />
+        <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-[#0d101b]">
+          <MiniMeMascot size={28} bubble={false} />
         </span>
         <span className="hidden sm:inline">Ask anything</span>
         <span className="hidden rounded border border-line px-1.5 py-0.5 text-xs text-steel dark:border-moss dark:text-paper sm:inline">Ctrl K</span>
@@ -113,10 +96,13 @@ export function AskPalette() {
           >
             <div className="flex items-center justify-between border-b border-line px-4 py-3 dark:border-moss">
               <div className="flex items-center gap-2.5 text-sm font-medium">
-                <span className="h-7 w-7 overflow-hidden rounded-full border border-line dark:border-moss">
-                  <MascotPicture className="h-full w-full object-cover" />
+                <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-[#0d101b]">
+                  <MiniMeMascot size={48} bubble={false} />
                 </span>
-                Ask Anything
+                <div>
+                  <p className="font-semibold">Ask Anything</p>
+                  <p className="text-xs text-steel dark:text-paper/70">GOAT mode · Portfolio AI Assistant</p>
+                </div>
               </div>
               <button className="focus-ring min-h-11 min-w-11 rounded p-1" onClick={() => setOpen(false)} aria-label="Close assistant">
                 <X className="h-5 w-5" />
@@ -152,8 +138,8 @@ export function AskPalette() {
                 >
                   <div className="mb-1 flex items-center gap-2">
                     {message.role === "assistant" ? (
-                      <span className="h-5 w-5 overflow-hidden rounded-full border border-line dark:border-moss">
-                        <MascotPicture className="h-full w-full object-cover" />
+                      <span className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-[#0d101b]">
+                        <MiniMeMascot size={24} bubble={false} />
                       </span>
                     ) : null}
                     <p className="font-semibold text-xs uppercase tracking-wider text-moss">
