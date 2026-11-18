@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { CommunityChatModal } from "@/components/CommunityChatModal";
+import { ProjectCaseStudyModal } from "@/components/ProjectCaseStudyModal";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className={`${inter.variable} font-sans antialiased w-full max-w-full overflow-x-hidden`} suppressHydrationWarning>
         {children}
         <CommunityChatModal />
+        <ProjectCaseStudyModal />
       </body>
     </html>
   );
