@@ -1,7 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { Loader2, Send, X } from "lucide-react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { Loader2, Send, Volume2, VolumeX, X } from "lucide-react";
 import MiniMeMascot from "@/components/MiniMeMascot";
 
 type Message = {
@@ -16,7 +16,46 @@ export function AskPalette() {
     { role: "assistant", content: "Ask me about projects, skills, certificates, or experience." }
   ]);
   const [loading, setLoading] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  const playTypeSound = useCallback(
+    (key: string) => {
+      if (!soundEnabled || typeof window === "undefined") return;
+      if (["Shift", "Control", "Alt", "Meta", "CapsLock", "Tab", "Escape"].includes(key)) return;
+      try {
+        const AudioCtx =
+          window.AudioContext ||
+          (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        if (!AudioCtx) return;
+        if (!audioCtxRef.current) {
+          audioCtxRef.current = new AudioCtx();
+        }
+        const ctx = audioCtxRef.current;
+        if (ctx.state === "suspended") {
+          ctx.resume();
+        }
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const isSpaceOrEnter = key === " " || key === "Enter" || key === "Backspace";
+        const baseFreq = isSpaceOrEnter ? 170 : 230 + (key.charCodeAt(0) % 5) * 18;
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(baseFreq, now);
+        osc.frequency.exponentialRampToValueAtTime(70, now + 0.042);
+        gain.gain.setValueAtTime(0.11, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.048);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.052);
+      } catch {
+        // Ignore audio errors if blocked by browser policy
+      }
+    },
+    [soundEnabled]
+  );
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -104,15 +143,27 @@ export function AskPalette() {
                   <p className="text-xs text-steel dark:text-paper/70">GOAT mode · Portfolio AI Assistant</p>
                 </div>
               </div>
-              <button className="focus-ring min-h-11 min-w-11 rounded p-1" onClick={() => setOpen(false)} aria-label="Close assistant">
-                <X className="h-5 w-5" />
-              </button>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setSoundEnabled((prev) => !prev)}
+                  className="focus-ring inline-flex min-h-11 items-center gap-1 rounded px-2 text-xs text-steel transition hover:text-ink dark:text-paper/75 dark:hover:text-paper"
+                  aria-label={soundEnabled ? "Mute typing sound" : "Enable typing sound"}
+                  title={soundEnabled ? "Typing sound on" : "Typing sound muted"}
+                >
+                  {soundEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+                </button>
+                <button className="focus-ring min-h-11 min-w-11 rounded p-1" onClick={() => setOpen(false)} aria-label="Close assistant">
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
             </div>
             <form onSubmit={submit} className="flex gap-2 border-b border-line p-3 dark:border-moss">
               <input
                 ref={inputRef}
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
+                onKeyDown={(event) => playTypeSound(event.key)}
                 placeholder="Ask about my projects, stack, or certificates..."
                 className="w-full bg-transparent px-2 py-1 text-sm outline-none dark:text-paper"
                 disabled={loading}
