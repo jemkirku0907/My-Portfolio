@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronDown, Command, Gamepad2, Mail, MessageCircle, Monitor, Moon, Sun, Users } from "lucide-react";
 import { profile } from "@/data/portfolio";
-import { CommunityChatModal } from "@/components/CommunityChatModal";
 import { useVisitorPresence } from "@/components/useVisitorPresence";
 
 type ThemeMode = "system" | "light" | "dark";
@@ -16,7 +15,6 @@ type DocumentWithViewTransition = Document & {
 
 export function HeaderDropdown() {
   const [open, setOpen] = useState(false);
-  const [chatOpen, setChatOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>("system");
   const [mounted, setMounted] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -158,8 +156,8 @@ export function HeaderDropdown() {
             <button
               type="button"
               onClick={() => {
+                window.dispatchEvent(new Event("open-community-chat"));
                 setOpen(false);
-                setChatOpen(true);
               }}
               className="mt-3 flex min-h-10 w-full items-center justify-between gap-3 rounded-md px-1.5 py-1 text-sm text-ink transition hover:bg-white/70 dark:text-paper dark:hover:bg-paper/10"
             >
@@ -211,7 +209,6 @@ export function HeaderDropdown() {
           </div>
         </div>
       ) : null}
-      <CommunityChatModal open={chatOpen} onClose={() => setChatOpen(false)} />
     </div>
   );
 }

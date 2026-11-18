@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { MessageCircle, Send, Users, X } from "lucide-react";
 import { getSupabaseBrowserClient } from "@/lib/supabase";
 import { useVisitorPresence } from "@/components/useVisitorPresence";
@@ -20,22 +19,18 @@ function createGuestName() {
   return `Visitor #${num}`;
 }
 
-export function CommunityChatModal({
-  open,
-  onClose
-}: {
-  open: boolean;
-  onClose: () => void;
-}) {
+export function CommunityChatModal() {
+  const [open, setOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [nickname, setNickname] = useState<string>("Visitor");
   const [draft, setDraft] = useState<string>("");
   const [connected, setConnected] = useState<boolean>(false);
-  const [mounted, setMounted] = useState<boolean>(false);
   const { count } = useVisitorPresence();
 
   useEffect(() => {
-    setMounted(true);
+    const onOpen = () => setOpen(true);
+    window.addEventListener("open-community-chat", onOpen);
+    return () => window.removeEventListener("open-community-chat", onOpen);
   }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,13 +82,13 @@ export function CommunityChatModal({
     if (!open) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKeyDown);
     inputRef.current?.focus();
 
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open, onClose]);
+  }, [open]);
 
   useEffect(() => {
     const supabase = getSupabaseBrowserClient();
@@ -208,10 +203,10 @@ export function CommunityChatModal({
     }
   }
 
-  if (!open || !mounted) return null;
+  if (!open) return null;
 
-  return createPortal(
-    <div className="fixed inset-0 z-50 bg-ink/40 p-4 backdrop-blur-sm" onMouseDown={onClose}>
+  return (
+    <div className="fixed inset-0 z-50 bg-ink/40 p-4 backdrop-blur-sm" onMouseDown={() => setOpen(false)}>
       <div
         className="mx-auto mt-10 sm:mt-16 flex max-h-[80vh] w-full max-w-lg flex-col overflow-hidden rounded-xl border border-line bg-paper text-ink shadow-soft dark:border-moss dark:bg-ink dark:text-paper"
         onMouseDown={(e) => e.stopPropagation()}
@@ -239,7 +234,7 @@ export function CommunityChatModal({
 
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => setOpen(false)}
             aria-label="Close community chat"
             className="focus-ring min-h-10 min-w-10 rounded-lg p-2 text-steel hover:text-ink dark:text-paper"
           >
@@ -315,7 +310,6 @@ export function CommunityChatModal({
           </button>
         </form>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }
