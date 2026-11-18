@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { MessageCircle, Send, Users, X } from "lucide-react";
+import { Laptop, MessageSquare, Smartphone, X } from "lucide-react";
 import { getSupabaseBrowserClient } from "@/lib/supabase";
 import { useVisitorPresence } from "@/components/useVisitorPresence";
 
@@ -9,6 +9,8 @@ type ChatMessage = {
   id: string;
   sender: string;
   body: string;
+  location?: string;
+  device?: "mobile" | "desktop";
   createdAt: string;
 };
 
@@ -31,21 +33,48 @@ function mergeMessages(base: ChatMessage[], incoming: ChatMessage[]) {
   }
   return filterLastDay(Array.from(map.values()))
     .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
-    .slice(-60);
+    .slice(-80);
 }
 
-function createGuestName() {
-  const num = Math.floor(100 + Math.random() * 900);
-  return `Visitor #${num}`;
+function formatRelativeTime(iso: string) {
+  const diffMs = Math.max(0, Date.now() - Date.parse(iso));
+  const mins = Math.floor(diffMs / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  return `${Math.floor(hours / 24)}d ago`;
+}
+
+function MinimalAvatar({ name }: { name: string }) {
+  const initial = (name.trim()[0] || "V").toUpperCase();
+  return (
+    <span
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-white font-mono text-xs font-semibold text-ink shadow-sm dark:border-moss dark:bg-ink dark:text-paper"
+      aria-hidden
+    >
+      {initial}
+    </span>
+  );
 }
 
 export function CommunityChatModal() {
   const [open, setOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [nickname, setNickname] = useState<string>("Visitor");
+  const [nickname, setNickname] = useState<string>("");
+  const [nameConfirmed, setNameConfirmed] = useState<boolean>(false);
   const [draft, setDraft] = useState<string>("");
+  const [location, setLocation] = useState<string>("Manila, PH");
+  const [device, setDevice] = useState<"mobile" | "desktop">("desktop");
   const [hydrated, setHydrated] = useState<boolean>(false);
   const { count } = useVisitorPresence();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const channelRef = useRef<any>(null);
+  const listEndRef = useRef<HTMLDivElement | null>(null);
+  const nameInputRef = useRef<HTMLInputElement | null>(null);
+  const msgInputRef = useRef<HTMLInputElement | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
     const onOpen = () => setOpen(true);
@@ -53,21 +82,22 @@ export function CommunityChatModal() {
     return () => window.removeEventListener("open-community-chat", onOpen);
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const channelRef = useRef<any>(null);
-  const listEndRef = useRef<HTMLDivElement | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const audioCtxRef = useRef<AudioContext | null>(null);
-
   useEffect(() => {
     const saved = window.localStorage.getItem(NAME_STORAGE_KEY);
     if (saved && saved.trim()) {
       setNickname(saved.trim().slice(0, 24));
-    } else {
-      const guest = createGuestName();
-      window.localStorage.setItem(NAME_STORAGE_KEY, guest);
-      setNickname(guest);
+      setNameConfirmed(true);
     }
+
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+    setDevice(isMobile ? "mobile" : "desktop");
+
+    fetch("/api/visitor-geo")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.location) setLocation(data.location);
+      })
+      .catch(() => {});
 
     try {
       const rawMessages = window.localStorage.getItem(MESSAGES_STORAGE_KEY);
@@ -119,10 +149,15 @@ export function CommunityChatModal() {
       if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKeyDown);
-    inputRef.current?.focus();
+
+    if (nameConfirmed) {
+      msgInputRef.current?.focus();
+    } else {
+      nameInputRef.current?.focus();
+    }
 
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+  }, [open, nameConfirmed]);
 
   useEffect(() => {
     const supabase = getSupabaseBrowserClient();
@@ -130,7 +165,6 @@ export function CommunityChatModal() {
 
     let cancelled = false;
 
-    // Load persisted last-24h history if `community_messages` table exists
     (async () => {
       try {
         const sinceIso = new Date(Date.now() - DAY_MS).toISOString();
@@ -139,9 +173,9 @@ export function CommunityChatModal() {
           .select("id, sender, body, created_at")
           .gte("created_at", sinceIso)
           .order("created_at", { ascending: true })
-          .limit(60);
+          .limit(80);
         if (!cancelled && !error && Array.isArray(data) && data.length > 0) {
-          const rows = data.map((row) => ({
+          const rows: ChatMessage[] = data.map((row) => ({
             id: String(row.id),
             sender: String(row.sender ?? "Visitor"),
             body: String(row.body ?? ""),
@@ -150,7 +184,7 @@ export function CommunityChatModal() {
           setMessages((prev) => mergeMessages(prev, rows));
         }
       } catch {
-        // Table not configured; localStorage + live broadcast still work
+        // Table optional; localStorage + live broadcast still work
       }
     })();
 
@@ -190,15 +224,16 @@ export function CommunityChatModal() {
     }
   }, [messages, open]);
 
-  const handleNicknameChange = (value: string) => {
-    const clean = value.slice(0, 24);
+  const handleConfirmName = (e: FormEvent) => {
+    e.preventDefault();
+    const clean = nickname.trim().slice(0, 24);
+    if (!clean) return;
     setNickname(clean);
-    if (clean.trim()) {
-      window.localStorage.setItem(NAME_STORAGE_KEY, clean.trim());
-    }
+    window.localStorage.setItem(NAME_STORAGE_KEY, clean);
+    setNameConfirmed(true);
   };
 
-  async function handleSubmit(e: FormEvent) {
+  async function handleSubmitMessage(e: FormEvent) {
     e.preventDefault();
     const body = draft.trim();
     if (!body) return;
@@ -211,6 +246,8 @@ export function CommunityChatModal() {
           : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
       sender,
       body: body.slice(0, 280),
+      location,
+      device,
       createdAt: new Date().toISOString()
     };
 
@@ -238,7 +275,7 @@ export function CommunityChatModal() {
           body: msg.body
         });
       } catch {
-        // Table optional; broadcast already delivered live
+        // Table optional
       }
     }
   }
@@ -248,101 +285,127 @@ export function CommunityChatModal() {
   return (
     <div className="fixed inset-0 z-50 bg-ink/40 p-4 backdrop-blur-sm" onMouseDown={() => setOpen(false)}>
       <div
-        className="mx-auto mt-10 sm:mt-16 flex max-h-[80vh] w-full max-w-lg flex-col overflow-hidden rounded-xl border border-line bg-paper text-ink shadow-soft dark:border-moss dark:bg-ink dark:text-paper"
+        className="mx-auto mt-8 sm:mt-14 flex max-h-[82vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-line bg-paper text-ink shadow-soft dark:border-moss dark:bg-ink dark:text-paper"
         onMouseDown={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-line px-4 py-3 dark:border-moss">
-          <div className="flex items-center gap-2.5">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-moss shadow-sm dark:bg-paper/10">
-              <MessageCircle className="h-4 w-4" aria-hidden />
-            </span>
-            <div>
-              <p className="text-sm font-semibold">Community Chat</p>
-              <p className="flex items-center gap-1 text-xs text-steel dark:text-paper/70">
-                <Users className="h-3 w-3" aria-hidden />
-                {count} online now
-              </p>
-            </div>
+        {/* Minimal top bar */}
+        <div className="flex items-center justify-between px-6 pt-5 pb-3">
+          <div className="flex items-center gap-2 font-mono text-xs text-steel dark:text-paper/70">
+            <MessageSquare className="h-3.5 w-3.5" aria-hidden />
+            <span>{messages.length} messages</span>
+            <span>·</span>
+            <span>{count} online</span>
           </div>
-
           <button
             type="button"
             onClick={() => setOpen(false)}
             aria-label="Close community chat"
-            className="focus-ring min-h-10 min-w-10 rounded-lg p-2 text-steel hover:text-ink dark:text-paper"
+            className="focus-ring rounded-lg p-1.5 text-steel transition hover:text-ink dark:text-paper/75 dark:hover:text-paper"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
-        {/* Nickname bar */}
-        <div className="flex items-center gap-2 border-b border-line bg-white/60 px-4 py-2 text-xs dark:border-moss dark:bg-ink/60">
-          <label htmlFor="chat-nickname" className="font-mono uppercase tracking-wider text-steel dark:text-paper/70">
-            Name:
-          </label>
-          <input
-            id="chat-nickname"
-            value={nickname}
-            onChange={(e) => handleNicknameChange(e.target.value)}
-            maxLength={24}
-            className="w-full bg-transparent font-medium text-ink outline-none dark:text-paper"
-            placeholder="Your name..."
-          />
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 space-y-2.5 overflow-y-auto p-4 text-sm">
+        {/* Message feed */}
+        <div className="flex-1 space-y-5 overflow-y-auto px-6 py-3">
           {messages.length === 0 ? (
-            <p className="py-8 text-center text-xs text-steel dark:text-paper/70">
-              No messages yet — say hi to everyone online!
+            <p className="py-10 text-center font-mono text-xs text-steel dark:text-paper/65">
+              no messages yet — say hi below!
             </p>
           ) : (
-            messages.map((msg) => {
-              const isMe = msg.sender === (nickname.trim() || "Visitor");
-              return (
-                <div
-                  key={msg.id}
-                  className={`rounded-lg border px-3 py-2 ${
-                    isMe
-                      ? "ml-8 border-moss/40 bg-white dark:border-moss dark:bg-paper/10"
-                      : "mr-8 border-line bg-white/75 dark:border-moss/50 dark:bg-ink/60"
-                  }`}
-                >
-                  <div className="mb-0.5 flex items-center justify-between gap-2">
-                    <span className="text-xs font-semibold text-moss dark:text-[#8fbc9f]">{msg.sender}</span>
-                    <span className="font-mono text-[10px] text-steel dark:text-paper/60">
-                      {new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    </span>
+            messages.map((msg) => (
+              <div key={msg.id} className="flex items-start gap-3.5">
+                <MinimalAvatar name={msg.sender} />
+                <div className="min-w-0 flex-1 space-y-1.5">
+                  <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs text-steel dark:text-paper/70">
+                    <span className="font-medium text-ink dark:text-paper">{msg.sender}</span>
+                    {msg.location ? (
+                      <>
+                        <span>·</span>
+                        <span>{msg.location}</span>
+                      </>
+                    ) : null}
+                    {msg.device === "mobile" ? (
+                      <Smartphone className="h-3 w-3 opacity-70" aria-hidden />
+                    ) : (
+                      <Laptop className="h-3 w-3 opacity-70" aria-hidden />
+                    )}
+                    <span>·</span>
+                    <span>{formatRelativeTime(msg.createdAt)}</span>
                   </div>
-                  <p className="whitespace-pre-wrap break-words text-ink dark:text-paper">{msg.body}</p>
+                  <div className="inline-block max-w-full rounded-2xl bg-[#e7e5df] px-4 py-2 font-mono text-sm leading-relaxed text-ink dark:bg-white/10 dark:text-paper">
+                    <p className="whitespace-pre-wrap break-words">{msg.body}</p>
+                  </div>
                 </div>
-              );
-            })
+              </div>
+            ))
           )}
           <div ref={listEndRef} />
         </div>
 
-        {/* Composer */}
-        <form onSubmit={handleSubmit} className="flex gap-2 border-t border-line p-3 dark:border-moss">
-          <input
-            ref={inputRef}
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={(e) => playTypeSound(e.key)}
-            maxLength={280}
-            placeholder="Say hi to the community..."
-            className="w-full rounded-md bg-white/80 px-3 py-2 text-sm outline-none ring-1 ring-line focus:ring-moss dark:bg-paper/10 dark:text-paper dark:ring-moss/60"
-          />
-          <button
-            type="submit"
-            disabled={!draft.trim()}
-            aria-label="Send message"
-            className="focus-ring inline-flex min-h-10 min-w-10 items-center justify-center rounded-md bg-ink px-3 text-white transition disabled:opacity-40 dark:bg-paper dark:text-ink"
-          >
-            <Send className="h-4 w-4" />
-          </button>
-        </form>
+        {/* Two-step minimal bottom prompt */}
+        <div className="border-t border-line/70 px-6 py-5 dark:border-moss/60">
+          {!nameConfirmed ? (
+            <form onSubmit={handleConfirmName} className="space-y-3">
+              <label
+                htmlFor="chat-name-step"
+                className="block font-mono text-sm text-steel dark:text-paper/75"
+              >
+                what&apos;s your name?
+              </label>
+              <div className="flex items-center justify-between gap-4">
+                <input
+                  id="chat-name-step"
+                  ref={nameInputRef}
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                  onKeyDown={(e) => playTypeSound(e.key)}
+                  maxLength={24}
+                  placeholder="your name"
+                  className="w-full bg-transparent font-mono text-lg text-ink placeholder:text-steel/50 outline-none dark:text-paper dark:placeholder:text-paper/40"
+                />
+                <button
+                  type="submit"
+                  disabled={!nickname.trim()}
+                  className="focus-ring shrink-0 font-mono text-sm text-steel transition hover:text-ink disabled:opacity-40 dark:text-paper/75 dark:hover:text-paper"
+                >
+                  next ↵
+                </button>
+              </div>
+            </form>
+          ) : (
+            <form onSubmit={handleSubmitMessage} className="space-y-3">
+              <div className="flex items-center justify-between font-mono text-xs text-steel dark:text-paper/70">
+                <span>chatting as {nickname}</span>
+                <button
+                  type="button"
+                  onClick={() => setNameConfirmed(false)}
+                  className="underline decoration-line underline-offset-4 hover:text-ink dark:hover:text-paper"
+                >
+                  change name
+                </button>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <input
+                  ref={msgInputRef}
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  onKeyDown={(e) => playTypeSound(e.key)}
+                  maxLength={280}
+                  placeholder="write a message..."
+                  className="w-full bg-transparent font-mono text-base text-ink placeholder:text-steel/50 outline-none dark:text-paper dark:placeholder:text-paper/40"
+                />
+                <button
+                  type="submit"
+                  disabled={!draft.trim()}
+                  className="focus-ring shrink-0 font-mono text-sm text-steel transition hover:text-ink disabled:opacity-40 dark:text-paper/75 dark:hover:text-paper"
+                >
+                  send ↵
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );
