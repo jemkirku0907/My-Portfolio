@@ -4,6 +4,7 @@ import { AskPalette } from "@/components/AskPalette";
 import { BeyondCodeSlider } from "@/components/BeyondCodeSlider";
 import { GitHubContributions } from "@/components/GitHubContributions";
 import { HeaderDropdown } from "@/components/HeaderDropdown";
+import { HeroIntro } from "@/components/HeroIntro";
 import { LightboxGallery } from "@/components/LightboxGallery";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { TechStackSection } from "@/components/TechStackSection";
@@ -106,20 +107,7 @@ export default function Home() {
 
           <div className="max-w-5xl space-y-5">
             <VisitorPresence />
-            <h2 className="text-2xl font-light leading-snug text-ink dark:text-paper sm:text-4xl md:text-5xl">
-              Web Developer <span className="text-steel dark:text-paper">— Next.js, C# &amp; Full-Stack</span>
-            </h2>
-            <p className="max-w-4xl text-base leading-7 text-steel dark:text-paper sm:text-xl sm:leading-8">
-              I build practical web systems across frontend, backend, databases, and deployment with{" "}
-              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-sm sm:text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">Next.js</span>
-              ,{" "}
-              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-sm sm:text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">React</span>
-              ,{" "}
-              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-sm sm:text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">Supabase</span>
-              ,{" "}
-              <span className="inline-flex rounded-full border border-line bg-white px-3 py-1 text-sm sm:text-base text-ink dark:border-moss dark:bg-ink dark:text-paper">C# / .NET</span>
-              , and PHP/MySQL.
-            </p>
+            <HeroIntro />
             <div className="flex flex-wrap gap-2.5 sm:gap-3">
               <a className="focus-ring min-h-11 rounded-lg bg-ink px-5 py-3 text-sm font-semibold text-white dark:bg-paper dark:text-ink" href="#projects">
                 View Projects
