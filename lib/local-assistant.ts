@@ -1,4 +1,4 @@
-import { certificates, profile, projects, skills, timeline } from "@/data/portfolio";
+import { certificates, profile, projects, services, skills, timeline } from "@/data/portfolio";
 
 const normalize = (value: string) => value.toLowerCase().replace(/[^a-z0-9.+#\s]/g, " ");
 
@@ -19,14 +19,21 @@ export function answerPortfolioQuestion(prompt: string) {
   });
 
   if (project) {
-    return `${project.name}: ${project.description} Tech used: ${formatList(project.stack)}. This project is shown as a preview only for privacy.`;
+    const availability = project.href
+      ? `Link: ${project.href}`
+      : "This project is shown as a preview only for privacy.";
+    return `${project.name}: ${project.description} Tech used: ${formatList(project.stack)}. ${availability}`;
+  }
+
+  if (includesAny(question, ["service", "hire", "freelance", "offer", "build for"])) {
+    return `Services offered: ${services.map((s) => `${s.title} (${s.description})`).join(" | ")}`;
   }
 
   if (includesAny(question, ["project", "portfolio", "work", "built", "system", "app", "website"])) {
     return `Jemkirk's featured projects are ${projects
       .filter((item) => item.name !== "NC III Graphic Design Work")
       .map((item) => item.name)
-      .join(", ")}. The cards are preview-only for privacy, but they show the role, stack, and project scope.`;
+      .join(", ")}. Click any project card to view its case study and details.`;
   }
 
   if (includesAny(question, ["skill", "stack", "technology", "technologies", "tech", "language", "framework"])) {
@@ -49,5 +56,5 @@ export function answerPortfolioQuestion(prompt: string) {
     return `${profile.name} is a ${profile.title} based in the ${profile.location}. ${profile.tagline}`;
   }
 
-  return "I can answer questions about Jemkirk's projects, skills, certificates, experience, and contact details. Try asking about Suri.AI, Marajo Group, PharSayo, Assignify, BasuCash, QUACC, NC III, or his tech stack.";
+  return "I can answer questions about Jemkirk's projects, services, skills, certificates, experience, and contact details. Try asking about OrgVault, TAGA-asK AI, Suri.AI, Marajo Group, PharSayo, QUACC, NC III, or his tech stack.";
 }
