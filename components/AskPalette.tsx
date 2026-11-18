@@ -98,27 +98,12 @@ export function AskPalette() {
         aria-label="Open AI assistant (Ctrl+K)"
         className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-2.5 py-1.5 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-3.5 shrink-0"
       >
-        <span className="h-6 w-6 overflow-hidden rounded-full border border-line dark:border-moss">
+        <span className="mascot-float h-6 w-6 overflow-hidden rounded-full border border-line dark:border-moss">
           <MascotPicture className="h-full w-full object-cover" />
         </span>
         <span className="hidden sm:inline">Ask anything</span>
         <span className="hidden rounded border border-line px-1.5 py-0.5 text-xs text-steel dark:border-moss dark:text-paper sm:inline">Ctrl K</span>
       </button>
-
-      {!open ? (
-        <div className="mascot-float fixed bottom-5 right-5 z-30">
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            aria-label="Chat with Jem's AI Assistant"
-            className="focus-ring group flex items-center rounded-full border border-line bg-[#0d101b] p-1 shadow-soft transition duration-300 hover:scale-105 hover:border-moss dark:border-moss"
-          >
-            <span className="h-24 w-24 overflow-hidden rounded-full sm:h-36 sm:w-36">
-              <MascotPicture className="h-full w-full object-cover" />
-            </span>
-          </button>
-        </div>
-      ) : null}
 
       {open ? (
         <div className="fixed inset-0 z-40 bg-ink/35 p-4 backdrop-blur-sm" onMouseDown={() => setOpen(false)}>
