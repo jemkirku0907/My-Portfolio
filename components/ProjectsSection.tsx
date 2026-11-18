@@ -13,7 +13,9 @@ const INITIAL_VISIBLE_COUNT = 4;
 export function ProjectsSection({ sectionClass }: { sectionClass: string }) {
   const [showAll, setShowAll] = useState(false);
 
-  const validProjects = projects;
+  const validProjects = projects.filter(
+    (project) => project.name !== "NC III Graphic Design Work"
+  );
   const visibleProjects = showAll ? validProjects : validProjects.slice(0, INITIAL_VISIBLE_COUNT);
   const remainingCount = validProjects.length - INITIAL_VISIBLE_COUNT;
 
