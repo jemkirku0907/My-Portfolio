@@ -114,6 +114,7 @@ export const certificates = [
     name: "NC III Graphic Design",
     issuer: "TESDA",
     date: "05/2025",
+    category: "Certifications",
     image: "/certificates/nc-iii-graphic-design.jpg",
     verifyUrl: "",
     fileUrl: "/certificates/nc-iii-graphic-design.jpg"
@@ -122,6 +123,7 @@ export const certificates = [
     name: "Batang Techno: Building the Minds of Tomorrow's Innovators Hackathon - Participant",
     issuer: "Batangas State University - The National Engineering University",
     date: "03/2026",
+    category: "Hackathons",
     image: "/certificates/batang-techno-hackathon.jpg",
     verifyUrl: "",
     fileUrl: "/certificates/batang-techno-hackathon.pdf"
@@ -130,6 +132,7 @@ export const certificates = [
     name: "InfoTechnOlympics 2025 Web Design Category - Participant",
     issuer: "University of Makati - College of Computing and Information Sciences",
     date: "10/2025",
+    category: "Hackathons",
     image: "/certificates/infotechnolympics-2025.jpg",
     verifyUrl: "",
     fileUrl: "/certificates/infotechnolympics-2025.pdf"
@@ -138,6 +141,7 @@ export const certificates = [
     name: "Math and Physics Quiz Bee 2025 - Participant",
     issuer: "University of Makati - Department of Math and Physics",
     date: "10/2025",
+    category: "Hackathons",
     image: "/certificates/ai-tech-cover-participation.jpg",
     verifyUrl: "",
     fileUrl: "/certificates/ai-tech-cover-participation.pdf"
@@ -146,6 +150,7 @@ export const certificates = [
     name: "AI Tech 2.0 - Participant",
     issuer: "University of Makati - College of Computing and Information Sciences",
     date: "04/2026",
+    category: "Seminars & Webinars",
     image: "/certificates/ai-tech-2-participant.jpg",
     verifyUrl: "",
     fileUrl: "/certificates/ai-tech-2-participant.pdf"
@@ -154,6 +159,7 @@ export const certificates = [
     name: "Data Privacy Awareness (Cybersecurity Awareness Month 2026) - Participant",
     issuer: "Department of Information and Communications Technology (DICT) – Caraga Region",
     date: "10/2026",
+    category: "Seminars & Webinars",
     image: "/certificates/dict-data-privacy-awareness-2026.png",
     verifyUrl: "",
     fileUrl: "/certificates/dict-data-privacy-awareness-2026.pdf"
