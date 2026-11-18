@@ -117,14 +117,14 @@ export function AskPalette() {
     <>
       <button
         onClick={() => setOpen(true)}
-        aria-label="Open AI assistant (Ctrl+K)"
+        aria-label="Ask anything"
         className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-2.5 py-1.5 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-3.5 shrink-0"
       >
-        <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-[#0d101b]">
+        <span aria-hidden="true" className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-[#0d101b]">
           <MiniMeMascot size={28} bubble={false} />
         </span>
         <span className="hidden sm:inline">Ask anything</span>
-        <span className="hidden rounded border border-line px-1.5 py-0.5 text-xs text-steel dark:border-moss dark:text-paper sm:inline">Ctrl K</span>
+        <span aria-hidden="true" className="hidden rounded border border-line px-1.5 py-0.5 text-xs text-steel dark:border-moss dark:text-paper sm:inline">Ctrl K</span>
       </button>
 
       {open ? (
