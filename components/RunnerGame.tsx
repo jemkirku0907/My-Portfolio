@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const CANVAS_WIDTH = 600;
 const CANVAS_HEIGHT = 250;
@@ -20,23 +20,12 @@ type Obstacle = {
 
 export function RunnerGame() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const controlsRef = useRef<{ jump: () => void; setDuck: (duck: boolean) => void }>({
+    jump: () => {},
+    setDuck: () => {}
+  });
 
   useEffect(() => {
-    const checkDevice = () => {
-      const isSmallScreen = window.innerWidth < 768;
-      const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-      setIsMobile(isSmallScreen && isTouchDevice);
-    };
-
-    checkDevice();
-    window.addEventListener("resize", checkDevice);
-    return () => window.removeEventListener("resize", checkDevice);
-  }, []);
-
-  useEffect(() => {
-    if (isMobile !== false) return;
-
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -91,30 +80,43 @@ export function RunnerGame() {
       return char.x < obs.x + obs.width && char.x + char.width > obs.x && char.y < obs.y + obs.height && char.y + char.height > obs.y;
     }
 
+    function triggerJump() {
+      if (isGameOver) {
+        resetGame();
+        return;
+      }
+
+      if (!character.isJumping) {
+        character.velocityY = JUMP_FORCE;
+        character.isJumping = true;
+      }
+    }
+
+    function setDuck(ducking: boolean) {
+      if (!character.isJumping) {
+        isDucking = ducking;
+      } else if (!ducking) {
+        isDucking = false;
+      }
+    }
+
+    controlsRef.current = { jump: triggerJump, setDuck };
+
     function onKeyDown(event: KeyboardEvent) {
       if (event.code === "Space" || event.code === "ArrowUp") {
         event.preventDefault();
-
-        if (isGameOver) {
-          resetGame();
-          return;
-        }
-
-        if (!character.isJumping) {
-          character.velocityY = JUMP_FORCE;
-          character.isJumping = true;
-        }
+        triggerJump();
       }
 
       if ((event.code === "ArrowDown" || event.code === "KeyS") && !character.isJumping) {
         event.preventDefault();
-        isDucking = true;
+        setDuck(true);
       }
     }
 
     function onKeyUp(event: KeyboardEvent) {
       if (event.code === "ArrowDown" || event.code === "KeyS") {
-        isDucking = false;
+        setDuck(false);
       }
     }
 
@@ -347,10 +349,10 @@ export function RunnerGame() {
           ctx.fillText("New High Score!", canvasWidth / 2, canvasHeight / 2 + 12);
           ctx.fillStyle = "#fff";
           ctx.font = "14px system-ui";
-          ctx.fillText("Press Space to restart", canvasWidth / 2, canvasHeight / 2 + 34);
+          ctx.fillText("Press Space or tap to restart", canvasWidth / 2, canvasHeight / 2 + 34);
         } else {
           ctx.font = "14px system-ui";
-          ctx.fillText("Press Space to restart", canvasWidth / 2, canvasHeight / 2 + 20);
+          ctx.fillText("Press Space or tap to restart", canvasWidth / 2, canvasHeight / 2 + 20);
         }
         ctx.textAlign = "left";
       }
@@ -371,22 +373,7 @@ export function RunnerGame() {
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("keyup", onKeyUp);
     };
-  }, [isMobile]);
-
-  if (isMobile === null) {
-    return <div className="flex min-h-[250px] w-full max-w-[600px] items-center justify-center" />;
-  }
-
-  if (isMobile) {
-    return (
-      <div className="flex min-h-[250px] w-full max-w-[600px] flex-col items-center justify-center gap-3 rounded-lg border border-line bg-white px-6 py-10 text-center dark:border-moss dark:bg-ink">
-        <p className="text-base font-semibold text-ink dark:text-paper">Best played on desktop</p>
-        <p className="max-w-xs text-sm leading-6 text-steel dark:text-paper">
-          This mini game uses keyboard controls that work best on a laptop or desktop.
-        </p>
-      </div>
-    );
-  }
+  }, []);
 
   return (
     <div className="w-full max-w-[600px]">
@@ -394,9 +381,38 @@ export function RunnerGame() {
         ref={canvasRef}
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
-        className="h-auto w-full rounded-lg border-2 border-moss bg-white"
+        onPointerDown={() => controlsRef.current.jump()}
+        className="h-auto w-full touch-none select-none rounded-lg border-2 border-moss bg-white cursor-pointer"
       />
-      <p className="mt-3 text-center text-sm text-steel dark:text-paper">
+
+      {/* Mobile / Touch Controls */}
+      <div className="mt-4 grid grid-cols-2 gap-3 md:hidden">
+        <button
+          type="button"
+          onPointerDown={(e) => {
+            e.preventDefault();
+            controlsRef.current.setDuck(true);
+          }}
+          onPointerUp={() => controlsRef.current.setDuck(false)}
+          onPointerLeave={() => controlsRef.current.setDuck(false)}
+          onPointerCancel={() => controlsRef.current.setDuck(false)}
+          className="focus-ring min-h-12 touch-none select-none rounded-xl border border-line bg-white px-4 py-3 text-sm font-semibold text-ink shadow-sm active:scale-95 active:border-moss dark:border-moss dark:bg-ink dark:text-paper"
+        >
+          Hold to Duck
+        </button>
+        <button
+          type="button"
+          onPointerDown={(e) => {
+            e.preventDefault();
+            controlsRef.current.jump();
+          }}
+          className="focus-ring min-h-12 touch-none select-none rounded-xl bg-ink px-4 py-3 text-sm font-semibold text-white shadow-sm active:scale-95 dark:bg-paper dark:text-ink"
+        >
+          Tap to Jump
+        </button>
+      </div>
+
+      <p className="mt-3 hidden text-center text-sm text-steel dark:text-paper md:block">
         Press <kbd className="rounded border border-line px-1.5 py-0.5 font-mono text-xs dark:border-moss">Space</kbd>
         {" / "}
         <kbd className="rounded border border-line px-1.5 py-0.5 font-mono text-xs dark:border-moss">Up</kbd> to jump,
