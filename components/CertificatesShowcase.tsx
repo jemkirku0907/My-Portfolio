@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { Award, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import { certificates } from "@/data/portfolio";
@@ -16,49 +16,37 @@ function getShortIssuer(issuer: string) {
 export function CertificatesShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [isPaused, setIsPaused] = useState(false);
   const trackRef = useRef<HTMLDivElement | null>(null);
 
   const total = certificates.length;
 
-  useEffect(() => {
-    if (isPaused || total <= 1) return;
-    const timer = window.setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % total);
-    }, 3600);
-    return () => window.clearInterval(timer);
-  }, [isPaused, total]);
-
-  useEffect(() => {
+  const slideTo = (nextIndex: number) => {
+    setActiveIndex(nextIndex);
     const container = trackRef.current;
     if (!container) return;
-    const card = container.children[activeIndex] as HTMLElement | undefined;
+    const card = container.children[nextIndex] as HTMLElement | undefined;
     if (!card) return;
     const targetLeft = card.offsetLeft - container.offsetLeft - 12;
     container.scrollTo({ left: Math.max(0, targetLeft), behavior: "smooth" });
-  }, [activeIndex]);
+  };
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + total) % total);
+    slideTo((activeIndex - 1 + total) % total);
   };
 
   const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % total);
+    slideTo((activeIndex + 1) % total);
   };
 
   return (
     <div
       className="mt-8 space-y-5"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => {
-        setIsPaused(false);
-        setHoveredIndex(null);
-      }}
+      onMouseLeave={() => setHoveredIndex(null)}
     >
       {/* Controls & hint */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-steel dark:text-paper/80">
-          Credentials &amp; hackathons — hover or slide any card to preview.
+          Credentials &amp; hackathons — hover a card to preview, or use arrows to slide.
         </p>
         <div className="flex items-center gap-2">
           <button
@@ -80,7 +68,7 @@ export function CertificatesShowcase() {
         </div>
       </div>
 
-      {/* Sliding tilted card track */}
+      {/* Tilted card track */}
       <div
         ref={trackRef}
         className="flex gap-5 overflow-x-auto pb-6 pt-3 px-2 snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -88,7 +76,7 @@ export function CertificatesShowcase() {
         {certificates.map((cert, idx) => {
           const isActive = idx === activeIndex;
           const isHovered = idx === hoveredIndex;
-          const showPreview = isHovered || isActive;
+          const showPreview = hoveredIndex !== null ? isHovered : isActive;
           const tiltClass = idx % 2 === 0 ? "-rotate-1" : "rotate-1";
 
           return (
@@ -97,10 +85,7 @@ export function CertificatesShowcase() {
               href={cert.fileUrl || cert.image}
               target="_blank"
               rel="noreferrer"
-              onMouseEnter={() => {
-                setHoveredIndex(idx);
-                setActiveIndex(idx);
-              }}
+              onMouseEnter={() => setHoveredIndex(idx)}
               className={`focus-ring group relative flex w-[275px] shrink-0 snap-start flex-col justify-between rounded-2xl border bg-white p-5 text-center shadow-sm transition-all duration-300 dark:bg-ink sm:w-[300px] ${
                 showPreview
                   ? "rotate-0 -translate-y-1.5 border-ink shadow-soft dark:border-paper"
@@ -128,7 +113,7 @@ export function CertificatesShowcase() {
                 </p>
               </div>
 
-              {/* Mini thumbnail preview + caption revealed on active/hover */}
+              {/* Mini thumbnail preview + caption revealed on hover/active */}
               <div
                 className={`overflow-hidden transition-all duration-300 ${
                   showPreview ? "mt-4 max-h-40 opacity-100" : "mt-0 max-h-0 opacity-0"
@@ -164,7 +149,7 @@ export function CertificatesShowcase() {
           <button
             key={cert.name}
             type="button"
-            onClick={() => setActiveIndex(idx)}
+            onClick={() => slideTo(idx)}
             aria-label={`Show certificate ${idx + 1}: ${cert.name}`}
             className={`h-2 rounded-full transition-all duration-300 ${
               idx === activeIndex
