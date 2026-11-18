@@ -13,6 +13,26 @@ type ChatMessage = {
 };
 
 const NAME_STORAGE_KEY = "portfolio-chat-name";
+const MESSAGES_STORAGE_KEY = "portfolio-community-messages-v1";
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function filterLastDay(items: ChatMessage[]) {
+  const cutoff = Date.now() - DAY_MS;
+  return items.filter((item) => {
+    const ts = Date.parse(item.createdAt);
+    return Number.isFinite(ts) ? ts >= cutoff : true;
+  });
+}
+
+function mergeMessages(base: ChatMessage[], incoming: ChatMessage[]) {
+  const map = new Map<string, ChatMessage>();
+  for (const m of [...base, ...incoming]) {
+    map.set(m.id, m);
+  }
+  return filterLastDay(Array.from(map.values()))
+    .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
+    .slice(-60);
+}
 
 function createGuestName() {
   const num = Math.floor(100 + Math.random() * 900);
@@ -24,7 +44,7 @@ export function CommunityChatModal() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [nickname, setNickname] = useState<string>("Visitor");
   const [draft, setDraft] = useState<string>("");
-  const [connected, setConnected] = useState<boolean>(false);
+  const [hydrated, setHydrated] = useState<boolean>(false);
   const { count } = useVisitorPresence();
 
   useEffect(() => {
@@ -47,6 +67,20 @@ export function CommunityChatModal() {
       const guest = createGuestName();
       window.localStorage.setItem(NAME_STORAGE_KEY, guest);
       setNickname(guest);
+    }
+
+    try {
+      const rawMessages = window.localStorage.getItem(MESSAGES_STORAGE_KEY);
+      if (rawMessages) {
+        const parsed = JSON.parse(rawMessages);
+        if (Array.isArray(parsed)) {
+          setMessages((prev) => mergeMessages(prev, parsed));
+        }
+      }
+    } catch {
+      // Ignore malformed local storage
+    } finally {
+      setHydrated(true);
     }
   }, []);
 
@@ -96,26 +130,27 @@ export function CommunityChatModal() {
 
     let cancelled = false;
 
-    // Load persisted history if `community_messages` table exists
+    // Load persisted last-24h history if `community_messages` table exists
     (async () => {
       try {
+        const sinceIso = new Date(Date.now() - DAY_MS).toISOString();
         const { data, error } = await supabase
           .from("community_messages")
           .select("id, sender, body, created_at")
+          .gte("created_at", sinceIso)
           .order("created_at", { ascending: true })
-          .limit(40);
-        if (!cancelled && !error && Array.isArray(data)) {
-          setMessages(
-            data.map((row) => ({
-              id: String(row.id),
-              sender: String(row.sender ?? "Visitor"),
-              body: String(row.body ?? ""),
-              createdAt: String(row.created_at ?? new Date().toISOString())
-            }))
-          );
+          .limit(60);
+        if (!cancelled && !error && Array.isArray(data) && data.length > 0) {
+          const rows = data.map((row) => ({
+            id: String(row.id),
+            sender: String(row.sender ?? "Visitor"),
+            body: String(row.body ?? ""),
+            createdAt: String(row.created_at ?? new Date().toISOString())
+          }));
+          setMessages((prev) => mergeMessages(prev, rows));
         }
       } catch {
-        // Table not configured; live broadcast still works
+        // Table not configured; localStorage + live broadcast still work
       }
     })();
 
@@ -126,23 +161,28 @@ export function CommunityChatModal() {
     channel
       .on("broadcast", { event: "chat-message" }, ({ payload }: { payload: ChatMessage }) => {
         if (!payload?.id || !payload?.body) return;
-        setMessages((prev) => (prev.some((m) => m.id === payload.id) ? prev : [...prev.slice(-49), payload]));
+        setMessages((prev) => mergeMessages(prev, [payload]));
       })
-      .subscribe((status: string) => {
-        if (!cancelled) {
-          setConnected(status === "SUBSCRIBED");
-        }
-      });
+      .subscribe();
 
     channelRef.current = channel;
 
     return () => {
       cancelled = true;
-      setConnected(false);
       supabase.removeChannel(channel);
       channelRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      const recent = filterLastDay(messages);
+      window.localStorage.setItem(MESSAGES_STORAGE_KEY, JSON.stringify(recent));
+    } catch {
+      // Ignore storage quota errors
+    }
+  }, [messages, hydrated]);
 
   useEffect(() => {
     if (open) {
@@ -174,7 +214,7 @@ export function CommunityChatModal() {
       createdAt: new Date().toISOString()
     };
 
-    setMessages((prev) => [...prev.slice(-49), msg]);
+    setMessages((prev) => mergeMessages(prev, [msg]));
     setDraft("");
 
     if (channelRef.current) {
@@ -218,13 +258,7 @@ export function CommunityChatModal() {
               <MessageCircle className="h-4 w-4" aria-hidden />
             </span>
             <div>
-              <div className="flex items-center gap-2">
-                <p className="text-sm font-semibold">Community Chat</p>
-                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-700 dark:text-emerald-300">
-                  <span className={`h-1.5 w-1.5 rounded-full ${connected ? "bg-emerald-500 animate-pulse" : "bg-amber-500"}`} />
-                  {connected ? "Live" : "Connecting"}
-                </span>
-              </div>
+              <p className="text-sm font-semibold">Community Chat</p>
               <p className="flex items-center gap-1 text-xs text-steel dark:text-paper/70">
                 <Users className="h-3 w-3" aria-hidden />
                 {count} online now
