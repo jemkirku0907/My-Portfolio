@@ -2,6 +2,7 @@ import Image from "next/image";
 import { BadgeCheck, Github, Linkedin, Mail } from "lucide-react";
 import { AskPalette } from "@/components/AskPalette";
 import { BeyondCodeSlider } from "@/components/BeyondCodeSlider";
+import { CertificatesShowcase } from "@/components/CertificatesShowcase";
 import { GitHubContributions } from "@/components/GitHubContributions";
 import { HeaderDropdown } from "@/components/HeaderDropdown";
 import { HeroIntro } from "@/components/HeroIntro";
@@ -9,7 +10,7 @@ import { LightboxGallery } from "@/components/LightboxGallery";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { TechStackSection } from "@/components/TechStackSection";
 import { VisitorPresence } from "@/components/VisitorPresence";
-import { certificates, profile, timeline } from "@/data/portfolio";
+import { profile, timeline } from "@/data/portfolio";
 
 const sectionClass = "mx-auto w-full max-w-6xl px-4 py-14 sm:px-8 sm:py-16";
 const heroSectionClass = "mx-auto w-full max-w-6xl px-4 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10";
@@ -164,15 +165,8 @@ export default function Home() {
       <section id="certificates" className={sectionClass}>
         <div className="flex items-center justify-between gap-4">
           <SectionHeading eyebrow="Proof of work" title="Certificates" />
-          <a className="hidden text-sm font-medium text-steel transition hover:text-moss dark:text-paper sm:inline-flex" href="#certificates">
-            View All →
-          </a>
         </div>
-        <div className="mt-10 space-y-12">
-          {certificates.map((certificate) => (
-            <CertificateRow key={`${certificate.name}-${certificate.date}`} certificate={certificate} />
-          ))}
-        </div>
+        <CertificatesShowcase />
       </section>
 
       <section className={sectionClass}>
@@ -225,37 +219,5 @@ function SectionHeading({ eyebrow, title }: { eyebrow: string; title: string }) 
       <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss">{eyebrow}</p>
       <h2 className="text-2xl font-semibold text-ink dark:text-paper sm:text-4xl">{title}</h2>
     </div>
-  );
-}
-
-function CertificateRow({ certificate }: { certificate: (typeof certificates)[number] }) {
-  return (
-    <article className="grid gap-4 border-b border-line pb-10 last:border-b-0 last:pb-0 dark:border-moss sm:grid-cols-[11rem_1fr]">
-      <p className="text-sm font-semibold text-steel dark:text-paper">{certificate.date}</p>
-      <div className="space-y-3">
-        <h3 className="max-w-3xl text-xl font-semibold leading-7 text-ink dark:text-paper">{certificate.name}</h3>
-        <div className="space-y-1">
-          <p className="text-lg text-steel dark:text-paper">{certificate.issuer}</p>
-          {certificate.verifyUrl ? <p className="text-sm text-steel dark:text-paper">{certificate.verifyUrl}</p> : null}
-        </div>
-        <a
-          href={certificate.fileUrl || certificate.image}
-          target="_blank"
-          rel="noreferrer"
-          className="group inline-block overflow-hidden rounded-md border border-line bg-white p-1 transition hover:-translate-y-0.5 hover:border-moss hover:shadow-soft dark:border-moss dark:bg-ink"
-          aria-label={`Open ${certificate.name}`}
-        >
-          <span className="relative block h-16 w-28 overflow-hidden rounded bg-[#ebe6da]">
-            <Image
-              src={certificate.image}
-              alt={`${certificate.name} preview`}
-              fill
-              sizes="112px"
-              className="object-cover transition duration-300 group-hover:scale-105"
-            />
-          </span>
-        </a>
-      </div>
-    </article>
   );
 }
