@@ -29,6 +29,15 @@ export const projects = [
     status: "Hackathon 2nd Runner Up"
   },
   {
+    name: "OrgVault",
+    description:
+      "Guarded AI treasury platform for student organizations built for the Binance Hackathon on BNB Smart Chain Testnet (Chain ID 97). Supports MockPHP dues collection, Gemini AI receipt extraction, EIP-712 typed attestations, and on-chain category budget and vendor allowlist enforcement via OrgVault.sol.",
+    stack: ["Next.js", "TypeScript", "Solidity", "BNB Smart Chain", "Gemini AI", "EIP-712", "Tailwind CSS", "Vercel"],
+    href: "https://orgvault-eosin.vercel.app/",
+    image: "/projects/orgvault-preview.png",
+    status: "Binance Hackathon"
+  },
+  {
     name: "Suri.AI",
     description:
       "AI-powered fact-checking platform built for the InterCICSkwela hackathon. Users submit a news article or claim, then Suri.AI cross-checks it with reliable sources and surfaces connected articles based on the result, showing credible sources for legitimate claims or related debunked misinformation for false or misleading ones.",
@@ -140,6 +149,14 @@ export const certificates = [
     image: "/certificates/ai-tech-2-participant.jpg",
     verifyUrl: "",
     fileUrl: "/certificates/ai-tech-2-participant.pdf"
+  },
+  {
+    name: "Data Privacy Awareness (Cybersecurity Awareness Month 2026) - Participant",
+    issuer: "Department of Information and Communications Technology (DICT) – Caraga Region",
+    date: "10/2026",
+    image: "/certificates/dict-data-privacy-awareness-2026.jpg",
+    verifyUrl: "",
+    fileUrl: "/certificates/dict-data-privacy-awareness-2026.pdf"
   }
 ];
 
@@ -157,6 +174,11 @@ export const designSamples = [
 ];
 
 export const timeline = [
+  {
+    year: "Nov 2026",
+    title: "OrgVault — Binance Hackathon",
+    body: "Built OrgVault, a guarded AI treasury for student organizations on BNB Smart Chain Testnet (Chain ID 97) combining Gemini AI receipt verification, EIP-712 attestations, and smart contract budget enforcement."
+  },
   {
     year: "Oct 2026",
     title: "TAGA-asK AI — Hackathon 2nd Runner Up",

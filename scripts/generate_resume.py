@@ -195,6 +195,18 @@ def build_resume():
     y = section(c, "Selected Projects", y + 1)
     projects = [
         (
+            "OrgVault - Guarded AI Treasury (Binance Hackathon)",
+            "Nov 2026",
+            "Next.js, TypeScript, Solidity, BNB Smart Chain, Gemini AI, EIP-712",
+            "Built a guarded AI student organization treasury on BSC Testnet with MockPHP dues, Gemini receipt checks, EIP-712 attestations, and on-chain budget rules.",
+        ),
+        (
+            "TAGA-asK AI (InfoTech Hackathon - 2nd Runner Up)",
+            "Oct 2026",
+            "Next.js, TypeScript, RAG / AI, Vector Search, Vercel",
+            "Built an AI campus knowledge companion and interactive map for UMak with citation-backed answers and Taglish query support, winning 2nd Runner Up.",
+        ),
+        (
             "Marajo Group Real Estate Platform",
             "2026 - Present",
             "Next.js, Supabase, PostgreSQL, Vercel",
@@ -213,22 +225,10 @@ def build_resume():
             "Built a hackathon prototype that checks submitted claims and surfaces credible or debunked article matches through an AI-assisted backend.",
         ),
         (
-            "Personal Portfolio",
-            "2026",
-            "Next.js, TypeScript, Tailwind CSS, Vercel, Gemini API",
-            "Developed a public portfolio with projects, certificates, resume access, GitHub activity, chatbot support, and a canvas mini game.",
-        ),
-        (
             "QUACC Child Care Center System",
             "2025",
             "PHP, MySQL, Bootstrap",
             "Implemented admin, staff, and guardian workflows with file uploads, password hashing, OTP verification, and backend CRUD functionality.",
-        ),
-        (
-            "Assignify and BasuCash Web Apps",
-            "2025 - 2026",
-            "Task management, finance dashboard, web app",
-            "Built focused dashboard concepts for tracking academic assignments, cash flow, expenses, and simple financial records.",
         ),
     ]
     for project in projects:
@@ -254,9 +254,12 @@ def build_resume():
 
     y = section(c, "Training and Certifications", y + 1)
     certs = (
-        "NC III Graphic Design - TESDA, May 2025 | Microcadd / TESDA Graphic Design Training - April-May 2025 | "
-        "Makati Health Department Work Immersion - March 2025 | Batang Techno Hackathon - Participant, March 2026 | "
-        "AI Tech 2.0 - Participant, April 2026 | InfoTechnOlympics Web Design - Participant, October 2025"
+        "Data Privacy Awareness (Cybersecurity Awareness Month 2026) - DICT Caraga Region, October 2026 | "
+        "Binance Hackathon (OrgVault) - Participant, November 2026 | "
+        "TAGA-asK AI Hackathon - 2nd Runner Up, October 2026 | "
+        "NC III Graphic Design - TESDA, May 2025 | AI Tech 2.0 - Participant, April 2026 | "
+        "Batang Techno Hackathon - Participant, March 2026 | InfoTechnOlympics Web Design - Participant, October 2025 | "
+        "Microcadd / TESDA Graphic Design Training - April-May 2025 | Makati Health Department Work Immersion - March 2025"
     )
     y = paragraph(c, certs, y, size=8.35, leading=9.25)
 
