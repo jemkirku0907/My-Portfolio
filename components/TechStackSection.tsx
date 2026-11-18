@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TechKeyboard } from "@/components/TechKeyboard";
 
 export const featuredStack = ["TypeScript", "React", "Next.js", "C#", "PHP", "MySQL", "PostgreSQL", "Supabase", "Tailwind CSS", "GitHub", "Vercel", "Figma", "Canva"];
 
@@ -9,7 +10,7 @@ export const stackGroups = [
   },
   {
     title: "Backend",
-    items: ["C#", ".NET", "PHP", "Laravel", "MySQL", "PostgreSQL", "Supabase", "Java", "Node.js", "C++", "Visual Basic", "VB.NET", "REST APIs"]
+    items: ["C#", ".NET", "PHP", "Laravel", "MySQL", "PostgreSQL", "Supabase", "Solidity", "EIP-712", "BNB Smart Chain", "Java", "Node.js", "C++", "Visual Basic", "VB.NET", "REST APIs"]
   },
   {
     title: "DevOps & Cloud",
@@ -59,12 +60,7 @@ export function TechStackSection() {
         </Link>
       </div>
 
-      <div className="mt-8 flex flex-wrap gap-3">
-        {featuredStack.map((item) => (
-          <StackChip key={item} item={item} />
-        ))}
-        <StackChip item="+ more" muted />
-      </div>
+      <TechKeyboard />
     </section>
   );
 }
