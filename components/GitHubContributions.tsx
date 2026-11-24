@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { ArrowUpRight } from "lucide-react";
 
 type ContributionDay = {
   date: string;
@@ -15,9 +16,6 @@ type ContributionsResponse = {
   contributions?: ContributionDay[];
   source?: "github-graphql" | "github-profile";
 };
-
-const dayLabels = ["", "Mon", "", "Wed", "", "Fri", ""];
-const monthFormatter = new Intl.DateTimeFormat("en", { month: "short" });
 
 function formatDate(date: Date) {
   return date.toISOString().slice(0, 10);
@@ -50,16 +48,6 @@ function buildCalendarDays(contributions: ContributionDay[]) {
   return weeks.slice(-53);
 }
 
-function monthLabels(weeks: ContributionDay[][]) {
-  return weeks.map((week, index) => {
-    const firstDay = new Date(`${week[0].date}T00:00:00`);
-    const previousWeek = weeks[index - 1];
-    const previousMonth = previousWeek ? new Date(`${previousWeek[0].date}T00:00:00`).getMonth() : -1;
-
-    return firstDay.getMonth() !== previousMonth ? monthFormatter.format(firstDay) : "";
-  });
-}
-
 function contributionLevel(day: Pick<ContributionDay, "count" | "level">) {
   if (day.count <= 0) return 0;
   if (day.level > 0) return day.level;
@@ -71,18 +59,24 @@ function contributionLevel(day: Pick<ContributionDay, "count" | "level">) {
 
 function colorForLevel(level: number) {
   return [
-    "bg-[#ebedf0] dark:bg-[#161b22]",
-    "bg-[#9be9a8] dark:bg-[#0e4429]",
-    "bg-[#40c463] dark:bg-[#006d32]",
-    "bg-[#30a14e] dark:bg-[#26a641]",
-    "bg-[#216e39] dark:bg-[#39d353]"
+    "bg-[#ededec] dark:bg-[#1c1c20]",
+    "bg-[#b7e3c5] dark:bg-[#133b24]",
+    "bg-[#69c388] dark:bg-[#1d663a]",
+    "bg-[#369b5c] dark:bg-[#2c9353]",
+    "bg-[#1e6b3a] dark:bg-[#49c977]"
   ][Math.max(0, Math.min(level, 4))];
 }
 
-export function GitHubContributions({ username, verifiedTotal }: { username: string; verifiedTotal?: number }) {
+export function GitHubContributions({
+  username,
+  verifiedTotal
+}: {
+  username: string;
+  verifiedTotal?: number;
+}) {
   const [data, setData] = useState<ContributionsResponse | null>(null);
-  const [error, setError] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [error, setError] = useState<boolean>(false);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
     setMounted(true);
@@ -92,7 +86,9 @@ export function GitHubContributions({ username, verifiedTotal }: { username: str
       setError(false);
 
       try {
-        const response = await fetch(`/api/github-contributions?username=${encodeURIComponent(username)}`);
+        const response = await fetch(
+          `/api/github-contributions?username=${encodeURIComponent(username)}`
+        );
 
         if (!response.ok) throw new Error("Unable to load GitHub contributions");
 
@@ -117,81 +113,56 @@ export function GitHubContributions({ username, verifiedTotal }: { username: str
     return buildCalendarDays(data?.contributions ?? []);
   }, [data, mounted]);
 
-  const months = useMemo(() => {
-    if (!mounted || weeks.length === 0) return [];
-    return monthLabels(weeks);
-  }, [weeks, mounted]);
-
   const apiTotal = data?.total?.lastYear ?? 0;
   const total = Math.max(apiTotal, verifiedTotal ?? 0);
-  const settingsLabel = data?.source === "github-graphql" ? "GitHub API" : "GitHub profile graph";
 
   return (
-    <a
-      href={`https://github.com/${username}`}
-      target="_blank"
-      rel="noreferrer"
-      className="block w-full min-w-0 max-w-full overflow-hidden rounded-lg border border-line bg-white p-4 text-ink transition duration-300 hover:-translate-y-1 hover:border-moss hover:shadow-soft dark:border-moss/70 dark:bg-ink dark:text-paper"
-    >
-      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-lg font-medium" suppressHydrationWarning>
-          {error ? "GitHub contributions unavailable" : `${total} contributions in the last year`}
-        </p>
-        <span className="text-sm text-steel dark:text-paper" suppressHydrationWarning>
-          {error ? "Open GitHub profile" : settingsLabel}
-        </span>
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="text-[14px] font-medium text-[#6e6e73] dark:text-[#8b8b91]">
+          GitHub
+        </h2>
+        <a
+          href={`https://github.com/${username}`}
+          target="_blank"
+          rel="noreferrer"
+          className="focus-ring inline-flex items-center gap-1 text-[13px] tabular-nums text-[#6e6e73] transition hover:text-[#111113] dark:text-[#8b8b91] dark:hover:text-[#ececee]"
+          suppressHydrationWarning
+        >
+          <span>
+            {error
+              ? `@${username} on GitHub`
+              : `${total.toLocaleString()} contributions in the last year`}
+          </span>
+          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+        </a>
       </div>
 
-      <div className="w-full min-w-0 max-w-full overflow-x-auto rounded-md border border-line bg-white p-4 dark:border-moss/70 dark:bg-[#0d1117]">
-        <div className="min-w-[760px] min-h-[136px]" aria-hidden={error} suppressHydrationWarning>
-          {mounted ? (
-            <>
-              <div className="ml-9 grid grid-cols-[repeat(53,12px)] gap-[3px] text-xs text-steel dark:text-paper">
-                {months.map((month, index) => (
-                  <span key={`${month}-${index}`} className="h-5">
-                    {month}
-                  </span>
+      <div
+        role="img"
+        aria-label="GitHub contribution graph"
+        className="w-full overflow-x-auto pb-1"
+      >
+        {mounted && weeks.length > 0 ? (
+          <div className="flex min-w-[530px] justify-between gap-[3px]">
+            {weeks.map((week: ContributionDay[], weekIdx: number) => (
+              <div key={week[0]?.date ?? weekIdx} className="flex flex-col gap-[3px]">
+                {week.map((day: ContributionDay) => (
+                  <span
+                    key={day.date}
+                    title={`${day.count} on ${day.date}`}
+                    className={`h-[9px] w-[9px] rounded-[2px] ${colorForLevel(
+                      contributionLevel(day)
+                    )}`}
+                  />
                 ))}
               </div>
-
-              <div className="flex gap-3">
-                <div className="grid grid-rows-7 gap-[3px] pt-[2px] text-xs text-steel dark:text-paper">
-                  {dayLabels.map((label, index) => (
-                    <span key={`${label}-${index}`} className="h-3 leading-3">
-                      {label}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="grid grid-flow-col grid-rows-7 gap-[3px]">
-                  {weeks.flat().map((day) => (
-                    <span
-                      key={day.date}
-                      title={`${day.count} contributions on ${day.date}`}
-                      className={`h-3 w-3 rounded-[2px] border border-black/5 dark:border-white/5 ${colorForLevel(contributionLevel(day))}`}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-4 flex flex-col gap-3 text-sm text-steel dark:text-paper sm:flex-row sm:items-center sm:justify-between">
-                <span>Learn how we count contributions</span>
-                <div className="flex items-center gap-1">
-                  <span>Less</span>
-                  {[0, 1, 2, 3, 4].map((level) => (
-                    <span key={level} className={`h-3 w-3 rounded-[2px] border border-black/5 dark:border-white/5 ${colorForLevel(level)}`} />
-                  ))}
-                  <span>More</span>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="flex items-center justify-center py-10 text-xs text-steel dark:text-paper">
-              Loading activity graph...
-            </div>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="h-[78px] w-full animate-pulse rounded-[10px] bg-[#ededec] dark:bg-[#1c1c20]" />
+        )}
       </div>
-    </a>
+    </div>
   );
 }

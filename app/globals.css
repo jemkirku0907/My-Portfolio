@@ -4,14 +4,14 @@
 
 :root {
   color-scheme: light;
-  background: #f7f5ef;
-  color: #111111;
+  background: #fcfcfb;
+  color: #111113;
 }
 
 .dark {
   color-scheme: dark;
-  background: #111111;
-  color: #f7f5ef;
+  background: #0f0f11;
+  color: #ececee;
 }
 
 html {
@@ -43,14 +43,13 @@ body {
   margin: 0;
   max-width: 100%;
   overflow-x: clip;
-  background:
-    linear-gradient(180deg, rgba(247, 245, 239, 0.92), rgba(247, 245, 239, 1)),
-    repeating-linear-gradient(90deg, rgba(17, 17, 17, 0.025) 0 1px, transparent 1px 96px);
+  background: #fcfcfb;
+  color: #111113;
 }
 
 .dark body {
-  background: #111111;
-  color: #f7f5ef;
+  background: #0f0f11;
+  color: #ececee;
 }
 
 ::selection {
