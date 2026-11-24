@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
 type KeyCap = {
@@ -245,7 +245,7 @@ const KEYCAPS: KeyCap[] = [
   }
 ];
 
-export function TechKeyboard() {
+export function TechKeyboard({ compact = false }: { compact?: boolean }) {
   const [selectedId, setSelectedId] = useState<string>("nextjs");
   const [pressedId, setPressedId] = useState<string | null>(null);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
@@ -289,7 +289,7 @@ export function TechKeyboard() {
       setPressedId(key.id);
       playClick();
       window.setTimeout(() => {
-        setPressedId((prev) => (prev === key.id ? null : prev));
+        setPressedId((prev: string | null) => (prev === key.id ? null : prev));
       }, 140);
     },
     [playClick]
@@ -317,7 +317,7 @@ export function TechKeyboard() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [triggerKey]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const nx = (e.clientX - rect.left) / rect.width - 0.5;
     const ny = (e.clientY - rect.top) / rect.height - 0.5;
@@ -325,20 +325,32 @@ export function TechKeyboard() {
   };
 
   return (
-    <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1.25fr] lg:items-center">
-      {/* Left readout panel */}
-      <div className="space-y-4 rounded-2xl border border-line bg-white/85 p-6 shadow-sm dark:border-moss dark:bg-ink/85">
+    <div
+      className={
+        compact
+          ? "mt-2 grid grid-cols-1 gap-5 rounded-[16px] border border-[#ebebea] bg-white p-5 dark:border-[#232327] dark:bg-[#161619]"
+          : "mt-8 grid gap-8 lg:grid-cols-[1fr_1.25fr] lg:items-center"
+      }
+    >
+      {/* Readout panel */}
+      <div
+        className={
+          compact
+            ? "space-y-3 border-b border-[#ebebea] pb-4 dark:border-[#232327]"
+            : "space-y-4 rounded-2xl border border-[#ebebea] bg-white p-6 shadow-sm dark:border-[#232327] dark:bg-[#161619]"
+        }
+      >
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <span className="inline-block h-2.5 w-2.5 rounded-full bg-moss" aria-hidden />
-            <p className="font-mono text-xs uppercase tracking-[0.16em] text-steel dark:text-paper/75">
+            <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#6e6e73] dark:text-[#8b8b91]">
               (hint: click or press a key)
             </p>
           </div>
           <button
             type="button"
-            onClick={() => setSoundEnabled((prev) => !prev)}
-            className="focus-ring inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 font-mono text-[11px] text-steel transition hover:border-moss hover:text-ink dark:border-moss dark:text-paper"
+            onClick={() => setSoundEnabled((prev: boolean) => !prev)}
+            className="focus-ring inline-flex items-center gap-1.5 rounded-full border border-[#e5e5e3] px-2.5 py-1 font-mono text-[11px] text-[#6e6e73] transition hover:border-[#111113] hover:text-[#111113] dark:border-[#2c2c31] dark:text-[#adadb3] dark:hover:border-[#8fbc9f] dark:hover:text-white"
             aria-label={soundEnabled ? "Mute key sound" : "Enable key sound"}
           >
             {soundEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
@@ -346,25 +358,27 @@ export function TechKeyboard() {
           </button>
         </div>
 
-        <div className="space-y-2 pt-1">
+        <div className="space-y-1.5 pt-0.5">
           <div className="flex flex-wrap items-center gap-2.5">
-            <h3 className="text-3xl font-semibold tracking-tight text-ink dark:text-paper sm:text-4xl">
+            <h3
+              className={
+                compact
+                  ? "text-2xl font-semibold tracking-tight text-[#111113] dark:text-[#ececee]"
+                  : "text-3xl font-semibold tracking-tight text-[#111113] dark:text-[#ececee] sm:text-4xl"
+              }
+            >
               {selectedKey.label}
             </h3>
-            <span className="rounded-full border border-line bg-paper px-3 py-0.5 font-mono text-xs font-medium text-moss dark:border-moss dark:bg-ink">
+            <span className="rounded-full border border-[#e5e5e3] bg-[#fcfcfb] px-2.5 py-0.5 font-mono text-xs font-medium text-moss dark:border-[#2c2c31] dark:bg-[#111113] dark:text-[#8fbc9f]">
               {selectedKey.category}
             </span>
+            <kbd className="ml-auto rounded border border-[#e5e5e3] bg-[#fcfcfb] px-2 py-0.5 font-mono text-xs font-semibold text-[#111113] dark:border-[#2c2c31] dark:bg-[#111113] dark:text-[#ececee]">
+              Key: {selectedKey.hotkey}
+            </kbd>
           </div>
-          <p className="text-sm leading-6 text-steel dark:text-paper/85 sm:text-base">
+          <p className="text-sm leading-6 text-[#6e6e73] dark:text-[#adadb3]">
             {selectedKey.description}
           </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2 pt-2 text-xs text-steel dark:text-paper/70">
-          <span className="font-mono">Key shortcut:</span>
-          <kbd className="rounded border border-line bg-paper px-2 py-0.5 font-mono text-xs font-semibold text-ink shadow-sm dark:border-moss dark:bg-ink dark:text-paper">
-            {selectedKey.hotkey}
-          </kbd>
         </div>
       </div>
 

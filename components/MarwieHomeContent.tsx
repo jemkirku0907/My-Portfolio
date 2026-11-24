@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowDown, ArrowRight, ArrowUpRight, FileText } from "lucide-react";
 import MiniMeMascot from "@/components/MiniMeMascot";
+import { TechKeyboard } from "@/components/TechKeyboard";
 import { certificates, profile, projects, services } from "@/data/portfolio";
 
 type ProjectItem = (typeof projects)[number];
@@ -585,7 +586,7 @@ export function ServicesAndAboutSection() {
 
 export function StackKeyValueSection() {
   return (
-    <section id="skills" className="scroll-mt-16 flex flex-col gap-4 lg:scroll-mt-10">
+    <section id="skills" className="scroll-mt-16 flex flex-col gap-5 lg:scroll-mt-10">
       <div className="flex items-baseline justify-between">
         <h2 className="text-[14px] font-medium text-[#6e6e73] dark:text-[#8b8b91]">
           Stack
@@ -594,9 +595,12 @@ export function StackKeyValueSection() {
           href="/tech-stack"
           className="focus-ring text-[13px] text-[#6e6e73] transition hover:text-[#111113] dark:text-[#8b8b91] dark:hover:text-[#ececee]"
         >
-          View all
+          View all →
         </Link>
       </div>
+
+      {/* Interactive 3D Mechanical Keyboard */}
+      <TechKeyboard compact />
 
       <div className="flex flex-col">
         {stackRows.map((row) => (
