@@ -9,7 +9,7 @@ type Message = {
   content: string;
 };
 
-export function AskPalette() {
+export function AskPalette({ hideTrigger = false }: { hideTrigger?: boolean }) {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([
@@ -115,22 +115,30 @@ export function AskPalette() {
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        aria-label="Ask anything"
-        className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-2.5 py-1.5 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-3.5 shrink-0"
-      >
-        <span aria-hidden="true" className="flex h-7 w-7 items-center justify-center">
-          <MiniMeMascot size={28} bubble={false} />
-        </span>
-        <span className="hidden sm:inline">Ask anything</span>
-        <span aria-hidden="true" className="hidden rounded border border-line px-1.5 py-0.5 text-xs text-steel dark:border-moss dark:text-paper sm:inline">Ctrl K</span>
-      </button>
+      {!hideTrigger ? (
+        <button
+          onClick={() => setOpen(true)}
+          aria-label="Ask anything"
+          className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-2.5 py-1.5 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-3.5 shrink-0"
+        >
+          <span aria-hidden="true" className="flex h-7 w-7 items-center justify-center">
+            <MiniMeMascot size={28} bubble={false} />
+          </span>
+          <span className="hidden sm:inline">Ask anything</span>
+          <span aria-hidden="true" className="hidden rounded border border-line px-1.5 py-0.5 text-xs text-steel dark:border-moss dark:text-paper sm:inline">Ctrl K</span>
+        </button>
+      ) : null}
 
       {open ? (
-        <div className="fixed inset-0 z-40 bg-ink/35 p-4 backdrop-blur-sm" onMouseDown={() => setOpen(false)}>
+        <div
+          className="fixed inset-0 z-50 bg-ink/45 p-4 backdrop-blur-sm"
+          onMouseDown={() => setOpen(false)}
+        >
           <div
-            className="mx-auto mt-14 sm:mt-20 w-full max-w-2xl overflow-hidden rounded-lg border border-line bg-paper shadow-soft dark:border-moss dark:bg-ink dark:text-paper"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Ask Anything AI Assistant"
+            className="mx-auto mt-14 sm:mt-20 w-full max-w-2xl overflow-hidden rounded-2xl border border-line bg-paper shadow-soft dark:border-moss dark:bg-ink dark:text-paper"
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-line px-4 py-3 dark:border-moss">

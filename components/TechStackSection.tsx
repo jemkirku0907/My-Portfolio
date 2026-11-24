@@ -46,7 +46,7 @@ export function StackChip({ item, muted = false }: { item: string; muted?: boole
 
 export function TechStackSection() {
   return (
-    <section id="skills" className="mx-auto w-full max-w-6xl border-y border-line px-5 py-16 dark:border-moss sm:px-8">
+    <section id="skills" className="mx-auto w-full max-w-5xl scroll-mt-16 border-y border-line px-4 py-14 dark:border-moss sm:px-8 sm:py-16 lg:scroll-mt-6 lg:px-12">
       <div className="flex items-center justify-between gap-4">
         <div className="space-y-2">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss dark:text-[#8fbc9f]">Stack</p>

@@ -1,31 +1,10 @@
 import Link from "next/link";
-import { AskPalette } from "@/components/AskPalette";
-import { HeaderDropdown } from "@/components/HeaderDropdown";
 import { StackChip, stackGroups } from "@/components/TechStackSection";
-import { profile } from "@/data/portfolio";
 
 export default function TechStackPage() {
   return (
-    <main className="min-h-screen w-full max-w-full overflow-x-clip">
-      <header className="sticky top-0 z-30 w-full border-b border-line bg-paper/85 backdrop-blur dark:border-moss dark:bg-ink/90">
-        <nav className="mx-auto flex w-full max-w-6xl items-center justify-between gap-2 px-4 py-3.5 sm:gap-3 sm:px-8 sm:py-4">
-          <Link href="/" className="truncate max-w-[170px] text-xs font-semibold tracking-[0.14em] text-ink dark:text-paper sm:max-w-none sm:text-sm">
-            {profile.name}
-          </Link>
-          <div className="hidden items-center gap-5 text-sm text-steel md:flex">
-            <Link href="/#projects" className="hover:text-ink dark:text-paper dark:hover:text-moss">Projects</Link>
-            <Link href="/#skills" className="hover:text-ink dark:text-paper dark:hover:text-moss">Skills</Link>
-            <Link href="/#certificates" className="hover:text-ink dark:text-paper dark:hover:text-moss">Certificates</Link>
-            <Link href="/#contact" className="hover:text-ink dark:text-paper dark:hover:text-moss">Contact</Link>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <AskPalette />
-            <HeaderDropdown />
-          </div>
-        </nav>
-      </header>
-
-      <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-8 sm:py-20">
+    <main className="min-h-[calc(100dvh-3.75rem)] w-full max-w-full overflow-x-clip lg:min-h-dvh">
+      <section className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-8 sm:py-16 lg:px-12 lg:py-20">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-moss dark:text-[#8fbc9f]">Stack</p>

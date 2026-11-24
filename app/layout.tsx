@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { AskPalette } from "@/components/AskPalette";
 import { CommunityChatModal } from "@/components/CommunityChatModal";
 import { ProjectCaseStudyModal } from "@/components/ProjectCaseStudyModal";
+import { SidebarNav } from "@/components/SidebarNav";
+import { profile } from "@/data/portfolio";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -9,7 +12,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5,
+  maximumScale: 5
 };
 
 export const metadata: Metadata = {
@@ -17,6 +20,9 @@ export const metadata: Metadata = {
   title: "Jemkirk Utana - Full-Stack Developer in the Philippines",
   description:
     "Portfolio of Jemkirk Utana, a Full-Stack Web Developer & Graphic Designer building practical web apps with Next.js, React, Supabase, C#/.NET, and PHP/MySQL.",
+  alternates: {
+    canonical: "/"
+  },
   openGraph: {
     title: "Jemkirk Utana — Full-Stack Web Developer",
     description:
@@ -47,11 +53,51 @@ export const metadata: Metadata = {
   }
 };
 
+const themeInitScript = `(function(){try{var t=localStorage.getItem("theme-mode");var d=window.matchMedia("(prefers-color-scheme: dark)").matches;if(t==="dark"||((!t||t==="system")&&d)){document.documentElement.classList.add("dark")}}catch(e){}})();`;
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  jobTitle: "Full-Stack Web Developer & Graphic Designer",
+  url: "https://jemkirk.vercel.app",
+  email: `mailto:${profile.email}`,
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "PH"
+  },
+  sameAs: [`https://github.com/${profile.github}`, profile.linkedin]
+};
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased w-full max-w-full overflow-x-hidden`} suppressHydrationWarning>
-        {children}
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
+      </head>
+      <body
+        className={`${inter.variable} font-sans antialiased w-full max-w-full overflow-x-clip`}
+        suppressHydrationWarning
+      >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-paper dark:focus:bg-paper dark:focus:text-ink"
+        >
+          Skip to main content
+        </a>
+
+        <div className="flex min-h-dvh w-full flex-col lg:flex-row lg:items-start">
+          <SidebarNav />
+          <div id="main-content" className="min-w-0 flex-1 w-full">
+            {children}
+          </div>
+        </div>
+
+        <AskPalette hideTrigger />
         <CommunityChatModal />
         <ProjectCaseStudyModal />
       </body>
