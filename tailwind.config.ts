@@ -14,7 +14,8 @@ const config: Config = {
         steel: "#405466"
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"]
+        sans: ["var(--font-inter)", "Inter", "system-ui", "-apple-system", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"]
       },
       boxShadow: {
         soft: "0 24px 80px rgba(17, 17, 17, 0.12)"

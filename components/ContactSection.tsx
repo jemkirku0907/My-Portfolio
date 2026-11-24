@@ -93,7 +93,7 @@ export function ContactSection({
           <button
             type="button"
             onClick={handleCopyEmail}
-            className="focus-ring inline-flex h-9 items-center gap-1.5 rounded-[9px] border border-[#ebebea] bg-white px-3 font-mono text-xs text-[#111113] transition hover:border-[#c8c8c4] dark:border-[#252529] dark:bg-[#161619] dark:text-[#ececee]"
+            className="focus-ring inline-flex h-9 items-center gap-1.5 rounded-[9px] border border-[#ebebea] bg-white px-3 text-xs font-medium text-[#111113] transition hover:border-[#c8c8c4] dark:border-[#252529] dark:bg-[#161619] dark:text-[#ececee]"
           >
             {copied ? (
               <Check className="h-3.5 w-3.5 text-moss" aria-hidden />

@@ -662,7 +662,7 @@ export function CertificatesRowsSection() {
               </p>
             </div>
 
-            <span className="shrink-0 font-mono text-[12px] tabular-nums text-[#8a8a8f] dark:text-[#737379]">
+            <span className="shrink-0 text-xs tabular-nums text-[#8a8a8f] dark:text-[#737379]">
               {cert.date}
             </span>
           </a>

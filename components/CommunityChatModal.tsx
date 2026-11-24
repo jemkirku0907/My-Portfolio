@@ -50,7 +50,7 @@ function MinimalAvatar({ name }: { name: string }) {
   const initial = (name.trim()[0] || "V").toUpperCase();
   return (
     <span
-      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-white font-mono text-xs font-semibold text-ink shadow-sm dark:border-moss dark:bg-ink dark:text-paper"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-white text-xs font-semibold text-ink shadow-sm dark:border-moss dark:bg-ink dark:text-paper"
       aria-hidden
     >
       {initial}
@@ -277,7 +277,7 @@ export function CommunityChatModal() {
       >
         {/* Minimal top bar */}
         <div className="flex items-center justify-between px-6 pt-5 pb-3">
-          <div className="flex items-center gap-2 font-mono text-xs text-steel dark:text-paper/70">
+          <div className="flex items-center gap-2 text-xs tabular-nums text-steel dark:text-paper/70">
             <MessageSquare className="h-3.5 w-3.5" aria-hidden />
             <span>{messages.length} messages</span>
             <span>·</span>
@@ -296,15 +296,15 @@ export function CommunityChatModal() {
         {/* Message feed */}
         <div className="flex-1 space-y-5 overflow-y-auto px-6 py-3">
           {messages.length === 0 ? (
-            <p className="py-10 text-center font-mono text-xs text-steel dark:text-paper/65">
-              no messages yet — say hi below!
+            <p className="py-10 text-center text-xs text-steel dark:text-paper/65">
+              No messages yet — say hi below!
             </p>
           ) : (
             messages.map((msg) => (
               <div key={msg.id} className="flex items-start gap-3.5">
                 <MinimalAvatar name={msg.sender} />
                 <div className="min-w-0 flex-1 space-y-1.5">
-                  <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs text-steel dark:text-paper/70">
+                  <div className="flex flex-wrap items-center gap-1.5 text-xs text-steel dark:text-paper/70">
                     <span className="font-medium text-ink dark:text-paper">{msg.sender}</span>
                     {msg.location ? (
                       <>
@@ -318,9 +318,9 @@ export function CommunityChatModal() {
                       <Laptop className="h-3 w-3 opacity-70" aria-hidden />
                     )}
                     <span>·</span>
-                    <span>{formatRelativeTime(msg.createdAt)}</span>
+                    <span className="tabular-nums">{formatRelativeTime(msg.createdAt)}</span>
                   </div>
-                  <div className="inline-block max-w-full rounded-2xl bg-[#e7e5df] px-4 py-2 font-mono text-sm leading-relaxed text-ink dark:bg-white/10 dark:text-paper">
+                  <div className="inline-block max-w-full rounded-2xl bg-[#e7e5df] px-4 py-2 text-sm leading-relaxed text-ink dark:bg-white/10 dark:text-paper">
                     <p className="whitespace-pre-wrap break-words">{msg.body}</p>
                   </div>
                 </div>
@@ -336,9 +336,9 @@ export function CommunityChatModal() {
             <form onSubmit={handleConfirmName} className="space-y-3">
               <label
                 htmlFor="chat-name-step"
-                className="block font-mono text-sm text-steel dark:text-paper/75"
+                className="block text-sm text-steel dark:text-paper/75"
               >
-                what&apos;s your name?
+                What&apos;s your name?
               </label>
               <div className="flex items-center justify-between gap-4">
                 <input
@@ -348,28 +348,28 @@ export function CommunityChatModal() {
                   onChange={(e) => setNickname(e.target.value)}
                   onKeyDown={(e) => playTypeSound(e.key)}
                   maxLength={24}
-                  placeholder="your name"
-                  className="w-full bg-transparent font-mono text-lg text-ink placeholder:text-steel/50 outline-none dark:text-paper dark:placeholder:text-paper/40"
+                  placeholder="Your name"
+                  className="w-full bg-transparent text-base text-ink placeholder:text-steel/50 outline-none dark:text-paper dark:placeholder:text-paper/40"
                 />
                 <button
                   type="submit"
                   disabled={!nickname.trim()}
-                  className="focus-ring shrink-0 font-mono text-sm text-steel transition hover:text-ink disabled:opacity-40 dark:text-paper/75 dark:hover:text-paper"
+                  className="focus-ring shrink-0 text-sm font-medium text-steel transition hover:text-ink disabled:opacity-40 dark:text-paper/75 dark:hover:text-paper"
                 >
-                  next ↵
+                  Next ↵
                 </button>
               </div>
             </form>
           ) : (
             <form onSubmit={handleSubmitMessage} className="space-y-3">
-              <div className="flex items-center justify-between font-mono text-xs text-steel dark:text-paper/70">
-                <span>chatting as {nickname}</span>
+              <div className="flex items-center justify-between text-xs text-steel dark:text-paper/70">
+                <span>Chatting as {nickname}</span>
                 <button
                   type="button"
                   onClick={() => setNameConfirmed(false)}
                   className="underline decoration-line underline-offset-4 hover:text-ink dark:hover:text-paper"
                 >
-                  change name
+                  Change name
                 </button>
               </div>
               <div className="flex items-center justify-between gap-4">
@@ -379,15 +379,15 @@ export function CommunityChatModal() {
                   onChange={(e) => setDraft(e.target.value)}
                   onKeyDown={(e) => playTypeSound(e.key)}
                   maxLength={280}
-                  placeholder="write a message..."
-                  className="w-full bg-transparent font-mono text-base text-ink placeholder:text-steel/50 outline-none dark:text-paper dark:placeholder:text-paper/40"
+                  placeholder="Write a message..."
+                  className="w-full bg-transparent text-sm text-ink placeholder:text-steel/50 outline-none dark:text-paper dark:placeholder:text-paper/40"
                 />
                 <button
                   type="submit"
                   disabled={!draft.trim()}
-                  className="focus-ring shrink-0 font-mono text-sm text-steel transition hover:text-ink disabled:opacity-40 dark:text-paper/75 dark:hover:text-paper"
+                  className="focus-ring shrink-0 text-sm font-medium text-steel transition hover:text-ink disabled:opacity-40 dark:text-paper/75 dark:hover:text-paper"
                 >
-                  send ↵
+                  Send ↵
                 </button>
               </div>
             </form>

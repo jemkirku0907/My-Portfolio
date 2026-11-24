@@ -78,7 +78,7 @@ export function ProjectCaseStudyModal() {
         <div className="flex-1 space-y-5 overflow-y-auto overscroll-contain p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.14em] text-moss dark:text-[#8fbc9f]">
+              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-moss dark:text-[#8fbc9f]">
                 {selectedProject.status} · {selectedProject.role}
               </p>
               <h3 id="case-study-title" className="mt-1 text-2xl font-semibold text-ink dark:text-paper">
@@ -109,7 +109,7 @@ export function ProjectCaseStudyModal() {
           </div>
 
           <div className="space-y-1.5">
-            <p className="font-mono text-xs uppercase tracking-wider text-steel dark:text-paper/70">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-steel dark:text-paper/70">
               Problem &amp; Context
             </p>
             <p className="text-sm leading-6 text-steel dark:text-paper/90">
@@ -118,7 +118,7 @@ export function ProjectCaseStudyModal() {
           </div>
 
           <div className="space-y-1.5">
-            <p className="font-mono text-xs uppercase tracking-wider text-steel dark:text-paper/70">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-steel dark:text-paper/70">
               Overview
             </p>
             <p className="text-sm leading-6 text-steel dark:text-paper/90">
@@ -127,7 +127,7 @@ export function ProjectCaseStudyModal() {
           </div>
 
           <div className="space-y-2">
-            <p className="font-mono text-xs uppercase tracking-wider text-steel dark:text-paper/70">
+            <p className="text-xs font-semibold uppercase tracking-[0.08em] text-steel dark:text-paper/70">
               What I Built
             </p>
             <ul className="space-y-2">
@@ -144,7 +144,7 @@ export function ProjectCaseStudyModal() {
             {selectedProject.stack.map((tech) => (
               <span
                 key={tech}
-                className="rounded-full border border-line px-2.5 py-0.5 font-mono text-xs text-steel dark:border-moss dark:text-paper"
+                className="rounded-full border border-line px-2.5 py-0.5 text-xs font-medium text-steel dark:border-moss dark:text-paper"
               >
                 {tech}
               </span>

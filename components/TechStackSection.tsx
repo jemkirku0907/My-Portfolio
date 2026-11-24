@@ -33,10 +33,10 @@ export const stackGroups = [
 export function StackChip({ item, muted = false }: { item: string; muted?: boolean }) {
   return (
     <span
-      className={`inline-flex min-h-11 items-center rounded-lg border px-4 py-2 font-mono text-sm shadow-sm transition hover:-translate-y-0.5 hover:border-moss sm:text-base ${
+      className={`inline-flex min-h-10 items-center rounded-lg border px-3.5 py-1.5 text-sm font-medium transition hover:-translate-y-0.5 hover:border-moss ${
         muted
-          ? "border-dashed border-line text-steel dark:border-moss dark:text-paper"
-          : "border-line bg-white text-steel hover:text-ink dark:border-moss dark:bg-ink dark:text-paper dark:hover:text-moss"
+          ? "border-dashed border-[#dcdcda] text-[#6e6e73] dark:border-[#2c2c31] dark:text-[#adadb3]"
+          : "border-[#ebebea] bg-white text-[#111113] shadow-[0_1px_2px_rgba(0,0,0,0.03)] dark:border-[#252529] dark:bg-[#161619] dark:text-[#ececee]"
       }`}
     >
       {item}

@@ -333,7 +333,7 @@ export function SidebarNav() {
       (item.href === "/tech-stack" && pathname === "/tech-stack") ||
       (pathname === "/" && Boolean(item.sectionId) && activeSection === item.sectionId);
 
-    const linkClasses = `focus-ring group flex items-center gap-3 py-1.5 font-mono text-[14px] transition-colors ${
+    const linkClasses = `focus-ring group flex items-center gap-3 py-1.5 text-sm transition-colors ${
       isRouteActive
         ? "font-medium text-ink dark:text-paper"
         : "text-steel hover:text-ink dark:text-paper/70 dark:hover:text-paper"
@@ -406,7 +406,7 @@ export function SidebarNav() {
           </button>
           <Link
             href="/"
-            className="focus-ring truncate px-1 py-1 font-mono text-[15px] font-medium tracking-tight text-ink dark:text-paper"
+            className="focus-ring truncate px-1 py-1 text-[15px] font-semibold tracking-[-0.01em] text-ink dark:text-paper"
           >
             {profile.name}
           </Link>
@@ -416,7 +416,7 @@ export function SidebarNav() {
           type="button"
           onClick={openAskPalette}
           aria-label="Ask anything"
-          className="focus-ring inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded border border-line bg-paper px-2.5 py-1 font-mono text-xs text-ink transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper"
+          className="focus-ring inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-md border border-line bg-paper px-2.5 py-1 text-xs font-medium text-ink transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper"
         >
           <span aria-hidden="true" className="flex h-5 w-5 items-center justify-center">
             <MiniMeMascot size={20} bubble={false} />
@@ -463,7 +463,7 @@ export function SidebarNav() {
               playClickSound();
               setMobileOpen(false);
             }}
-            className="focus-ring truncate font-mono text-[17px] font-medium tracking-tight text-ink transition hover:text-moss dark:text-paper dark:hover:text-[#8fbc9f]"
+            className="focus-ring truncate text-[17px] font-semibold tracking-[-0.015em] text-ink transition hover:text-moss dark:text-paper dark:hover:text-[#8fbc9f]"
           >
             {profile.name}
           </Link>
@@ -514,7 +514,7 @@ export function SidebarNav() {
                     setActiveSection(item.sectionId);
                     setMobileOpen(false);
                   }}
-                  className={`focus-ring flex items-center gap-2 py-1.5 font-mono text-[14px] transition-colors ${
+                  className={`focus-ring flex items-center gap-2 py-1.5 text-sm transition-colors ${
                     active
                       ? "font-medium text-ink dark:text-paper"
                       : "text-steel hover:text-ink dark:text-paper/70 dark:hover:text-paper"
@@ -578,8 +578,8 @@ export function SidebarNav() {
               <MiniMeMascot size={26} bubble={false} />
             </div>
 
-            <p className="mt-2 text-[12.5px] text-steel dark:text-paper/65" suppressHydrationWarning>
-              <strong className="font-mono font-semibold text-ink dark:text-paper" suppressHydrationWarning>
+            <p className="mt-2 text-xs text-steel dark:text-paper/65" suppressHydrationWarning>
+              <strong className="font-semibold tabular-nums text-ink dark:text-paper" suppressHydrationWarning>
                 {viewerCount}
               </strong>{" "}
               {viewerCount === 1 ? "person viewing now" : "people viewing now"}
@@ -588,10 +588,10 @@ export function SidebarNav() {
             <button
               type="button"
               onClick={openCommunityChat}
-              className="focus-ring mt-2.5 inline-flex items-center gap-2.5 font-mono text-[13.5px] text-steel transition hover:text-ink dark:text-paper/75 dark:hover:text-paper"
+              className="focus-ring mt-2.5 inline-flex items-center gap-2.5 text-sm text-steel transition hover:text-ink dark:text-paper/75 dark:hover:text-paper"
             >
               <MessageSquare className="h-3.5 w-3.5 shrink-0" aria-hidden />
-              <span>community chat</span>
+              <span>Community chat</span>
             </button>
           </div>
 
@@ -655,7 +655,7 @@ export function SidebarNav() {
 
             <a
               href={`mailto:${profile.email}`}
-              className="focus-ring mt-1.5 inline-flex max-w-full items-center gap-2 font-mono text-[13px] text-ink transition hover:text-moss dark:text-paper dark:hover:text-[#8fbc9f]"
+              className="focus-ring mt-1.5 inline-flex max-w-full items-center gap-2 text-[13px] font-medium text-ink transition hover:text-moss dark:text-paper dark:hover:text-[#8fbc9f]"
             >
               <Mail className="h-3.5 w-3.5 shrink-0" aria-hidden />
               <span className="truncate">{profile.email}</span>

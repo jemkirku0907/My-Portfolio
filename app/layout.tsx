@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { AskPalette } from "@/components/AskPalette";
 import { CommunityChatModal } from "@/components/CommunityChatModal";
 import { ProjectCaseStudyModal } from "@/components/ProjectCaseStudyModal";
@@ -8,6 +8,7 @@ import { profile } from "@/data/portfolio";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -80,7 +81,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body
-        className={`${inter.variable} font-sans antialiased w-full max-w-full overflow-x-clip`}
+        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased w-full max-w-full overflow-x-clip`}
         suppressHydrationWarning
       >
         <a

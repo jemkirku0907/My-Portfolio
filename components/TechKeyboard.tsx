@@ -342,15 +342,15 @@ export function TechKeyboard({ compact = false }: { compact?: boolean }) {
       >
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-moss" aria-hidden />
-            <p className="font-mono text-xs uppercase tracking-[0.14em] text-[#6e6e73] dark:text-[#8b8b91]">
-              (hint: click or press a key)
+            <span className="inline-block h-2 w-2 rounded-full bg-moss" aria-hidden />
+            <p className="text-xs font-medium text-[#6e6e73] dark:text-[#8b8b91]">
+              Click or press a keycap
             </p>
           </div>
           <button
             type="button"
             onClick={() => setSoundEnabled((prev: boolean) => !prev)}
-            className="focus-ring inline-flex items-center gap-1.5 rounded-full border border-[#e5e5e3] px-2.5 py-1 font-mono text-[11px] text-[#6e6e73] transition hover:border-[#111113] hover:text-[#111113] dark:border-[#2c2c31] dark:text-[#adadb3] dark:hover:border-[#8fbc9f] dark:hover:text-white"
+            className="focus-ring inline-flex items-center gap-1.5 rounded-full border border-[#e5e5e3] px-2.5 py-1 text-xs font-medium text-[#6e6e73] transition hover:border-[#111113] hover:text-[#111113] dark:border-[#2c2c31] dark:text-[#adadb3] dark:hover:border-[#8fbc9f] dark:hover:text-white"
             aria-label={soundEnabled ? "Mute key sound" : "Enable key sound"}
           >
             {soundEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
@@ -369,10 +369,10 @@ export function TechKeyboard({ compact = false }: { compact?: boolean }) {
             >
               {selectedKey.label}
             </h3>
-            <span className="rounded-full border border-[#e5e5e3] bg-[#fcfcfb] px-2.5 py-0.5 font-mono text-xs font-medium text-moss dark:border-[#2c2c31] dark:bg-[#111113] dark:text-[#8fbc9f]">
+            <span className="rounded-full border border-[#e5e5e3] bg-[#fcfcfb] px-2.5 py-0.5 text-xs font-medium text-moss dark:border-[#2c2c31] dark:bg-[#111113] dark:text-[#8fbc9f]">
               {selectedKey.category}
             </span>
-            <kbd className="ml-auto rounded border border-[#e5e5e3] bg-[#fcfcfb] px-2 py-0.5 font-mono text-xs font-semibold text-[#111113] dark:border-[#2c2c31] dark:bg-[#111113] dark:text-[#ececee]">
+            <kbd className="ml-auto rounded border border-[#e5e5e3] bg-[#fcfcfb] px-2 py-0.5 font-mono text-xs font-medium text-[#111113] dark:border-[#2c2c31] dark:bg-[#111113] dark:text-[#ececee]">
               Key: {selectedKey.hotkey}
             </kbd>
           </div>
