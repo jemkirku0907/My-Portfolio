@@ -411,18 +411,6 @@ export function SidebarNav() {
             {profile.name}
           </Link>
         </div>
-
-        <button
-          type="button"
-          onClick={openAskPalette}
-          aria-label="Ask anything"
-          className="focus-ring inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-md border border-line bg-paper px-2.5 py-1 text-xs font-medium text-ink transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper"
-        >
-          <span aria-hidden="true" className="flex h-5 w-5 items-center justify-center">
-            <MiniMeMascot size={20} bubble={false} />
-          </span>
-          <span>Ask AI</span>
-        </button>
       </header>
 
       {/* Desktop expand button when sidebar is collapsed */}

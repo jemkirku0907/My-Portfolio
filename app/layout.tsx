@@ -98,7 +98,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           </div>
         </div>
 
-        <AskPalette hideTrigger />
+        <AskPalette />
         <CommunityChatModal />
         <ProjectCaseStudyModal />
       </body>

@@ -115,17 +115,23 @@ export function AskPalette({ hideTrigger = false }: { hideTrigger?: boolean }) {
 
   return (
     <>
-      {!hideTrigger ? (
+      {!hideTrigger && !open ? (
         <button
+          type="button"
           onClick={() => setOpen(true)}
-          aria-label="Ask anything"
-          className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-white px-2.5 py-1.5 text-sm font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper sm:px-3.5 shrink-0"
+          aria-label="Ask AI assistant"
+          className="focus-ring group fixed bottom-5 right-5 z-40 inline-flex min-h-12 items-center gap-2.5 rounded-full border border-[#e5e5e3] bg-white/95 py-1.5 pl-2.5 pr-4 text-sm font-medium text-[#111113] shadow-[0_8px_28px_rgba(17,17,19,0.12),0_1px_3px_rgba(17,17,19,0.06)] backdrop-blur transition duration-200 hover:-translate-y-0.5 hover:border-[#c8c8c4] hover:shadow-[0_12px_34px_rgba(17,17,19,0.16)] active:translate-y-0 motion-reduce:transition-none dark:border-[#2c2c31] dark:bg-[#19191c]/95 dark:text-[#ececee] dark:shadow-[0_12px_32px_rgba(0,0,0,0.45)] dark:hover:border-[#8fbc9f]/60 sm:bottom-6 sm:right-6"
         >
-          <span aria-hidden="true" className="flex h-7 w-7 items-center justify-center">
-            <MiniMeMascot size={28} bubble={false} />
+          <span aria-hidden="true" className="mascot-float flex h-9 w-9 items-center justify-center">
+            <MiniMeMascot size={34} bubble={false} />
           </span>
-          <span className="hidden sm:inline">Ask anything</span>
-          <span aria-hidden="true" className="hidden rounded border border-line px-1.5 py-0.5 text-xs text-steel dark:border-moss dark:text-paper sm:inline">Ctrl K</span>
+          <span>Ask AI</span>
+          <kbd
+            aria-hidden="true"
+            className="hidden rounded border border-[#e5e5e3] bg-[#fcfcfb] px-1.5 py-0.5 font-mono text-[11px] font-medium text-[#6e6e73] dark:border-[#2c2c31] dark:bg-[#111113] dark:text-[#adadb3] sm:inline"
+          >
+            Ctrl K
+          </kbd>
         </button>
       ) : null}
 
