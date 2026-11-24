@@ -100,7 +100,8 @@ body {
 }
 
 .avatar-swap:hover .avatar-slice,
-.avatar-swap:focus-visible .avatar-slice {
+.avatar-swap:focus-visible .avatar-slice,
+.avatar-swap[data-anime="true"] .avatar-slice {
   opacity: 1;
   transform: translateY(0) scaleY(1);
   filter: saturate(1.08);
@@ -116,7 +117,8 @@ body {
 }
 
 .avatar-swap:hover .avatar-scan,
-.avatar-swap:focus-visible .avatar-scan {
+.avatar-swap:focus-visible .avatar-scan,
+.avatar-swap[data-anime="true"] .avatar-scan {
   opacity: 1;
   transform: translateX(520%);
 }

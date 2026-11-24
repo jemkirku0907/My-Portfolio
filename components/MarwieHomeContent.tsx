@@ -106,25 +106,49 @@ const projectSubtitles: Record<string, string> = {
   BasuCash: "Lightweight personal cash-flow, expense, and budget tracker"
 };
 
+const avatarSlices = Array.from({ length: 8 }, (_, index) => index);
+
 export function HeroIdentityBlock() {
   const [bioExpanded, setBioExpanded] = useState<boolean>(false);
+  const [animeToggled, setAnimeToggled] = useState<boolean>(false);
 
   return (
     <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
-      {/* Large Monochrome-to-Color Editorial Avatar */}
+      {/* Large Monochrome Editorial Avatar -> 8-Slice Anime Portrait Reveal on Hover / Tap */}
       <button
         type="button"
-        onClick={() => setBioExpanded((prev: boolean) => !prev)}
-        aria-label="Toggle portrait color"
-        className="focus-ring group relative h-[188px] w-[188px] shrink-0 overflow-hidden rounded-full bg-[#e4e4e2] dark:bg-[#222226] sm:h-[236px] sm:w-[236px]"
+        onClick={() => setAnimeToggled((prev: boolean) => !prev)}
+        data-anime={animeToggled ? "true" : "false"}
+        aria-pressed={animeToggled}
+        aria-label="Toggle anime portrait style"
+        className="focus-ring avatar-swap group relative h-[188px] w-[188px] shrink-0 overflow-hidden rounded-full bg-[#e4e4e2] dark:bg-[#222226] [contain:paint] sm:h-[236px] sm:w-[236px]"
       >
         <Image
           src="/profile/hero-face.jpg"
-          alt={profile.name}
+          alt={`${profile.name} portrait`}
           fill
           priority
           sizes="(max-width: 640px) 188px, 236px"
-          className="scale-[1.06] object-cover object-top grayscale contrast-[1.08] brightness-[1.03] transition duration-700 group-hover:scale-[1.09] group-hover:grayscale-0 group-hover:contrast-100"
+          className="scale-[1.06] object-cover object-top grayscale contrast-[1.08] brightness-[1.03] transition duration-700 group-hover:scale-[1.12] group-focus-within:scale-[1.12]"
+        />
+        <div className="absolute inset-0" aria-hidden="true">
+          {avatarSlices.map((slice: number) => (
+            <span
+              key={slice}
+              className="avatar-slice absolute top-0 h-full"
+              style={{
+                left: `${slice * 12.5}%`,
+                width: "12.5%",
+                backgroundImage: "url('/profile/avatar.jpg')",
+                backgroundPosition: `${slice === 0 ? 0 : (slice / 7) * 100}% center`,
+                transitionDelay: `${slice * 45}ms`
+              }}
+            />
+          ))}
+        </div>
+        <span
+          className="avatar-scan pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 rotate-12 bg-white/25 blur-md"
+          aria-hidden="true"
         />
       </button>
 
