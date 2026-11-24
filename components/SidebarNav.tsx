@@ -1,32 +1,38 @@
 "use client";
 
-import { useEffect, useState, type ComponentType, type MouseEvent as ReactMouseEvent } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
-  Award,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ComponentType,
+  type MouseEvent as ReactMouseEvent
+} from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  ArrowRight,
+  BookOpen,
   Briefcase,
-  Compass,
-  FileText,
   Gamepad2,
-  GitCommitHorizontal,
-  Github,
-  History,
-  Layers,
-  LayoutGrid,
-  Linkedin,
+  Laptop,
   Mail,
-  MessageCircle,
+  MessageSquare,
+  Monitor,
+  Moon,
   PanelLeft,
   PanelLeftClose,
-  Sparkles,
-  User,
+  Sun,
+  Users,
+  Volume2,
+  VolumeX,
   X
 } from "lucide-react";
 import MiniMeMascot from "@/components/MiniMeMascot";
-import { stackGroups } from "@/components/TechStackSection";
 import { useVisitorPresence } from "@/components/useVisitorPresence";
-import { certificates, profile, projects, services, timeline } from "@/data/portfolio";
+import { profile } from "@/data/portfolio";
+
+type ThemeMode = "system" | "light" | "dark";
 
 type DocumentWithViewTransition = Document & {
   startViewTransition?: (callback: () => void) => {
@@ -34,100 +40,62 @@ type DocumentWithViewTransition = Document & {
   };
 };
 
-type NavItem = {
+type IconNavItem = {
   label: string;
-  href?: string;
-  sectionId?: string;
+  href: string;
   external?: boolean;
-  onAction?: "ask-palette";
+  sectionId?: string;
   icon: ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
-  count?: number;
-  shortcut?: string;
 };
 
-const visibleProjectCount = projects.filter(
-  (project) => project.name !== "NC III Graphic Design Work"
-).length;
-const totalStackCount = stackGroups.reduce((sum, group) => sum + group.items.length, 0);
+type SectionNavItem = {
+  label: string;
+  href: string;
+  sectionId: string;
+};
 
-const primaryItems: NavItem[] = [
+const topIconLinks: IconNavItem[] = [
   {
-    label: "Services",
-    href: "/#services",
-    sectionId: "services",
-    icon: Briefcase,
-    count: services.length
+    label: "Tech Stack",
+    href: "/tech-stack",
+    icon: Laptop
   },
   {
-    label: "Projects",
-    href: "/#projects",
-    sectionId: "projects",
-    icon: LayoutGrid,
-    count: visibleProjectCount
-  },
-  {
-    label: "Certificates",
-    href: "/#certificates",
-    sectionId: "certificates",
-    icon: Award,
-    count: certificates.length
+    label: "Avoid Boredom",
+    href: "/game",
+    icon: Gamepad2
   },
   {
     label: "Resume",
     href: profile.resume,
     external: true,
-    icon: FileText
+    icon: BookOpen
   }
 ];
 
-const exploreItems: NavItem[] = [
+const workIconLinks: IconNavItem[] = [
   {
-    label: "Ask anything",
-    onAction: "ask-palette",
-    icon: Sparkles,
-    shortcut: "Ctrl K"
+    label: "Services",
+    href: "/#services",
+    sectionId: "services",
+    icon: Briefcase
   },
   {
-    label: "Avoid Boredom",
-    href: "/game",
-    icon: Gamepad2,
-    count: 2
-  },
-  {
-    label: "Tech Stack",
-    href: "/tech-stack",
-    icon: Layers,
-    count: totalStackCount
-  },
-  {
-    label: "Outside Code",
-    href: "/#beyond-code",
-    sectionId: "beyond-code",
-    icon: Compass,
-    count: 6
+    label: "Contact",
+    href: "/#contact",
+    sectionId: "contact",
+    icon: Users
   }
 ];
 
-const portfolioItems: NavItem[] = [
-  {
-    label: "More about me",
-    href: "/#about",
-    sectionId: "about",
-    icon: User
-  },
-  {
-    label: "Experience",
-    href: "/#experience",
-    sectionId: "experience",
-    icon: History,
-    count: timeline.length
-  },
-  {
-    label: "GitHub",
-    href: "/#github",
-    sectionId: "github",
-    icon: GitCommitHorizontal
-  }
+const sectionLinks: SectionNavItem[] = [
+  { label: "Projects", href: "/#projects", sectionId: "projects" },
+  { label: "Experience", href: "/#experience", sectionId: "experience" },
+  { label: "Skills", href: "/#skills", sectionId: "skills" },
+  { label: "Certificates", href: "/#certificates", sectionId: "certificates" },
+  { label: "GitHub", href: "/#github", sectionId: "github" },
+  { label: "About", href: "/#about", sectionId: "about" },
+  { label: "Outside Code", href: "/#beyond-code", sectionId: "beyond-code" }
 ];
 
 const OBSERVED_SECTIONS = [
@@ -144,15 +112,60 @@ const OBSERVED_SECTIONS = [
 
 export function SidebarNav() {
   const pathname = usePathname();
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("");
-  const [manilaTime, setManilaTime] = useState<string>("");
+  const router = useRouter();
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+  const [theme, setTheme] = useState<ThemeMode>("system");
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(false);
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [activeSection, setActiveSection] = useState<string>("projects");
+  const audioCtxRef = useRef<AudioContext | null>(null);
   const { count, enabled } = useVisitorPresence();
 
-  const githubUser = process.env.NEXT_PUBLIC_GITHUB_USERNAME || profile.github;
+  const playClickSound = useCallback(() => {
+    if (!soundEnabled || typeof window === "undefined") return;
+    try {
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new AudioCtx();
+      }
+      const ctx = audioCtxRef.current;
+      if (ctx.state === "suspended") ctx.resume();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(320, now);
+      osc.frequency.exponentialRampToValueAtTime(110, now + 0.035);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.045);
+    } catch {
+      // Ignore audio policy restrictions
+    }
+  }, [soundEnabled]);
+
+  function resolveTheme(nextTheme: ThemeMode) {
+    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return nextTheme === "dark" || (nextTheme === "system" && systemDark);
+  }
+
+  function applyTheme(nextTheme: ThemeMode) {
+    const root = document.documentElement;
+    const shouldUseDark = resolveTheme(nextTheme);
+    root.classList.toggle("dark", shouldUseDark);
+    if (nextTheme === "system") {
+      window.localStorage.removeItem("theme-mode");
+    } else {
+      window.localStorage.setItem("theme-mode", nextTheme);
+    }
+  }
 
   useEffect(() => {
     setMounted(true);
@@ -162,32 +175,28 @@ export function SidebarNav() {
       setCollapsed(true);
     }
 
-    const savedTheme = window.localStorage.getItem("theme-mode");
-    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initialDark =
-      savedTheme === "dark" || ((!savedTheme || savedTheme === "system") && systemDark);
+    const savedSound = window.localStorage.getItem("sidebar-sound");
+    if (savedSound === "1") {
+      setSoundEnabled(true);
+    }
 
-    document.documentElement.classList.toggle("dark", initialDark);
-    setIsDark(initialDark);
+    const savedTheme = window.localStorage.getItem("theme-mode") as ThemeMode | null;
+    const initialTheme: ThemeMode =
+      savedTheme === "light" || savedTheme === "dark" ? savedTheme : "system";
+    setTheme(initialTheme);
+    applyTheme(initialTheme);
+  }, []);
 
-    const updateClock = () => {
-      try {
-        const formatted = new Intl.DateTimeFormat("en-US", {
-          timeZone: "Asia/Manila",
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true
-        }).format(new Date());
-        setManilaTime(formatted);
-      } catch {
-        setManilaTime("");
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.altKey && event.key.toLowerCase() === "g") {
+        event.preventDefault();
+        router.push("/game");
       }
     };
-
-    updateClock();
-    const timer = window.setInterval(updateClock, 30000);
-    return () => window.clearInterval(timer);
-  }, []);
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [router]);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -241,6 +250,7 @@ export function SidebarNav() {
   }, [pathname]);
 
   function toggleDesktopCollapse() {
+    playClickSound();
     setCollapsed((prev: boolean) => {
       const next = !prev;
       window.localStorage.setItem("sidebar-collapsed", next ? "1" : "0");
@@ -248,29 +258,37 @@ export function SidebarNav() {
     });
   }
 
+  function toggleSound() {
+    setSoundEnabled((prev: boolean) => {
+      const next = !prev;
+      window.localStorage.setItem("sidebar-sound", next ? "1" : "0");
+      return next;
+    });
+  }
+
   function openAskPalette() {
+    playClickSound();
     setMobileOpen(false);
     window.dispatchEvent(new Event("open-ask-palette"));
   }
 
   function openCommunityChat() {
+    playClickSound();
     setMobileOpen(false);
     window.dispatchEvent(new Event("open-community-chat"));
   }
 
-  function toggleTheme(event: ReactMouseEvent<HTMLButtonElement>) {
-    const nextDark = !isDark;
+  function setThemeWithReveal(nextTheme: ThemeMode, event: ReactMouseEvent<HTMLButtonElement>) {
+    playClickSound();
+    if (nextTheme === theme) return;
+
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const transitionDocument = document as DocumentWithViewTransition;
+    const currentIsDark = document.documentElement.classList.contains("dark");
+    const nextIsDark = resolveTheme(nextTheme);
 
-    const commitTheme = () => {
-      document.documentElement.classList.toggle("dark", nextDark);
-      window.localStorage.setItem("theme-mode", nextDark ? "dark" : "light");
-      setIsDark(nextDark);
-    };
-
-    if (!transitionDocument.startViewTransition || prefersReducedMotion) {
-      commitTheme();
+    if (currentIsDark === nextIsDark) {
+      applyTheme(nextTheme);
+      setTheme(nextTheme);
       return;
     }
 
@@ -281,9 +299,17 @@ export function SidebarNav() {
       Math.max(x, window.innerWidth - x),
       Math.max(y, window.innerHeight - y)
     );
+    const transitionDocument = document as DocumentWithViewTransition;
+
+    if (!transitionDocument.startViewTransition || prefersReducedMotion) {
+      applyTheme(nextTheme);
+      setTheme(nextTheme);
+      return;
+    }
 
     const transition = transitionDocument.startViewTransition(() => {
-      commitTheme();
+      applyTheme(nextTheme);
+      setTheme(nextTheme);
     });
 
     transition.ready.then(() => {
@@ -300,103 +326,73 @@ export function SidebarNav() {
     });
   }
 
-  function isItemActive(item: NavItem) {
-    if (item.href === "/game") return pathname === "/game";
-    if (item.href === "/tech-stack") return pathname === "/tech-stack";
-    if (pathname === "/" && item.sectionId) {
-      return activeSection === item.sectionId;
+  function renderIconLink(item: IconNavItem) {
+    const Icon = item.icon;
+    const isRouteActive =
+      (item.href === "/game" && pathname === "/game") ||
+      (item.href === "/tech-stack" && pathname === "/tech-stack") ||
+      (pathname === "/" && Boolean(item.sectionId) && activeSection === item.sectionId);
+
+    const linkClasses = `focus-ring group flex items-center gap-3 py-1.5 font-mono text-[14px] transition-colors ${
+      isRouteActive
+        ? "font-medium text-ink dark:text-paper"
+        : "text-steel hover:text-ink dark:text-paper/70 dark:hover:text-paper"
+    }`;
+
+    const content = (
+      <>
+        <Icon
+          className={`h-[15px] w-[15px] shrink-0 transition-colors ${
+            isRouteActive
+              ? "text-ink dark:text-paper"
+              : "text-steel/80 group-hover:text-ink dark:text-paper/60 dark:group-hover:text-paper"
+          }`}
+          aria-hidden
+        />
+        <span className="truncate">{item.label}</span>
+      </>
+    );
+
+    if (item.external) {
+      return (
+        <a
+          key={item.label}
+          href={item.href}
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => {
+            playClickSound();
+            setMobileOpen(false);
+          }}
+          className={linkClasses}
+        >
+          {content}
+        </a>
+      );
     }
-    return false;
-  }
 
-  function renderNavGroup(items: NavItem[], groupLabel?: string) {
     return (
-      <div className="flex flex-col gap-0.5">
-        {groupLabel ? (
-          <span className="px-3 pb-1.5 text-xs font-medium tracking-[0.01em] text-steel/85 dark:text-paper/55">
-            {groupLabel}
-          </span>
-        ) : null}
-        {items.map((item) => {
-          const Icon = item.icon;
-          const active = isItemActive(item);
-          const itemClasses = `focus-ring group flex h-10 w-full items-center gap-3 rounded-xl px-3 text-[15px] font-medium transition duration-150 motion-reduce:transition-none ${
-            active
-              ? "bg-gradient-to-b from-white to-[#eeeae0] text-ink shadow-[inset_0_0_0_1px_#ded9ce,inset_0_1px_0_rgba(255,255,255,0.9),0_1px_2px_rgba(17,17,17,0.06)] dark:from-[#232925] dark:to-[#1b201d] dark:text-paper dark:shadow-[inset_0_0_0_1px_rgba(66,100,81,0.7),0_1px_2px_rgba(0,0,0,0.35)]"
-              : "text-steel hover:bg-black/[0.04] hover:text-ink dark:text-paper/80 dark:hover:bg-white/[0.06] dark:hover:text-paper"
-          }`;
-
-          const iconClasses = `h-4 w-4 shrink-0 transition-colors ${
-            active
-              ? "text-moss dark:text-[#8fbc9f]"
-              : "text-steel/75 group-hover:text-ink dark:text-paper/55 dark:group-hover:text-paper"
-          }`;
-
-          const inner = (
-            <>
-              <Icon className={iconClasses} aria-hidden />
-              <span className="truncate">{item.label}</span>
-              {typeof item.count === "number" ? (
-                <span className="ml-auto font-mono text-xs font-medium tabular-nums text-steel/75 dark:text-paper/50">
-                  {item.count}
-                </span>
-              ) : null}
-              {item.shortcut ? (
-                <kbd className="ml-auto rounded-md border border-line/90 bg-white/80 px-1.5 py-0.5 font-mono text-[11px] font-medium text-steel dark:border-moss/60 dark:bg-ink/70 dark:text-paper/75">
-                  {item.shortcut}
-                </kbd>
-              ) : null}
-            </>
-          );
-
-          if (item.onAction === "ask-palette") {
-            return (
-              <button
-                key={item.label}
-                type="button"
-                onClick={openAskPalette}
-                className={`${itemClasses} text-left`}
-              >
-                {inner}
-              </button>
-            );
-          }
-
-          if (item.external && item.href) {
-            return (
-              <a
-                key={item.label}
-                href={item.href}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => setMobileOpen(false)}
-                className={itemClasses}
-              >
-                {inner}
-              </a>
-            );
-          }
-
-          return (
-            <Link
-              key={item.label}
-              href={item.href || "/"}
-              onClick={() => setMobileOpen(false)}
-              aria-current={active ? "page" : undefined}
-              className={itemClasses}
-            >
-              {inner}
-            </Link>
-          );
-        })}
-      </div>
+      <Link
+        key={item.label}
+        href={item.href}
+        aria-current={isRouteActive ? "page" : undefined}
+        onClick={() => {
+          playClickSound();
+          setMobileOpen(false);
+        }}
+        className={linkClasses}
+      >
+        {content}
+      </Link>
     );
   }
 
+  const viewerCount = mounted && enabled ? count : 1;
+
   return (
     <>
-      {/* Mobile sticky top bar (< lg) */}
-      <header className="sticky top-0 z-30 flex w-full items-center justify-between gap-2 border-b border-line bg-paper/90 px-3 py-2 backdrop-blur dark:border-moss/60 dark:bg-ink/90 lg:hidden">
+      {/* Mobile sticky top bar (< lg) — straight flush bar */}
+      <header className="sticky top-0 z-30 flex w-full items-center justify-between gap-2 border-b border-line bg-white/95 px-3 py-2 backdrop-blur dark:border-moss/60 dark:bg-ink/95 lg:hidden">
         <div className="flex min-w-0 items-center gap-1.5">
           <button
             type="button"
@@ -404,13 +400,13 @@ export function SidebarNav() {
             aria-label="Open navigation menu"
             aria-expanded={mobileOpen}
             aria-controls="portfolio-sidebar"
-            className="focus-ring inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl text-ink transition hover:bg-black/[0.05] dark:text-paper dark:hover:bg-white/[0.08]"
+            className="focus-ring inline-flex min-h-11 min-w-11 items-center justify-center text-ink transition hover:bg-black/[0.04] dark:text-paper dark:hover:bg-white/[0.08]"
           >
             <PanelLeft className="h-5 w-5" aria-hidden />
           </button>
           <Link
             href="/"
-            className="focus-ring truncate rounded-md px-1 py-1 text-base font-semibold tracking-[-0.01em] text-ink dark:text-paper"
+            className="focus-ring truncate px-1 py-1 font-mono text-[15px] font-medium tracking-tight text-ink dark:text-paper"
           >
             {profile.name}
           </Link>
@@ -420,184 +416,249 @@ export function SidebarNav() {
           type="button"
           onClick={openAskPalette}
           aria-label="Ask anything"
-          className="focus-ring inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full border border-line bg-white px-2.5 py-1 text-xs font-medium text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper"
+          className="focus-ring inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded border border-line bg-paper px-2.5 py-1 font-mono text-xs text-ink transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper"
         >
-          <span aria-hidden="true" className="flex h-6 w-6 items-center justify-center">
-            <MiniMeMascot size={24} bubble={false} />
+          <span aria-hidden="true" className="flex h-5 w-5 items-center justify-center">
+            <MiniMeMascot size={20} bubble={false} />
           </span>
           <span>Ask AI</span>
         </button>
       </header>
 
-      {/* Desktop floating expand button when sidebar is collapsed */}
+      {/* Desktop expand button when sidebar is collapsed */}
       {collapsed ? (
         <button
           type="button"
           onClick={toggleDesktopCollapse}
           aria-label="Expand sidebar"
           title="Expand sidebar"
-          className="focus-ring fixed left-4 top-4 z-30 hidden h-10 w-10 items-center justify-center rounded-xl border border-line bg-paper/95 text-ink shadow-[0_2px_10px_rgba(17,17,17,0.08)] backdrop-blur transition hover:border-moss dark:border-moss dark:bg-[#151816] dark:text-paper lg:inline-flex"
+          className="focus-ring fixed left-3 top-3 z-30 hidden h-9 w-9 items-center justify-center rounded border border-line bg-white text-ink shadow-sm transition hover:border-moss dark:border-moss dark:bg-ink dark:text-paper lg:inline-flex"
         >
-          <PanelLeft className="h-[18px] w-[18px]" aria-hidden />
+          <PanelLeft className="h-4 w-4" aria-hidden />
         </button>
       ) : null}
 
-      {/* Mobile drawer backdrop scrim */}
+      {/* Mobile drawer scrim */}
       {mobileOpen ? (
         <div
           aria-hidden="true"
           onClick={() => setMobileOpen(false)}
-          className="fixed inset-0 z-40 bg-ink/45 backdrop-blur-[2px] lg:hidden"
+          className="fixed inset-0 z-40 bg-ink/40 backdrop-blur-[1px] lg:hidden"
         />
       ) : null}
 
-      {/* Floating rounded left sidebar (sticky on desktop, slide-over drawer on mobile) */}
+      {/* Straight, flush full-height left sidebar (no outer card border-radius) */}
       <aside
         id="portfolio-sidebar"
         aria-label="Sidebar"
-        className={`sidebar-shell fixed left-2.5 top-2.5 z-50 h-[calc(100dvh-20px)] w-[min(292px,calc(100vw-20px))] shrink-0 rounded-[26px] border border-line/95 bg-gradient-to-b from-[#f3f0e8] to-[#e8e3d7] p-[5px] shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_2px_4px_rgba(17,17,17,0.05),0_24px_56px_rgba(17,17,17,0.22)] transition-transform duration-200 ease-out motion-reduce:transition-none dark:border-moss/60 dark:from-[#181b19] dark:to-[#111412] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_24px_56px_rgba(0,0,0,0.55)] lg:sticky lg:left-auto lg:top-3 lg:z-20 lg:my-3 lg:ml-3 lg:h-[calc(100dvh-24px)] lg:w-[268px] lg:shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_1px_2px_rgba(17,17,17,0.05),0_18px_40px_rgba(17,17,17,0.08)] ${
-          mobileOpen ? "translate-x-0" : "-translate-x-[115%]"
+        className={`fixed inset-y-0 left-0 z-50 flex h-dvh w-[264px] shrink-0 flex-col rounded-none border-r border-line bg-white text-ink transition-transform duration-200 ease-out motion-reduce:transition-none dark:border-moss/60 dark:bg-[#121212] dark:text-paper lg:sticky lg:top-0 lg:z-20 lg:w-[252px] ${
+          mobileOpen ? "translate-x-0" : "-translate-x-full"
         } ${collapsed ? "lg:hidden" : "lg:translate-x-0"}`}
       >
-        <div className="sidebar-grain flex h-full flex-col gap-4 overflow-hidden rounded-[21px] border border-line/80 bg-paper/95 px-3 pt-3.5 shadow-[0_1px_3px_rgba(17,17,17,0.05)] dark:border-moss/45 dark:bg-[#151816]">
-          {/* Sidebar top header: Name + Collapse/Close button */}
-          <div className="flex shrink-0 items-center justify-between gap-2 pl-2.5 pr-1 pt-0.5">
-            <Link
-              href="/"
-              onClick={() => setMobileOpen(false)}
-              className="focus-ring truncate rounded-md text-[17px] font-semibold tracking-[-0.02em] text-ink transition hover:text-moss dark:text-paper dark:hover:text-[#8fbc9f]"
-            >
-              {profile.name}
-            </Link>
-
-            <button
-              type="button"
-              onClick={toggleDesktopCollapse}
-              aria-label="Collapse sidebar"
-              title="Collapse sidebar"
-              className="focus-ring hidden h-9 w-9 shrink-0 items-center justify-center rounded-lg text-steel transition hover:bg-black/[0.05] hover:text-ink dark:text-paper/75 dark:hover:bg-white/[0.08] dark:hover:text-paper lg:inline-flex"
-            >
-              <PanelLeftClose className="h-[18px] w-[18px]" aria-hidden />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMobileOpen(false)}
-              aria-label="Close navigation menu"
-              className="focus-ring inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-steel transition hover:bg-black/[0.05] hover:text-ink dark:text-paper/75 dark:hover:bg-white/[0.08] dark:hover:text-paper lg:hidden"
-            >
-              <X className="h-[18px] w-[18px]" aria-hidden />
-            </button>
-          </div>
-
-          {/* Primary tactile pill CTA (Contact) */}
+        {/* Top Name Header */}
+        <div className="flex shrink-0 items-center justify-between gap-2 px-7 pb-5 pt-7">
           <Link
-            href="/#contact"
-            onClick={() => setMobileOpen(false)}
-            className="focus-ring flex h-[46px] w-full shrink-0 items-center gap-2.5 rounded-full bg-gradient-to-b from-white to-[#f2efe7] px-4 text-[15px] font-medium text-ink shadow-[inset_0_0_0_1px_#ded9ce,inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(17,17,17,0.06),0_4px_10px_rgba(17,17,17,0.04)] transition duration-150 hover:shadow-[inset_0_0_0_1px_#cbc4b5,inset_0_1px_0_rgba(255,255,255,0.95),0_2px_4px_rgba(17,17,17,0.08),0_8px_16px_rgba(17,17,17,0.06)] active:translate-y-px motion-reduce:transition-none dark:from-[#222824] dark:to-[#1a1f1c] dark:text-paper dark:shadow-[inset_0_0_0_1px_rgba(66,100,81,0.65),inset_0_1px_0_rgba(255,255,255,0.06),0_4px_12px_rgba(0,0,0,0.35)] dark:hover:shadow-[inset_0_0_0_1px_rgba(143,188,159,0.55),inset_0_1px_0_rgba(255,255,255,0.08),0_6px_16px_rgba(0,0,0,0.45)]"
+            href="/"
+            onClick={() => {
+              playClickSound();
+              setMobileOpen(false);
+            }}
+            className="focus-ring truncate font-mono text-[17px] font-medium tracking-tight text-ink transition hover:text-moss dark:text-paper dark:hover:text-[#8fbc9f]"
           >
-            <Mail className="h-4 w-4 shrink-0 text-ink dark:text-paper" aria-hidden />
-            <span className="flex-1 truncate">Contact</span>
+            {profile.name}
           </Link>
 
-          {/* Scrollable grouped navigation */}
-          <nav
-            aria-label="Main"
-            className="sidebar-scroll flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto pr-0.5"
+          <button
+            type="button"
+            onClick={toggleDesktopCollapse}
+            aria-label="Collapse sidebar"
+            title="Collapse sidebar"
+            className="focus-ring -mr-2 hidden h-8 w-8 shrink-0 items-center justify-center rounded text-steel/70 transition hover:bg-black/[0.04] hover:text-ink dark:text-paper/60 dark:hover:bg-white/[0.06] dark:hover:text-paper lg:inline-flex"
           >
-            {renderNavGroup(primaryItems)}
-            {renderNavGroup(exploreItems, "Explore")}
-            {renderNavGroup(portfolioItems, "Portfolio")}
-          </nav>
+            <PanelLeftClose className="h-4 w-4" aria-hidden />
+          </button>
 
-          {/* Live presence & Community Chat strip */}
-          <div className="mt-auto flex shrink-0 items-center justify-between gap-2.5 pl-2.5 pr-1 pt-1">
-            <div className="flex min-w-0 flex-col gap-0.5">
-              <span className="text-xs text-steel/85 dark:text-paper/60">Viewing now</span>
-              <span
-                className="inline-flex items-center gap-1.5 text-[13px] font-medium tabular-nums text-ink dark:text-paper"
-                suppressHydrationWarning
-              >
-                <span
-                  className="h-2 w-2 shrink-0 rounded-full bg-moss dark:bg-[#8fbc9f]"
-                  aria-hidden="true"
-                />
-                <span className="truncate" suppressHydrationWarning>
-                  {mounted && enabled ? `${count} online` : "Live chat"}
-                </span>
+          <button
+            type="button"
+            onClick={() => setMobileOpen(false)}
+            aria-label="Close navigation menu"
+            className="focus-ring -mr-2 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded text-steel transition hover:bg-black/[0.04] hover:text-ink dark:text-paper/75 dark:hover:bg-white/[0.08] lg:hidden"
+          >
+            <X className="h-4 w-4" aria-hidden />
+          </button>
+        </div>
+
+        {/* Scrollable Vertical Navigation */}
+        <nav
+          aria-label="Main"
+          className="sidebar-scroll flex min-h-0 flex-1 flex-col overflow-y-auto px-7 py-1"
+        >
+          <div className="flex flex-col gap-1">
+            {topIconLinks.map((item) => renderIconLink(item))}
+          </div>
+
+          <div className="mt-5 flex flex-col gap-1">
+            {workIconLinks.map((item) => renderIconLink(item))}
+          </div>
+
+          <div className="mt-5 flex flex-col gap-1 pb-2">
+            {sectionLinks.map((item) => {
+              const active = pathname === "/" && activeSection === item.sectionId;
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  onClick={() => {
+                    playClickSound();
+                    setActiveSection(item.sectionId);
+                    setMobileOpen(false);
+                  }}
+                  className={`focus-ring flex items-center gap-2 py-1.5 font-mono text-[14px] transition-colors ${
+                    active
+                      ? "font-medium text-ink dark:text-paper"
+                      : "text-steel hover:text-ink dark:text-paper/70 dark:hover:text-paper"
+                  }`}
+                >
+                  {active ? (
+                    <ArrowRight className="h-3.5 w-3.5 shrink-0 text-ink dark:text-paper" aria-hidden />
+                  ) : null}
+                  <span className="truncate">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+
+        {/* Bottom Fixed Sections */}
+        <div className="shrink-0 px-7 pb-6 pt-3">
+          {/* Keyboard Shortcut Rows */}
+          <div className="space-y-2 pb-4 text-[13px]">
+            <button
+              type="button"
+              onClick={openAskPalette}
+              className="focus-ring flex w-full items-center gap-2 text-left text-steel transition hover:text-ink dark:text-paper/70 dark:hover:text-paper"
+            >
+              <span>Ask anything</span>
+              <span className="inline-flex items-center gap-1 font-mono text-[11px]">
+                <kbd className="rounded-[4px] border border-line bg-paper/60 px-1.5 py-0.5 text-steel dark:border-moss/60 dark:bg-white/[0.04] dark:text-paper/80">
+                  Ctrl
+                </kbd>
+                <span className="text-steel/60 dark:text-paper/45">+</span>
+                <kbd className="rounded-[4px] border border-line bg-paper/60 px-1.5 py-0.5 text-steel dark:border-moss/60 dark:bg-white/[0.04] dark:text-paper/80">
+                  K
+                </kbd>
               </span>
+            </button>
+
+            <Link
+              href="/game"
+              onClick={() => {
+                playClickSound();
+                setMobileOpen(false);
+              }}
+              className="focus-ring flex w-full items-center gap-2 text-left text-steel transition hover:text-ink dark:text-paper/70 dark:hover:text-paper"
+            >
+              <span>Avoid boredom</span>
+              <span className="inline-flex items-center gap-1 font-mono text-[11px]">
+                <kbd className="rounded-[4px] border border-line bg-paper/60 px-1.5 py-0.5 text-steel dark:border-moss/60 dark:bg-white/[0.04] dark:text-paper/80">
+                  Alt
+                </kbd>
+                <span className="text-steel/60 dark:text-paper/45">+</span>
+                <kbd className="rounded-[4px] border border-line bg-paper/60 px-1.5 py-0.5 text-steel dark:border-moss/60 dark:bg-white/[0.04] dark:text-paper/80">
+                  G
+                </kbd>
+              </span>
+            </Link>
+          </div>
+
+          {/* Live Presence & Community Chat */}
+          <div className="border-t border-line/80 py-4 dark:border-moss/45">
+            <div className="inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-line bg-paper dark:border-moss/60 dark:bg-white/[0.05]">
+              <MiniMeMascot size={26} bubble={false} />
             </div>
+
+            <p className="mt-2 text-[12.5px] text-steel dark:text-paper/65" suppressHydrationWarning>
+              <strong className="font-mono font-semibold text-ink dark:text-paper" suppressHydrationWarning>
+                {viewerCount}
+              </strong>{" "}
+              {viewerCount === 1 ? "person viewing now" : "people viewing now"}
+            </p>
 
             <button
               type="button"
               onClick={openCommunityChat}
-              className="focus-ring inline-flex h-[36px] shrink-0 items-center gap-1.5 rounded-full bg-gradient-to-b from-white to-[#f2efe7] px-3.5 text-sm font-medium text-ink shadow-[inset_0_0_0_1px_#ded9ce,inset_0_1px_0_rgba(255,255,255,0.95),0_1px_2px_rgba(17,17,17,0.06),0_4px_10px_rgba(17,17,17,0.04)] transition duration-150 hover:shadow-[inset_0_0_0_1px_#cbc4b5,0_4px_12px_rgba(17,17,17,0.08)] active:translate-y-px motion-reduce:transition-none dark:from-[#222824] dark:to-[#1a1f1c] dark:text-paper dark:shadow-[inset_0_0_0_1px_rgba(66,100,81,0.65),inset_0_1px_0_rgba(255,255,255,0.06),0_4px_10px_rgba(0,0,0,0.35)]"
+              className="focus-ring mt-2.5 inline-flex items-center gap-2.5 font-mono text-[13.5px] text-steel transition hover:text-ink dark:text-paper/75 dark:hover:text-paper"
             >
-              <MessageCircle className="h-3.5 w-3.5 text-moss dark:text-[#8fbc9f]" aria-hidden />
-              <span>Chat</span>
+              <MessageSquare className="h-3.5 w-3.5 shrink-0" aria-hidden />
+              <span>community chat</span>
             </button>
           </div>
 
-          {/* Bottom footer bar: Timezone + Theme & Social icon buttons */}
-          <div className="-mx-3 flex shrink-0 items-center gap-1.5 border-t border-line/85 px-4 py-3.5 dark:border-moss/45">
-            <div
-              className="flex min-w-0 flex-1 flex-col pl-1.5 text-xs text-steel dark:text-paper/65"
-              title={mounted && manilaTime ? `Manila, Philippines · ${manilaTime}` : "Philippines Time (GMT+8)"}
-            >
-              <span className="font-medium tabular-nums">GMT+8</span>
+          {/* Theme Switcher + Sound Toggle + Email Footer */}
+          <div className="border-t border-line/80 pt-4 dark:border-moss/45">
+            <div className="flex items-center gap-2">
+              <div
+                role="group"
+                aria-label="Theme mode"
+                className="inline-flex items-center gap-0.5 rounded-full border border-line p-1 dark:border-moss/60"
+              >
+                {(
+                  [
+                    { mode: "system" as const, label: "System theme", icon: Monitor },
+                    { mode: "light" as const, label: "Light theme", icon: Sun },
+                    { mode: "dark" as const, label: "Dark theme", icon: Moon }
+                  ] as const
+                ).map((item) => {
+                  const Icon = item.icon;
+                  const active = mounted && theme === item.mode;
+                  return (
+                    <button
+                      key={item.mode}
+                      type="button"
+                      onClick={(event: ReactMouseEvent<HTMLButtonElement>) =>
+                        setThemeWithReveal(item.mode, event)
+                      }
+                      aria-label={item.label}
+                      aria-pressed={active}
+                      className={`focus-ring inline-flex h-7 w-7 items-center justify-center rounded-full transition ${
+                        active
+                          ? "bg-black/[0.08] text-ink dark:bg-white/[0.14] dark:text-paper"
+                          : "text-steel/80 hover:text-ink dark:text-paper/60 dark:hover:text-paper"
+                      }`}
+                    >
+                      <Icon className="h-3.5 w-3.5" aria-hidden />
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                type="button"
+                onClick={toggleSound}
+                aria-label={soundEnabled ? "Mute UI sounds" : "Enable UI sounds"}
+                aria-pressed={soundEnabled}
+                title={soundEnabled ? "Sound effects on" : "Sound effects muted"}
+                className="focus-ring inline-flex h-9 w-9 items-center justify-center rounded-full border border-line text-steel transition hover:text-ink dark:border-moss/60 dark:text-paper/70 dark:hover:text-paper"
+              >
+                {soundEnabled ? (
+                  <Volume2 className="h-3.5 w-3.5" aria-hidden />
+                ) : (
+                  <VolumeX className="h-3.5 w-3.5" aria-hidden />
+                )}
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label={mounted && isDark ? "Switch to light mode" : "Switch to dark mode"}
-              aria-pressed={mounted ? isDark : undefined}
-              title={mounted && isDark ? "Switch to light mode" : "Switch to dark mode"}
-              className="focus-ring inline-flex h-[34px] w-[34px] items-center justify-center rounded-[10px] text-steel shadow-[inset_0_0_0_1px_#ded9ce] transition hover:bg-black/[0.04] hover:text-ink dark:text-paper/80 dark:shadow-[inset_0_0_0_1px_rgba(66,100,81,0.65)] dark:hover:bg-white/[0.06] dark:hover:text-paper"
-            >
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                aria-hidden="true"
-              >
-                <circle cx="8" cy="8" r="5.75" />
-                <path d="M8 2.25a5.75 5.75 0 0 1 0 11.5z" fill="currentColor" />
-              </svg>
-            </button>
+            <p className="mt-4 text-[12px] leading-5 text-steel/85 dark:text-paper/60">
+              For work, collabs &amp; everything else, reach me at
+            </p>
 
             <a
               href={`mailto:${profile.email}`}
-              aria-label="Send email"
-              title={`Email ${profile.email}`}
-              className="focus-ring inline-flex h-[34px] w-[34px] items-center justify-center rounded-[10px] text-steel shadow-[inset_0_0_0_1px_#ded9ce] transition hover:bg-black/[0.04] hover:text-ink dark:text-paper/80 dark:shadow-[inset_0_0_0_1px_rgba(66,100,81,0.65)] dark:hover:bg-white/[0.06] dark:hover:text-paper"
+              className="focus-ring mt-1.5 inline-flex max-w-full items-center gap-2 font-mono text-[13px] text-ink transition hover:text-moss dark:text-paper dark:hover:text-[#8fbc9f]"
             >
-              <Mail className="h-[15px] w-[15px]" aria-hidden />
-            </a>
-
-            <a
-              href={`https://github.com/${githubUser}`}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub profile"
-              title="GitHub"
-              className="focus-ring inline-flex h-[34px] w-[34px] items-center justify-center rounded-[10px] text-steel shadow-[inset_0_0_0_1px_#ded9ce] transition hover:bg-black/[0.04] hover:text-ink dark:text-paper/80 dark:shadow-[inset_0_0_0_1px_rgba(66,100,81,0.65)] dark:hover:bg-white/[0.06] dark:hover:text-paper"
-            >
-              <Github className="h-[15px] w-[15px]" aria-hidden />
-            </a>
-
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn profile"
-              title="LinkedIn"
-              className="focus-ring inline-flex h-[34px] w-[34px] items-center justify-center rounded-[10px] text-steel shadow-[inset_0_0_0_1px_#ded9ce] transition hover:bg-black/[0.04] hover:text-ink dark:text-paper/80 dark:shadow-[inset_0_0_0_1px_rgba(66,100,81,0.65)] dark:hover:bg-white/[0.06] dark:hover:text-paper"
-            >
-              <Linkedin className="h-[15px] w-[15px]" aria-hidden />
+              <Mail className="h-3.5 w-3.5 shrink-0" aria-hidden />
+              <span className="truncate">{profile.email}</span>
             </a>
           </div>
         </div>
