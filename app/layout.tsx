@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { AskPalette } from "@/components/AskPalette";
 import { CommunityChatModal } from "@/components/CommunityChatModal";
+import { GeometryDashBg } from "@/components/GeometryDashBg";
 import { ProjectCaseStudyModal } from "@/components/ProjectCaseStudyModal";
 import { SidebarNav } from "@/components/SidebarNav";
 import { profile } from "@/data/portfolio";
@@ -91,7 +92,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Skip to main content
         </a>
 
-        <div className="flex min-h-dvh w-full flex-col lg:flex-row lg:items-start">
+        <GeometryDashBg />
+
+        <div className="relative z-10 flex min-h-dvh w-full flex-col lg:flex-row lg:items-start">
           <SidebarNav />
           <div id="main-content" className="min-w-0 flex-1 w-full">
             {children}

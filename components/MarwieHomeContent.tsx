@@ -215,12 +215,6 @@ export function HeroMetricsAndSpotlights() {
 
   return (
     <div className="relative flex flex-col gap-9">
-      {/* Subtle halftone dot matrix backdrop matching screenshot */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -inset-x-6 top-6 h-44 opacity-55 [background-image:radial-gradient(#c9c9c5_1.25px,transparent_1.25px)] [background-size:10px_10px] [mask-image:radial-gradient(ellipse_at_center,#000_25%,transparent_75%)] dark:opacity-20"
-      />
-
       {/* 3-Column Metrics Row */}
       <div className="relative grid grid-cols-3 gap-3 sm:gap-6">
         <a
